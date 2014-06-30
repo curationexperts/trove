@@ -1,0 +1,2 @@
+class CourseCollection < CuratedCollection
+end

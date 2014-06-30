@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe CuratedCollection do
+describe PersonalCollection do
 
-  subject { CuratedCollection.new title: 'some title' }
+  subject { PersonalCollection.new title: 'some title' }
 
   describe "members" do
     context "when it's empty" do
