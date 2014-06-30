@@ -16,4 +16,9 @@ class User < ActiveRecord::Base
   def to_s
     email
   end
+
+  def registered?
+    self.groups.include?('registered')
+  end
+
 end

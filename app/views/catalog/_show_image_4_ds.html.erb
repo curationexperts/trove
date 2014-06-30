@@ -1,0 +1,8 @@
+<div class="row">
+  <div class="col-md-6">
+    <%= render partial: 'show_default', locals: {document: document} %>
+  </div>
+  <div class="col-md-6">
+    <img src="<%= download_path(document.id, datastream_id: 'Basic.jpg') %>" style="width: 100%">
+  </div>
+</div>

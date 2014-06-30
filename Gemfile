@@ -39,6 +39,7 @@ gem 'spring',        group: :development
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'factory_girl_rails'
 end
 
 gem 'tufts_models', github: 'curationexperts/tufts_models'
@@ -49,4 +50,8 @@ gem "devise-guests", "~> 0.3"
 group :development, :test do
   gem "rspec-rails"
   gem "jettywrapper"
+end
+
+group :debug do
+  gem 'byebug', require: false
 end

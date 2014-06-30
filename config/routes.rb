@@ -1,4 +1,8 @@
+ALLOW_DOTS ||= /[a-zA-Z0-9_.:]+/
+
 Rails.application.routes.draw do
+
+  resources :downloads, only: [:show], constraints: { id: ALLOW_DOTS }
 
   root :to => "catalog#index"
   blacklight_for :catalog

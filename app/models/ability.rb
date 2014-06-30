@@ -14,5 +14,11 @@ class Ability
     # if user_groups.include? 'special_group'
     #   can [:create], ActiveFedora::Base
     # end
+
+    cannot :download, ActiveFedora::Datastream
+
+    if current_user.registered?
+      can :download, ActiveFedora::Datastream
+    end
   end
 end

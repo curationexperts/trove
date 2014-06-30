@@ -2,7 +2,14 @@
 
 ##Initial Setup for Developers
 
-* cp config/secrets.yml.sample config/secrets.yml
-* Edit config/secrets.yml.  Add the fedora password.  Replace the secret_key_base with a new key, which you can generate with ```rake secret```.
+### Add secrets to your secrets file
 
+```bash
+cp config/secrets.yml.sample config/secrets.yml
+```
 
+* Edit config/secrets.yml
+  * Add the fedora password
+  * Replace the ```secret_key_base``` with a new key, which you can generate with ```rake secret```
+  * Replace the ```devise_secret_key``` with a new key, which you can generate with ```rake secret```
+  * Replace the ```blacklight_secret_key``` with a new key, which you can generate with ```rake secret```
