@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.2'
 gem 'sqlite3'
 gem 'hydra', '7.0.0'
+gem 'active-fedora', github: 'projecthydra/active_fedora', branch: 'make_valid_lists'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -37,20 +38,18 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-group :development, :test do
-  gem 'rspec-rails'
-  gem 'factory_girl_rails'
-end
-
 gem 'tufts_models', github: 'curationexperts/tufts_models'
-
 
 gem "devise"
 gem "devise-guests", "~> 0.3"
+
+
 group :development, :test do
-  gem "rspec-rails"
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
   gem "jettywrapper"
 end
+
 
 group :debug do
   gem 'byebug', require: false

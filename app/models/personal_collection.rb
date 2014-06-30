@@ -1,0 +1,3 @@
+class PersonalCollection < CuratedCollection
+end
+
