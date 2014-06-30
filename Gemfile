@@ -41,6 +41,8 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
+gem 'tufts_models', github: 'curationexperts/tufts_models'
+
 
 gem "devise"
 gem "devise-guests", "~> 0.3"

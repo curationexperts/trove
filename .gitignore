@@ -27,6 +27,11 @@ jetty
 .rvmrc
 .ruby-gemset
 
+# test derivatives are generated here:
+spec/fixtures/local_object_store/data01/tufts/central/dca/MISS/advanced_jpg/
+spec/fixtures/local_object_store/data01/tufts/central/dca/MISS/basic_jpg/
+spec/fixtures/local_object_store/data01/tufts/central/dca/MISS/thumbnail_png/
+
 # Ignore RubyMine config files
 .idea/
 
