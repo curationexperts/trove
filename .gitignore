@@ -4,6 +4,9 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile ~/.gitignore_global
 
+
+config/secrets.yml
+
 */.DS_Store
 
 # Ignore bundler config
@@ -24,17 +27,8 @@ jetty
 .rvmrc
 .ruby-gemset
 
-# Don't send system specific config files
-config/initializers/secret_token.rb
-config/database.yml
-config/fedora.yml
-config/solr.yml
-config/redis.yml
-config/devise.yml
-
 # Ignore RubyMine config files
 .idea/
 
 # Ignore ctags files
 tags
-
