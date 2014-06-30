@@ -15,6 +15,22 @@ GIT
       settingslogic
       titleize
 
+GIT
+  remote: git://github.com/projecthydra/active_fedora.git
+  revision: cea2e0899c82b5661e8ee594f7be2019082e50ca
+  branch: make_valid_lists
+  specs:
+    active-fedora (7.0.4)
+      activesupport (>= 3.0.0)
+      deprecation
+      linkeddata
+      mediashelf-loggable
+      nom-xml (>= 0.5.1)
+      om (~> 3.0.0)
+      rdf-rdfxml (~> 1.1.0)
+      rsolr (~> 1.0.10.pre1)
+      rubydora (~> 1.7.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -31,16 +47,6 @@ GEM
       activesupport (= 4.1.2)
       builder (~> 3.1)
       erubis (~> 2.7.0)
-    active-fedora (7.0.4)
-      activesupport (>= 3.0.0)
-      deprecation
-      linkeddata
-      mediashelf-loggable
-      nom-xml (>= 0.5.1)
-      om (~> 3.0.0)
-      rdf-rdfxml (~> 1.1.0)
-      rsolr (~> 1.0.10.pre1)
-      rubydora (~> 1.7.4)
     activemodel (4.1.2)
       activesupport (= 4.1.2)
       builder (~> 3.1)
@@ -105,6 +111,11 @@ GEM
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
     execjs (2.2.1)
+    factory_girl (4.4.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.4.1)
+      factory_girl (~> 4.4.0)
+      railties (>= 3.0.0)
     fastercsv (1.5.5)
     ffi (1.9.3)
     haml (4.0.5)
@@ -383,9 +394,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active-fedora!
   coffee-rails (~> 4.0.0)
   devise
   devise-guests (~> 0.3)
+  factory_girl_rails
   hydra (= 7.0.0)
   jbuilder (~> 2.0)
   jettywrapper
