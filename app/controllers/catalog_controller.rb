@@ -150,6 +150,12 @@ class CatalogController < ApplicationController
     config.spell_max = 5
   end
 
+  def index
+    @my_collections = PersonalCollection.all
+    @course_collections = CourseCollection.all
+    super
+  end
+
 
 
 end
