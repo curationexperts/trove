@@ -45,6 +45,7 @@ describe CourseCollectionsController do
         get :show, id: collection.id
         expect(response).to be_successful
         expect(assigns[:curated_collection]).to eq collection
+        expect(response).to render_template(:show)
       end
     end
 
@@ -99,6 +100,7 @@ describe CourseCollectionsController do
         get :show, id: collection.id
         expect(response).to be_successful
         expect(assigns[:curated_collection]).to eq collection
+        expect(response).to render_template(:show)
       end
     end
 

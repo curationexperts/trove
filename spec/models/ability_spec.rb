@@ -15,6 +15,19 @@ describe Ability do
     it { should be_able_to(:download, ActiveFedora::Datastream) }
     it { should be_able_to(:create, CourseCollection) }
     it { should be_able_to(:append_to, CourseCollection) }
+    it { should be_able_to(:show, CourseCollection) }
+    it { should be_able_to(:create, PersonalCollection) }
+    it { should be_able_to(:show, PersonalCollection) }
+
+    context 'my own PersonalCollection' do
+      let(:collection) { FactoryGirl.create(:personal_collection, user: admin) }
+      it { should be_able_to(:append_to, collection) }
+    end
+
+    context 'someone elses PersonalCollection' do
+      let(:collection) { FactoryGirl.create(:personal_collection, user: user) }
+      it { should_not be_able_to(:append_to, collection) }
+    end
   end
 
 
@@ -24,6 +37,19 @@ describe Ability do
     it { should be_able_to(:download, ActiveFedora::Datastream) }
     it { should_not be_able_to(:create, CourseCollection) }
     it { should_not be_able_to(:append_to, CourseCollection) }
+    it { should     be_able_to(:show, CourseCollection) }
+    it { should     be_able_to(:create, PersonalCollection) }
+    it { should     be_able_to(:show, PersonalCollection) }
+
+    context 'my own PersonalCollection' do
+      let(:collection) { FactoryGirl.create(:personal_collection, user: user) }
+      it { should be_able_to(:append_to, collection) }
+    end
+
+    context 'someone elses PersonalCollection' do
+      let(:collection) { FactoryGirl.create(:personal_collection, user: admin) }
+      it { should_not be_able_to(:append_to, collection) }
+    end
   end
 
 
@@ -34,5 +60,9 @@ describe Ability do
     it { should_not be_able_to(:download, ActiveFedora::Datastream) }
     it { should_not be_able_to(:create, CourseCollection) }
     it { should_not be_able_to(:append_to, CourseCollection) }
+    it { should_not be_able_to(:show, CourseCollection) }
+    it { should_not be_able_to(:create, PersonalCollection) }
+    it { should_not be_able_to(:show, PersonalCollection) }
+    it { should_not be_able_to(:append_to, PersonalCollection) }
   end
 end

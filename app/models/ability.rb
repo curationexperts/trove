@@ -14,9 +14,17 @@ class Ability
     # end
 
     cannot :download, ActiveFedora::Datastream
+    cannot :show, CourseCollection
+    cannot :show, PersonalCollection
 
     if current_user.registered?
       can :download, ActiveFedora::Datastream
+      can :show, CourseCollection
+      can [:create, :show], PersonalCollection
+
+      can :append_to, PersonalCollection do |pc|
+        pc.edit_users.include?(current_user.user_key)
+      end
     end
 
     if current_user.admin?
