@@ -4,9 +4,17 @@ Rails.application.routes.draw do
 
   resources :downloads, only: [:show], constraints: { id: ALLOW_DOTS }
 
+  resources :course_collections, only: [:create, :show] do
+    patch :append_to, on: :member
+  end
+  resources :personal_collections, only: [:create, :show] do
+    patch :append_to, on: :member
+  end
+
   root :to => "catalog#index"
   blacklight_for :catalog
   devise_for :users
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.

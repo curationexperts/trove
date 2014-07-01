@@ -1,0 +1,2 @@
+class CourseCollectionsController < CuratedCollectionsController
+end

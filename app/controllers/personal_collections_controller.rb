@@ -1,0 +1,2 @@
+class PersonalCollectionsController < CuratedCollectionsController
+end
