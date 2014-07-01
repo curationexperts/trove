@@ -21,6 +21,7 @@ class CatalogController < ApplicationController
     config.index.title_field = 'title_tesim'
     config.index.display_type_field = 'has_model_ssim'
 
+    config.index.thumbnail_method = :thumbnail_tag
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display

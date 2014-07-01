@@ -42,6 +42,7 @@ gem 'tufts_models', github: 'curationexperts/tufts_models'
 
 gem "devise"
 gem "devise-guests", "~> 0.3"
+gem 'blacklight-gallery', github: 'projectblacklight/blacklight-gallery', ref: '2f9f342518'
 
 
 group :development, :test do
