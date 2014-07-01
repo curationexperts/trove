@@ -3,7 +3,7 @@
     <div class="panel-heading">
       <h5 class="panel-title">Course Collections:</h5>
     </div>
-    <ul class="panel-body curated-collection-list list-unstyled">
+    <ul class="panel-body course-collection-list list-unstyled">
       <% @course_collections.each do |collection| %>
         <li data-collection-id="<%= collection.pid %>"><%= collection.title %></li>
       <% end %>
@@ -14,7 +14,7 @@
   <div class="panel-heading">
     <h5 class="panel-title">My Collections:</h5>
   </div>
-  <ul class="panel-body curated-collection-list list-unstyled">
+  <ul class="panel-body personal-collection-list list-unstyled">
     <% @my_collections.each do |collection| %>
       <li data-collection-id="<%= collection.pid %>"><%= collection.title %></li>
     <% end %>
@@ -27,7 +27,7 @@
       helper: 'clone'
     });
 
-    $(".curated-collection-list li").droppable({
+    $(".personal-collection-list li").droppable({
       hoverClass: 'drop-target-hover',
       tolerance: 'pointer',
       drop: function(event, ui){
@@ -35,7 +35,24 @@
         collection_id = $(this).data('collection-id');
         $.ajax({
           type: "PATCH",
-          url: '/curated_collections/' + collection_id + '/append_to',
+          url: '/personal_collections/' + collection_id + '/append_to',
+          data: {pid: pid},
+          success: function(data, status){
+            console.log(data);
+            console.log(status);
+          }
+        });
+      }
+    });
+    $(".course-collection-list li").droppable({
+      hoverClass: 'drop-target-hover',
+      tolerance: 'pointer',
+      drop: function(event, ui){
+        pid = ui.draggable.find('.batch_document_selector').val();
+        collection_id = $(this).data('collection-id');
+        $.ajax({
+          type: "PATCH",
+          url: '/course_collections/' + collection_id + '/append_to',
           data: {pid: pid},
           success: function(data, status){
             console.log(data);
