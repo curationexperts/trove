@@ -1,0 +1,9 @@
+.drop-target {
+  padding: 0;
+  border: 1px solid transparent; //keep it from hoping around when it's hovered
+}
+.drop-target-hover {
+  padding: 0;
+  background: #f2fbff;
+  border: 1px dashed #b6bcbf;
+}

@@ -26,12 +26,12 @@ Blacklight.onLoad(function() {
     });
   }
 
-  $(".personal-collection-list li").droppable({
+  $(".personal-collection-list li.drop-target").droppable({
     hoverClass: 'drop-target-hover',
     tolerance: 'pointer',
     drop: addToPersonalCollection
   });
-  $(".course-collection-list li").droppable({
+  $(".course-collection-list li.drop-target").droppable({
     hoverClass: 'drop-target-hover',
     tolerance: 'pointer',
     drop: addToCourseCollection
