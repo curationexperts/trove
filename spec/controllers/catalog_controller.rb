@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe CatalogController do
   let(:user) { FactoryGirl.create(:user) }
+
   describe "GET index" do
     before do
       PersonalCollection.destroy_all
@@ -20,4 +21,14 @@ describe CatalogController do
       expect(assigns[:course_collections]).to eq [course_collection1, course_collection2]
     end
   end
+
+  describe "an unauthenticated user" do
+    describe "GET index" do
+      it "redirects to sign in" do
+        get :index
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
 end
