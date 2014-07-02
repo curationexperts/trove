@@ -1,18 +1,20 @@
 <div class="panel-group">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h5 class="panel-title">Course Collections:</h5>
+      <h5 class="panel-title">Course Collections: <%= link_to "+", new_course_collection_path,
+        class: 'btn btn-default btn-sm' %></h5>
     </div>
     <ul class="panel-body course-collection-list list-unstyled">
       <% @course_collections.each do |collection| %>
-        <li data-collection-id="<%= collection.pid %>"><%= link_to collection.title, collection %></li>
+        <li data-collection-id="<%= collection.pid %>"><%= link_to_if can?(:create, CourseCollection), collection.title, collection %></li>
       <% end %>
     </ul>
   </div>
 </div>
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h5 class="panel-title">My Collections:</h5>
+    <h5 class="panel-title">My Collections: <%= link_to_if can?(:create, PersonalCollection), "+", new_personal_collection_path,
+      class: 'btn btn-default btn-sm' %></h5>
   </div>
   <ul class="panel-body personal-collection-list list-unstyled">
     <% @my_collections.each do |collection| %>

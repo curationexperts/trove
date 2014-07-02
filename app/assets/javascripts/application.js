@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require hydra-editor/hydra-editor
 //= require turbolinks
 //
 // Required by Blacklight

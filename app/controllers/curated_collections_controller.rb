@@ -1,9 +1,12 @@
 class CuratedCollectionsController < ApplicationController
-  before_filter :build_collection, only: :create
-  before_filter :load_collection, only: [:show, :append_to]
-  authorize_resource :curated_collection, parent: false
+  load_and_authorize_resource instance_name: :curated_collection
 
   def create
+    @curated_collection.attributes = collection_params
+    @curated_collection.read_groups = ['public']
+    @curated_collection.displays = ['tdil']
+    @curated_collection.apply_depositor_metadata(current_user)
+    @curated_collection.creator = [current_user.user_key]
     if @curated_collection.save
       redirect_to (params[:return_url] || root_path)
     else
@@ -11,7 +14,15 @@ class CuratedCollectionsController < ApplicationController
     end
   end
 
+  def edit
+    initialize_fields
+  end
+
   def show
+  end
+
+  def new
+    initialize_fields
   end
 
   def append_to
@@ -22,17 +33,15 @@ class CuratedCollectionsController < ApplicationController
   end
 
 protected
-
-  def load_collection
-    @curated_collection = model_class.find(params[:id])
+  def initialize_fields
+    %w(description).each do |key|
+      # if value is empty, we create an one element array to loop over for output 
+      @curated_collection[key] = [''] if @curated_collection[key].empty?
+    end
   end
 
-  def build_collection
-    attributes = params.require(:curated_collection).permit(:title)
-    @curated_collection = model_class.new(attributes.symbolize_keys)
-    @curated_collection.read_groups = ['public']
-    @curated_collection.displays = ['tdil']
-    @curated_collection.apply_depositor_metadata(current_user)
+  def collection_params
+    params.require(controller_name.singularize).permit(:title)
   end
 
 end
