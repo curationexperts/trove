@@ -3,9 +3,11 @@
   <h2>This collection does not have any members</h2>
 <% else %>
   <h2>Members:</h2>
-  <ol>
+  <ol class="dd-list row">
   <% @curated_collection.members.each do |member| %>
-    <li><%= link_to member.title, catalog_path(member.id) %></li>
+    <li class="dd-item col-md-3 col-sm-4 col-xs-6" data-id="<%= member.id %>">
+    <div class="dd-handle"><p><%= link_to member.title, catalog_path(member.id) %></p></div>
+    </li>
   <% end %>
   </ol>
 <% end %>

@@ -1,0 +1,12 @@
+ol.dd-list {
+  display: block;
+  position: relative;
+  list-style: none;
+
+  li .dd-handle {
+    padding: 5px 10px;
+    background-color: lightgray;
+    margin-bottom: 20px;
+    height: 150px;
+  }
+}
