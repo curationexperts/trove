@@ -21,7 +21,7 @@
         <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{index}][weight]", index, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{index}_weight", data: { property: 'weight' } %>
           <div class="dd-handle">
             <div class="thumbnail">
-              <%= image_tag download_path(member.id, datastream_id: 'Thumbnail.png') %>
+              <%= thumbnail_tag(member) %>
               <div class="caption">
                 <%= render partial: 'curated_collections/index_header_default', locals: {document: member, counter: index + 1} %>
                 <%= render partial: 'curated_collections/index_default', locals: {document: member, counter: index + 1} %>
