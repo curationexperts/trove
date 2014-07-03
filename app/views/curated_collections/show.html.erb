@@ -12,16 +12,16 @@
   <h2>This collection does not have any members</h2>
 <% else %>
   <h2>Members:</h2>
-  <div id="orderable" class="dd row">
+  <div id="orderable" class="dd row gallery">
     <ol class="dd-list">
-    <% @curated_collection.members.each do |member| %>
+    <% @curated_collection.members.each_with_index do |member, idx| %>
       <li class="dd-item" data-id="<%= member.id %>">
         <div class="dd-handle">
-          <p><%= link_to member.title, catalog_path(member.id) %></p>
           <div class="thumbnail">
             <%= image_tag download_path(member.id, datastream_id: 'Thumbnail.png') %>
             <div class="caption">
-              <%= render_document_partials member, blacklight_config.view_config(:gallery).partials, :document_counter => idx %>
+              <%= render partial: 'curated_collections/index_header_default', locals: {document: member, counter: idx + 1} %>
+              <%= render partial: 'curated_collections/index_default', locals: {document: member, counter: idx + 1} %>
             </div>
           </div>
         </div>
