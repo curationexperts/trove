@@ -4,7 +4,7 @@ gem 'rails', '4.1.2'
 gem 'sqlite3'
 gem 'hydra', '7.0.0'
 gem 'active-fedora', github: 'projecthydra/active_fedora', branch: 'feature/active-triples'
-gem 'active-triples', github: 'jcoyne/ActiveTriples', branch: 'after_clear'
+gem 'active-triples', github: 'no-reply/ActiveTriples', ref: 'dc61794'
 gem 'hydra-editor', github: 'projecthydra-labs/hydra-editor', branch: 'bootstrap3'
 
 # Use SCSS for stylesheets

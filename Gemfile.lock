@@ -16,9 +16,9 @@ GIT
       titleize
 
 GIT
-  remote: git://github.com/jcoyne/ActiveTriples.git
-  revision: 1888c22bb9d02a10b4565b23556092901502b6bb
-  branch: after_clear
+  remote: git://github.com/no-reply/ActiveTriples.git
+  revision: dc61794d4822ac5e3a534b73cfc727a733b8056d
+  ref: dc61794
   specs:
     active-triples (0.2.0)
       activemodel (>= 3.0.0)
