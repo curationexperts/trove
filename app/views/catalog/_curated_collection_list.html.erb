@@ -8,7 +8,7 @@
     </div>
     <ul class="panel-body course-collection-list list-unstyled">
       <% @course_collections.each do |collection| %>
-        <li class="drop-target" data-collection-id="<%= collection.pid %>"><%= link_to collection.title, collection %></li>
+        <li class="<% if can?(:append_to, collection) %>drop-target<% end %>" data-collection-id="<%= collection.pid %>"><%= link_to collection.title, collection %></li>
       <% end %>
     </ul>
   </div>
@@ -22,7 +22,7 @@
   </div>
   <ul class="panel-body personal-collection-list list-unstyled">
     <% @my_collections.each do |collection| %>
-      <li class="drop-target" data-collection-id="<%= collection.pid %>"><%= link_to collection.title, collection %></li>
+      <li class="<% if can?(:append_to, collection) %>drop-target<% end %>" data-collection-id="<%= collection.pid %>"><%= link_to collection.title, collection %></li>
     <% end %>
   </ol>
 </div>
