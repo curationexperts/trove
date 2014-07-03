@@ -1,6 +1,10 @@
 Blacklight.onLoad(function() {
   $(".document").draggable({
-    helper: 'clone'
+    helper: function(event) {
+      return $('<span style="white-space:nowrap;"/>')
+            .html($(this).find('img').clone().css('opacity', '0.6'));
+    },
+  cursorAt: { left: 5, top: 5 }
   });
 
   function addToPersonalCollection(event, ui) {
