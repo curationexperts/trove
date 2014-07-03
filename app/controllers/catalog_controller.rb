@@ -6,12 +6,8 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
 
-  # These before_filters apply the hydra access controls
-  before_filter :enforce_show_permissions, only: :show
-
   CatalogController.solr_search_params_logic += [:only_displays_in_tdil]
   CatalogController.solr_search_params_logic += [:filter_personal_collections]
-
 
   configure_blacklight do |config|
     config.default_solr_params = {
@@ -142,6 +138,15 @@ protected
   def filter_personal_collections(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] << "-has_model_ssim:\"info:fedora/afmodel:PersonalCollection\""
+  end
+
+  # Override method from blacklight to check for 'tdil' display
+  def get_solr_response_for_doc_id(id=nil, extra_controller_params={})
+    @response, @document = super
+    unless @document['displays_tesim'].include?('tdil')
+      raise Hydra::AccessDenied.new("You do not have sufficient access privileges to read this document.", :read, params[:id])
+    end
+    [@response, @document]
   end
 
 end
