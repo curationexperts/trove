@@ -25,6 +25,8 @@ class Ability
       can :append_to, PersonalCollection do |pc|
         pc.edit_users.include?(current_user.user_key)
       end
+
+      can :read, TuftsImage
     end
 
     if current_user.admin?
