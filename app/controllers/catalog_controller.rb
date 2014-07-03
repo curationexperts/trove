@@ -8,8 +8,8 @@ class CatalogController < ApplicationController
 
   # These before_filters apply the hydra access controls
   before_filter :enforce_show_permissions, only: :show
-  # This applies appropriate access controls to all solr queries
-  CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
+
+  CatalogController.solr_search_params_logic += [:only_displays_in_tdil]
   CatalogController.solr_search_params_logic += [:filter_personal_collections]
 
 
@@ -154,6 +154,11 @@ class CatalogController < ApplicationController
   end
 
 protected
+
+  def only_displays_in_tdil(solr_parameters, user_parameters)
+    solr_parameters[:fq] ||= []
+    solr_parameters[:fq] << "displays_tesim:tdil"
+  end
 
   def filter_personal_collections(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
