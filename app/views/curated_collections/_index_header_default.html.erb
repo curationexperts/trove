@@ -10,7 +10,7 @@
          <span class="document-counter">
          <%= t('blacklight.search.documents.counter', :counter => counter) if counter %>
          </span>
-         <%= link_to document.title, catalog_path(document), :label=>document_show_link_field(document), :counter => counter %>
+         <%= link_to document.title, catalog_path(document), label: document_show_link_field(document), class: 'dd-nodrag' %>
         </h5>
 
         <% # bookmark functions for items/docs -%>
