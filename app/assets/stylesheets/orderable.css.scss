@@ -1,11 +1,10 @@
-$handle-height: 150px;
+$handle-height: 270px;
 .dd { position: relative; display: block; margin: 0; padding: 0; line-height: 20px; }
 
 .dd .dd-item {
   @include make-xs-column(6);
   @include make-sm-column(4);
   @include make-md-column(3);
-  margin-bottom: 20px;
 }
 .dd-list {
   display: block;
@@ -16,10 +15,6 @@ $handle-height: 150px;
   li .dd-handle {
     padding: 0;
     height: $handle-height;
-    background-color: #fafafa;
-    background: -webkit-linear-gradient(bottom, #fafafa 0%, #eee 100%);
-    background:    -moz-linear-gradient(bottom, #fafafa 0%, #eee 100%);
-    background:         linear-gradient(bottom, #fafafa 0%, #eee 100%);
     -webkit-border-radius: 3px;
             border-radius: 3px;
   }

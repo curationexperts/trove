@@ -14,6 +14,16 @@ class CuratedCollectionsController < ApplicationController
     end
   end
 
+  def update
+    members = params[controller_name.singularize].delete(:members)
+    members = members.sort_by { |i, _| i.to_i }.map { |_, attributes| attributes } if members.is_a? Hash
+    member_ids = members.sort_by { |e| e[:weight] }.map { |e| e[:id] } 
+    @curated_collection.member_ids = member_ids 
+    if @curated_collection.save
+      redirect_to @curated_collection 
+    end
+  end
+
   def edit
     initialize_fields
   end

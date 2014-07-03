@@ -3,7 +3,8 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.2'
 gem 'sqlite3'
 gem 'hydra', '7.0.0'
-gem 'active-fedora', github: 'projecthydra/active_fedora', branch: 'make_valid_lists'
+gem 'active-fedora', github: 'projecthydra/active_fedora', branch: 'feature/active-triples'
+gem 'active-triples', github: 'jcoyne/ActiveTriples', branch: 'after_clear'
 gem 'hydra-editor', github: 'projecthydra-labs/hydra-editor', branch: 'bootstrap3'
 
 # Use SCSS for stylesheets

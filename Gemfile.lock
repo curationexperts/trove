@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/curationexperts/tufts_models.git
-  revision: 9be0904aa5a1f81735a843be0d2694d0370e765b
+  revision: 93eab672792368a279a8f585cee86149daa44900
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -14,6 +14,18 @@ GIT
       rmagick (= 2.13.2)
       settingslogic
       titleize
+
+GIT
+  remote: git://github.com/jcoyne/ActiveTriples.git
+  revision: 1888c22bb9d02a10b4565b23556092901502b6bb
+  branch: after_clear
+  specs:
+    active-triples (0.2.0)
+      activemodel (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      deprecation (~> 0.1)
+      linkeddata (~> 1.1)
+      rdf (~> 1.1)
 
 GIT
   remote: git://github.com/projectblacklight/blacklight-gallery.git
@@ -39,13 +51,13 @@ GIT
 
 GIT
   remote: git://github.com/projecthydra/active_fedora.git
-  revision: 7c330fe88326c4bc01709c9fbb49d7f4180e381a
-  branch: make_valid_lists
+  revision: b9a1dfc5c788de81da1ba731937ec114d30d9109
+  branch: feature/active-triples
   specs:
     active-fedora (7.0.4)
+      active-triples (>= 0.2.0)
       activesupport (>= 3.0.0)
       deprecation
-      linkeddata
       mediashelf-loggable
       nom-xml (>= 0.5.1)
       om (~> 3.0.0)
@@ -423,6 +435,7 @@ PLATFORMS
 
 DEPENDENCIES
   active-fedora!
+  active-triples!
   blacklight-gallery!
   byebug
   capybara
