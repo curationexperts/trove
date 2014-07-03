@@ -15,6 +15,11 @@ describe 'Course Collections' do
       controller: 'course_collections', action: 'edit', id: '1')
   end
 
+  it 'routes to update' do
+    expect(patch: 'course_collections/1').to route_to(
+      controller: 'course_collections', action: 'update', id: '1')
+  end
+
   it 'routes to create' do
     expect(post: 'course_collections').to route_to(controller: 'course_collections', action: 'create')
   end
@@ -41,6 +46,11 @@ describe 'Personal Collections' do
   it 'routes to edit' do
     expect(get: 'personal_collections/1/edit').to route_to(
       controller: 'personal_collections', action: 'edit', id: '1')
+  end
+
+  it 'routes to update' do
+    expect(patch: 'personal_collections/1').to route_to(
+      controller: 'personal_collections', action: 'update', id: '1')
   end
 
   it 'routes to create' do

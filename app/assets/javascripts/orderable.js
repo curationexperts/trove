@@ -1,7 +1,6 @@
 Blacklight.onLoad(function(){
   $('#orderable').nestable({maxDepth: 1});
-  // updateWeightsAndRelationships($('#nested-navigation'));
-  // addRestoreDefaultBehavior();
+  updateWeights($('#orderable'));
 });
 
 function updateWeights(selector) {
@@ -11,6 +10,7 @@ function updateWeights(selector) {
       container = $(event.currentTarget);
       var data = $(this).nestable('serialize')
       var weight = 0;
+      console.log(data);
       for(var i in data) {
         var node_id = data[i]['id'];
         node = findNode(node_id, container);
@@ -21,7 +21,7 @@ function updateWeights(selector) {
 }
 
 function findNode(id, container) {
-  return container.find("[data-id="+id+"]");
+  return container.find("[data-id=\""+id+"\"]");
 }
 
 function setWeight(node, weight) {

@@ -3,13 +3,18 @@
   <h2>This collection does not have any members</h2>
 <% else %>
   <h2>Members:</h2>
-  <div id="orderable" class="dd row">
-    <ol class="dd-list">
-    <% @curated_collection.members.each do |member| %>
-      <li class="dd-item" data-id="<%= member.id %>">
-      <div class="dd-handle"><p><%= link_to member.title, catalog_path(member.id) %></p></div>
-      </li>
-    <% end %>
-    </ol>
-  </div>
+  <%= bootstrap_form_for @curated_collection do |f| %>
+    <div id="orderable" class="dd row">
+      <ol class="dd-list">
+      <% @curated_collection.members.each_with_index do |member, index| %>
+        <li class="dd-item" data-id="<%= index %>">
+        <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{index}][id]", member.id, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{index}_id" %>
+        <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{index}][weight]", index, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{index}_weight", data: { property: 'weight' } %>
+        <div class="dd-handle"><p><%= link_to member.title, catalog_path(member.id) %></p></div>
+        </li>
+      <% end %>
+      </ol>
+    </div>
+    <%= f.primary t('.save_order') %>
+  <% end %>
 <% end %>

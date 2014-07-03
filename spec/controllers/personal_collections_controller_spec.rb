@@ -100,6 +100,34 @@ describe PersonalCollectionsController do
         end
       end
     end
+
+    describe "PATCH update" do
+      context 'my own collection with images' do
+        let(:image1) { FactoryGirl.create(:image) }
+        let(:image2) { FactoryGirl.create(:image) }
+        let(:image3) { FactoryGirl.create(:image) }
+
+        before do
+          collection.member_ids = [image1.id, image1.id, image1.id, image2.id, image3.id]
+          collection.save!
+        end
+
+        it "reorders the collection" do
+          patch :update, id: collection, personal_collection: {members: {"0"=>{"id"=>image1.id, "weight"=>"1"}, "1"=>{"id"=>image1.id, "weight"=>"2"}, "2"=>{"id"=>image1.id, "weight"=>"3"}, "3"=>{"id"=>image2.id, "weight"=>"4"}, "4"=>{"id"=>image3.id, "weight"=>"0"}}}
+          expect(response).to redirect_to collection
+          expect(collection.reload.member_ids).to eq [image3.id, image1.id, image1.id, image1.id, image2.id]
+
+        end
+      end
+
+      context 'someone elses collection' do
+        it "denies access" do
+          expect{
+            patch :update, id: not_my_collection, personal_collection: {}
+          }.to raise_error(CanCan::AccessDenied)
+        end
+      end
+    end
   end
 
 
