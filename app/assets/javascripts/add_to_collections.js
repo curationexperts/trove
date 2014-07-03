@@ -24,8 +24,6 @@ Blacklight.onLoad(function() {
       url: '/' + path + '/' + collection_id + '/append_to',
       data: {pid: pid},
       success: function(data, status){
-        console.log(data);
-        console.log(status);
       }
     });
   }
