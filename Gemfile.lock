@@ -38,18 +38,6 @@ GIT
       rails
 
 GIT
-  remote: git://github.com/projecthydra-labs/hydra-editor.git
-  revision: 108b4a2749ed26e195bc5de2b7c53200188309e2
-  branch: bootstrap3
-  specs:
-    hydra-editor (0.3.0)
-      active-fedora (>= 6.3.0)
-      bootstrap_form (~> 2.1.1)
-      cancancan
-      deprecation
-      rails (>= 3.2.13, < 5.0)
-
-GIT
   remote: git://github.com/projecthydra/active_fedora.git
   revision: b9a1dfc5c788de81da1ba731937ec114d30d9109
   branch: feature/active-triples
@@ -193,6 +181,12 @@ GEM
       hydra-access-controls (= 7.0.2)
       jettywrapper (>= 1.4.1)
       rails (>= 3.2.3, < 5)
+    hydra-editor (0.4.0)
+      active-fedora (>= 6.3.0)
+      bootstrap_form (~> 2.1.1)
+      cancancan
+      deprecation
+      rails (>= 3.2.13, < 5.0)
     hydra-head (7.0.2)
       hydra-access-controls (= 7.0.2)
       hydra-core (= 7.0.2)
@@ -444,7 +438,7 @@ DEPENDENCIES
   devise-guests (~> 0.3)
   factory_girl_rails
   hydra (= 7.0.0)
-  hydra-editor!
+  hydra-editor (~> 0.4.0)
   jbuilder (~> 2.0)
   jettywrapper
   jquery-rails
