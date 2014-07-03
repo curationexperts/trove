@@ -1,4 +1,13 @@
-<h1><%=@curated_collection.title %></h1>
+<div id="previousNextDocument">
+  <div class="pull-right search-widgets">
+    <%=link_to "Back", :back %>
+  </div>
+</div>
+
+
+<h1><%=@curated_collection.title %> <small><%=@curated_collection.type.capitalize %> Collection</small></h1>
+<p class="lead"><%= @curated_collection.description.first %></p>
+
 <% if @curated_collection.members.size == 0 %>
   <h2>This collection does not have any members</h2>
 <% else %>
@@ -7,7 +16,15 @@
     <ol class="dd-list">
     <% @curated_collection.members.each do |member| %>
       <li class="dd-item" data-id="<%= member.id %>">
-      <div class="dd-handle"><p><%= link_to member.title, catalog_path(member.id) %></p></div>
+        <div class="dd-handle">
+          <p><%= link_to member.title, catalog_path(member.id) %></p>
+          <div class="thumbnail">
+            <%= image_tag download_path(member.id, datastream_id: 'Thumbnail.png') %>
+            <div class="caption">
+              <%= render_document_partials member, blacklight_config.view_config(:gallery).partials, :document_counter => idx %>
+            </div>
+          </div>
+        </div>
       </li>
     <% end %>
     </ol>
