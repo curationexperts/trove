@@ -8,7 +8,7 @@
     </div>
     <ul class="panel-body course-collection-list list-unstyled">
       <% @course_collections.each do |collection| %>
-        <li class="drop-target" data-collection-id="<%= collection.pid %>"><%= link_to_if can?(:create, CourseCollection), collection.title, collection %></li>
+        <li class="drop-target" data-collection-id="<%= collection.pid %>"><%= link_to collection.title, collection %></li>
       <% end %>
     </ul>
   </div>
