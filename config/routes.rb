@@ -2,6 +2,9 @@ ALLOW_DOTS ||= /[a-zA-Z0-9_.:]+/
 
 Rails.application.routes.draw do
 
+  get 'about', to: 'pages#about', as: 'about'
+  get 'contact', to: 'pages#contact', as: 'contact'
+
   resources :downloads, only: [:show], constraints: { id: ALLOW_DOTS }
 
   resources :course_collections, except: :destroy do
