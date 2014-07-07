@@ -31,7 +31,7 @@ $handle-height: 270px;
 .dd-item, .dd-empty, .dd-placeholder {
   display: block; position: relative; margin: 0; padding: 0; min-height: 20px; }
 
-.dd-handle:hover { color: #2ea8e5; background: #fff; }
+.dd-handle:hover { background: #fff; }
 
 .dd-placeholder, .dd-empty {
   @include make-xs-column(6);
