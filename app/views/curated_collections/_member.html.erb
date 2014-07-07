@@ -3,6 +3,9 @@
           <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{member_counter}][weight]", member_counter, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{member_counter}_weight", data: { property: 'weight' } %>
             <div class="dd-handle">
               <div class="frame">
+                <%= link_to [:remove_from, f.object, { position: member_counter}], method: :delete, class: "removeButton dd-nodrag" do %>
+                  <span class="glyphicon glyphicon-remove-circle"></span>
+                <% end %>
                 <div class="text-center">
                   <%= thumbnail_tag(member) %>
                 </div>

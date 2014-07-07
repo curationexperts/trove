@@ -49,6 +49,12 @@ class CuratedCollectionsController < ApplicationController
     render json: { status: status }
   end
 
+  def remove_from
+    @curated_collection.delete_member_at(params[:position].to_i)
+    @curated_collection.save!
+    redirect_to @curated_collection
+  end
+
 protected
   def initialize_fields
     %w(description).each do |key|

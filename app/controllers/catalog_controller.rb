@@ -143,7 +143,7 @@ protected
   # Override method from blacklight to check for 'tdil' display
   def get_solr_response_for_doc_id(id=nil, extra_controller_params={})
     @response, @document = super
-    unless @document['displays_ssim'].include?('tdil')
+    unless @document['displays_ssim'] && @document['displays_ssim'].include?('tdil')
       raise Hydra::AccessDenied.new("You do not have sufficient access privileges to read this document.", :read, params[:id])
     end
     [@response, @document]

@@ -59,7 +59,15 @@ describe CourseCollectionsController do
     describe "PATCH 'append_to'" do
       it "denies access" do
         expect{
-          patch 'append_to', id: collection, pid: 'pid:1'
+          patch :append_to, id: collection, pid: 'pid:1'
+        }.to raise_error(CanCan::AccessDenied)
+      end
+    end
+
+    describe "DELETE 'remove_from'" do
+      it "denies access" do
+        expect{
+          delete :remove_from, id: collection, position: '1'
         }.to raise_error(CanCan::AccessDenied)
       end
     end
@@ -142,9 +150,21 @@ describe CourseCollectionsController do
 
     describe "PATCH 'append_to'" do
       it "returns http success" do
-        patch 'append_to', id: collection, pid: image.pid
+        patch :append_to, id: collection, pid: image.pid
         expect(response).to be_successful
         expect(collection.reload.members).to eq [image]
+      end
+    end
+
+    describe "DELETE 'remove_from'" do
+      before do
+        collection.members = [image]
+        collection.save!
+      end
+      it "removes the collection member" do
+        delete :remove_from, id: collection, position: '0'
+        expect(response).to redirect_to collection
+        expect(collection.reload.members).to eq []
       end
     end
   end  # describe admin user

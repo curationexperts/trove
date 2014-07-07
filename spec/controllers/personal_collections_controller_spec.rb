@@ -121,6 +121,28 @@ describe PersonalCollectionsController do
       end
     end
 
+    describe "DELETE remove_from" do
+      context 'my own collection' do
+        before do
+          collection.members = [image]
+          collection.save!
+        end
+        it "returns http success" do
+          delete 'remove_from', id: collection, position: '0'
+          expect(response).to redirect_to collection
+          expect(collection.reload.members).to eq []
+        end
+      end
+
+      context 'someone elses collection' do
+        it "denies access" do
+          expect{
+            delete 'remove_from', id: not_my_collection, position: '1'
+          }.to raise_error(CanCan::AccessDenied)
+        end
+      end
+    end
+
     describe "PATCH update" do
       context 'my own collection with images' do
         let(:image1) { FactoryGirl.create(:image) }
