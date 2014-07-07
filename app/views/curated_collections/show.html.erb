@@ -25,13 +25,21 @@
     <h2>This collection does not have any members</h2>
   <% else %>
     <h2>Members:</h2>
-    <%= bootstrap_form_for @curated_collection do |f| %>
-      <div id="orderable" class="dd row gallery">
-        <ol class="dd-list">
-          <%= render partial: 'member',  collection: @curated_collection.members, locals: { f: f } %>
-        </ol>
-      </div>
-      <%= f.primary t('.save_order') %>
+    <% if can?(:edit, @curated_collection) %>
+      <%= bootstrap_form_for @curated_collection do |f| %>
+        <div id="orderable" class="dd row gallery">
+          <ol class="dd-list">
+            <%= render partial: 'member',  collection: @curated_collection.members %>
+          </ol>
+        </div>
+        <%= f.primary t('.save_order') %>
+      <% end %>
+    <% else %>
+        <div class="dd row gallery">
+          <ol class="dd-list">
+            <%= render partial: 'member',  collection: @curated_collection.members %>
+          </ol>
+        </div>
     <% end %>
   <% end %>
 </div>
