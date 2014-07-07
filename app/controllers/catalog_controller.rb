@@ -55,11 +55,11 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
-    config.add_index_field solr_name('title', :stored_searchable, type: :string), label: 'Title'
+    config.add_index_field solr_name('description', :stored_searchable, type: :string), label: 'Description'
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
-    config.add_show_field solr_name('title', :stored_searchable, type: :string), label: 'Title'
+    config.add_show_field solr_name('description', :stored_searchable, type: :string), label: 'Description'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

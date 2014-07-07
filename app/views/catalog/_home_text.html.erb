@@ -1,0 +1,35 @@
+<% cache do %>
+  <% feat1 = ActiveFedora::Base.find('changeme:13942') %>
+  <% feat2 = ActiveFedora::Base.find('changeme:13942') %>
+  <% feat3 = ActiveFedora::Base.find('changeme:13942') %>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <div class="text-center">
+          <%= thumbnail_tag(feat1) %>
+          <%= render 'curated_collections/index_header_default', document: feat1 %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <div class="text-center">
+          <%= thumbnail_tag(feat2) %>
+          <%= render 'curated_collections/index_header_default', document: feat2 %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <div class="text-center">
+          <%= thumbnail_tag(feat3) %>
+          <%= render 'curated_collections/index_header_default', document: feat3 %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <strong>Finding Course Collections:</strong> click on the course collections at the left of the screen and select a course to view.<br>
+  <strong>Searching Images:</strong> use the search bar at top to search for keywords and names<br>
+  <strong>Browsing Images:</strong> use the facet controls at left to browse by Subject, Name, or Date<br>
+<% end %>
