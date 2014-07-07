@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.2'
+gem 'rails', '4.1.4'
 gem 'sqlite3'
 gem 'hydra', '7.0.0'
 gem 'active-fedora', github: 'projecthydra/active_fedora', branch: 'feature/active-triples'
