@@ -2,7 +2,7 @@
   <div id="previousNextDocument">
     <%= link_back_to_catalog %></li>
   </div>
-  <ul class="pull-right search-widgets">
+  <ul class="pull-right show-tools">
     <% if can? :edit, @curated_collection %>
       <li>
         <%= link_to [:edit, @curated_collection] do %>
