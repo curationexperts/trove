@@ -1,0 +1,17 @@
+          <li class="dd-item" data-id="<%= member_counter %>">
+          <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{member_counter}][id]", member.id, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{member_counter}_id" %>
+          <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{member_counter}][weight]", member_counter, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{member_counter}_weight", data: { property: 'weight' } %>
+            <div class="dd-handle">
+              <div class="frame">
+                <div class="text-center">
+                  <%= thumbnail_tag(member) %>
+                </div>
+                <div class="caption">
+                  <%= render 'curated_collections/index_header_default', document: member, counter: member_counter + 1 %>
+                  <%= render 'curated_collections/index_default', document: member, counter: member_counter + 1 %>
+                </div>
+                <div style="clear: left"/>
+              </div>
+            </div>
+          </li>
+

@@ -28,24 +28,7 @@
     <%= bootstrap_form_for @curated_collection do |f| %>
       <div id="orderable" class="dd row gallery">
         <ol class="dd-list">
-        <% @curated_collection.members.each_with_index do |member, index| %>
-          <li class="dd-item" data-id="<%= index %>">
-          <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{index}][id]", member.id, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{index}_id" %>
-          <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{index}][weight]", index, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{index}_weight", data: { property: 'weight' } %>
-            <div class="dd-handle">
-              <div class="frame">
-                <div class="text-center">
-                  <%= thumbnail_tag(member) %>
-                </div>
-                <div class="caption">
-                  <%= render partial: 'curated_collections/index_header_default', locals: {document: member, counter: index + 1} %>
-                  <%= render partial: 'curated_collections/index_default', locals: {document: member, counter: index + 1} %>
-                </div>
-                <div style="clear: left"/>
-              </div>
-            </div>
-          </li>
-        <% end %>
+          <%= render partial: 'member',  collection: @curated_collection.members, locals: { f: f } %>
         </ol>
       </div>
       <%= f.primary t('.save_order') %>
