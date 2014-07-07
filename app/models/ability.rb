@@ -22,7 +22,7 @@ class Ability
       can :show, CourseCollection
       can [:create, :show], PersonalCollection
 
-      can :append_to, PersonalCollection do |pc|
+      can [:append_to, :destroy], PersonalCollection do |pc|
         pc.edit_users.include?(current_user.user_key)
       end
 
@@ -30,7 +30,7 @@ class Ability
     end
 
     if current_user.admin?
-      can [:create, :append_to], CourseCollection
+      can [:edit, :create, :destroy, :append_to], CourseCollection
     end
   end
 

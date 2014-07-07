@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe CourseCollectionsController do
   let(:image) { FactoryGirl.create(:image) }
-  let(:collection) { FactoryGirl.create(:course_collection, user: user) }
+  let(:collection) { FactoryGirl.create(:course_collection) }
 
   describe "for an unauthenticated user" do
     describe "create" do
@@ -35,6 +35,14 @@ describe CourseCollectionsController do
       it "denies access" do
         expect{
           post 'create', course_collection: {title: 'foo'}
+        }.to raise_error(CanCan::AccessDenied)
+      end
+    end
+
+    describe "DELETE 'destroy'" do
+      it "denies access" do
+        expect{
+          delete :destroy, id: collection
         }.to raise_error(CanCan::AccessDenied)
       end
     end
@@ -119,6 +127,16 @@ describe CourseCollectionsController do
         expect(response).to render_template(:edit)
         expect(assigns[:curated_collection]).to eq collection
         expect(response).to be_successful
+      end
+    end
+
+    describe "DELETE 'destroy'" do
+      let!(:collection) { FactoryGirl.create(:course_collection) }
+      it "deletes the collection" do
+        expect{
+          delete :destroy, id: collection
+          expect(response).to redirect_to root_path
+        }.to change { CourseCollection.count }.by(-1)
       end
     end
 

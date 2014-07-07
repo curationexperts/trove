@@ -64,7 +64,7 @@ describe PersonalCollectionsController do
       it 'creates a personal collection' do
         expect {
           post 'create', personal_collection: {title: 'foo'}
-        }.to change {PersonalCollection.count }.by(1)
+        }.to change { PersonalCollection.count }.by(1)
 
         expect(response.status).to eq 302
         expect(assigns[:curated_collection].read_groups).to eq ['public']
@@ -74,11 +74,31 @@ describe PersonalCollectionsController do
 
       context 'with a bad title' do
         it "displays the form to fix the title" do
-          count = PersonalCollection.count
-          post 'create', personal_collection: {title: nil}
-          expect(PersonalCollection.count).to eq count
+          expect {
+            post 'create', personal_collection: {title: nil}
+          }.not_to change { PersonalCollection.count }
           expect(response).to be_successful
           expect(response).to render_template(:new)
+        end
+      end
+    end
+
+    describe "DELETE destroy" do
+      context 'my own collection' do
+        let!(:collection) { FactoryGirl.create(:personal_collection, user: user) }
+        it "deletes the collection" do
+          expect{
+            delete :destroy, id: collection
+            expect(response).to redirect_to root_path
+          }.to change { PersonalCollection.count }.by(-1)
+        end
+      end
+
+      context 'someone elses collection' do
+        it "denies access" do
+          expect{
+            delete :destroy, id: not_my_collection
+          }.to raise_error(CanCan::AccessDenied)
         end
       end
     end

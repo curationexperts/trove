@@ -7,26 +7,32 @@ describe Ability do
   end
   let(:user) { FactoryGirl.create(:user) }
   let(:admin) { FactoryGirl.create(:admin) }
+  let(:course_collection) { FactoryGirl.create(:course_collection) }
+  let(:personal_collection) { FactoryGirl.create(:personal_collection) }
+  let(:datastream) { ActiveFedora::Datastream.new }
 
 
   describe "an admin user" do
     subject { Ability.new(admin) }
 
-    it { should be_able_to(:download, ActiveFedora::Datastream) }
+    it { should be_able_to(:download, datastream) }
     it { should be_able_to(:create, CourseCollection) }
-    it { should be_able_to(:append_to, CourseCollection) }
-    it { should be_able_to(:show, CourseCollection) }
+    it { should be_able_to(:append_to, course_collection) }
+    it { should be_able_to(:destroy, course_collection) }
+    it { should be_able_to(:edit, course_collection) }
+    it { should be_able_to(:show, course_collection) }
     it { should be_able_to(:create, PersonalCollection) }
-    it { should be_able_to(:show, PersonalCollection) }
+    it { should be_able_to(:show, personal_collection) }
 
     context 'my own PersonalCollection' do
       let(:collection) { FactoryGirl.create(:personal_collection, user: admin) }
       it { should be_able_to(:append_to, collection) }
+      it { should be_able_to(:destroy, collection) }
     end
 
     context 'someone elses PersonalCollection' do
-      let(:collection) { FactoryGirl.create(:personal_collection, user: user) }
-      it { should_not be_able_to(:append_to, collection) }
+      it { should_not be_able_to(:append_to, personal_collection) }
+      it { should_not be_able_to(:destroy, personal_collection) }
     end
   end
 
@@ -34,12 +40,14 @@ describe Ability do
   describe "a non-admin user" do
     subject { Ability.new(user) }
 
-    it { should be_able_to(:download, ActiveFedora::Datastream) }
+    it { should be_able_to(:download, datastream) }
     it { should_not be_able_to(:create, CourseCollection) }
-    it { should_not be_able_to(:append_to, CourseCollection) }
-    it { should     be_able_to(:show, CourseCollection) }
+    it { should_not be_able_to(:append_to, course_collection) }
+    it { should_not be_able_to(:destroy, course_collection) }
+    it { should_not be_able_to(:edit, course_collection) }
+    it { should     be_able_to(:show, course_collection) }
     it { should     be_able_to(:create, PersonalCollection) }
-    it { should     be_able_to(:show, PersonalCollection) }
+    it { should     be_able_to(:show, personal_collection) }
 
     context 'my own PersonalCollection' do
       let(:collection) { FactoryGirl.create(:personal_collection, user: user) }
@@ -47,8 +55,7 @@ describe Ability do
     end
 
     context 'someone elses PersonalCollection' do
-      let(:collection) { FactoryGirl.create(:personal_collection, user: admin) }
-      it { should_not be_able_to(:append_to, collection) }
+      it { should_not be_able_to(:append_to, personal_collection) }
     end
   end
 
@@ -57,12 +64,12 @@ describe Ability do
     let(:not_logged_in) { User.new }
     subject { Ability.new(not_logged_in) }
 
-    it { should_not be_able_to(:download, ActiveFedora::Datastream) }
+    it { should_not be_able_to(:download, datastream) }
     it { should_not be_able_to(:create, CourseCollection) }
-    it { should_not be_able_to(:append_to, CourseCollection) }
-    it { should_not be_able_to(:show, CourseCollection) }
+    it { should_not be_able_to(:append_to, course_collection) }
+    it { should_not be_able_to(:show, course_collection) }
     it { should_not be_able_to(:create, PersonalCollection) }
-    it { should_not be_able_to(:show, PersonalCollection) }
-    it { should_not be_able_to(:append_to, PersonalCollection) }
+    it { should_not be_able_to(:show, personal_collection) }
+    it { should_not be_able_to(:append_to, personal_collection) }
   end
 end

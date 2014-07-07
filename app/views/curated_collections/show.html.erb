@@ -1,41 +1,54 @@
-<div id="previousNextDocument">
-  <div class="pull-right search-widgets">
-    <%=link_to "Back", :back %>
+<div id="content" class="show-document">
+  <div id="previousNextDocument">
+    <%= link_back_to_catalog %></li>
   </div>
-</div>
+  <ul class="pull-right search-widgets">
+    <% if can? :edit, @curated_collection %>
+      <li>
+        <%= link_to [:edit, @curated_collection] do %>
+          edit title &amp; description <span class="glyphicon glyphicon-pencil"></span>
+        <% end %>
+      </li>
+    <% end %>
+    <% if can? :destroy, @curated_collection %>
+      <li>
+        <%= link_to @curated_collection, method: :delete do %>
+          delete collection <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+  <h1><%=@curated_collection.title %> <small><%=@curated_collection.type.capitalize %> Collection</small></h1>
+  <p class="lead"><%= @curated_collection.description.first %></p>
 
-
-<h1><%=@curated_collection.title %> <small><%=@curated_collection.type.capitalize %> Collection</small></h1>
-<p class="lead"><%= @curated_collection.description.first %></p>
-
-<% if @curated_collection.members.size == 0 %>
-  <h2>This collection does not have any members</h2>
-<% else %>
-  <h2>Members:</h2>
-  <%= bootstrap_form_for @curated_collection do |f| %>
-    <div id="orderable" class="dd row gallery">
-      <ol class="dd-list">
-      <% @curated_collection.members.each_with_index do |member, index| %>
-        <li class="dd-item" data-id="<%= index %>">
-        <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{index}][id]", member.id, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{index}_id" %>
-        <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{index}][weight]", index, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{index}_weight", data: { property: 'weight' } %>
-          <div class="dd-handle">
-            <div class="frame">
-              <div class="text-center">
-                <%= thumbnail_tag(member) %>
+  <% if @curated_collection.members.size == 0 %>
+    <h2>This collection does not have any members</h2>
+  <% else %>
+    <h2>Members:</h2>
+    <%= bootstrap_form_for @curated_collection do |f| %>
+      <div id="orderable" class="dd row gallery">
+        <ol class="dd-list">
+        <% @curated_collection.members.each_with_index do |member, index| %>
+          <li class="dd-item" data-id="<%= index %>">
+          <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{index}][id]", member.id, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{index}_id" %>
+          <%= hidden_field_tag "#{ActiveModel::Naming.singular(f.object)}[members][#{index}][weight]", index, id: "#{ActiveModel::Naming.singular(f.object)}_members_#{index}_weight", data: { property: 'weight' } %>
+            <div class="dd-handle">
+              <div class="frame">
+                <div class="text-center">
+                  <%= thumbnail_tag(member) %>
+                </div>
+                <div class="caption">
+                  <%= render partial: 'curated_collections/index_header_default', locals: {document: member, counter: index + 1} %>
+                  <%= render partial: 'curated_collections/index_default', locals: {document: member, counter: index + 1} %>
+                </div>
+                <div style="clear: left"/>
               </div>
-              <div class="caption">
-                <%= render partial: 'curated_collections/index_header_default', locals: {document: member, counter: index + 1} %>
-                <%= render partial: 'curated_collections/index_default', locals: {document: member, counter: index + 1} %>
-              </div>
-              <div style="clear: left"/>
             </div>
-          </div>
-        </li>
-      <% end %>
-      </ol>
-    </div>
-    <%= f.primary t('.save_order') %>
+          </li>
+        <% end %>
+        </ol>
+      </div>
+      <%= f.primary t('.save_order') %>
+    <% end %>
   <% end %>
-<% end %>
-
+</div>
