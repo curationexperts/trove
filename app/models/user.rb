@@ -15,4 +15,8 @@ class User < ActiveRecord::Base
   def to_s
     email
   end
+
+  def personal_collections
+    PersonalCollection.where(edit_access_person_ssim: user_key)
+  end
 end

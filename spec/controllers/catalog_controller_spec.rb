@@ -9,8 +9,9 @@ describe CatalogController do
       CourseCollection.destroy_all
       sign_in user
     end
-    let!(:my_collection1) { FactoryGirl.create(:personal_collection) }
-    let!(:my_collection2) { FactoryGirl.create(:personal_collection) }
+    let!(:my_collection1) { FactoryGirl.create(:personal_collection, user: user) }
+    let!(:my_collection2) { FactoryGirl.create(:personal_collection, user: user) }
+    let!(:not_my_collection) { FactoryGirl.create(:personal_collection) }
     let!(:course_collection1) { FactoryGirl.create(:course_collection) }
     let!(:course_collection2) { FactoryGirl.create(:course_collection) }
 

@@ -123,7 +123,7 @@ class CatalogController < ApplicationController
   end
 
   def index
-    @my_collections = PersonalCollection.all
+    @my_collections = current_user.personal_collections
     @course_collections = CourseCollection.all
     super
   end
