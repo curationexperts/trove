@@ -132,7 +132,7 @@ protected
 
   def only_displays_in_tdil(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "displays_tesim:tdil"
+    solr_parameters[:fq] << "displays_ssim:tdil"
   end
 
   def filter_personal_collections(solr_parameters, user_parameters)
@@ -143,7 +143,7 @@ protected
   # Override method from blacklight to check for 'tdil' display
   def get_solr_response_for_doc_id(id=nil, extra_controller_params={})
     @response, @document = super
-    unless @document['displays_tesim'].include?('tdil')
+    unless @document['displays_ssim'].include?('tdil')
       raise Hydra::AccessDenied.new("You do not have sufficient access privileges to read this document.", :read, params[:id])
     end
     [@response, @document]
