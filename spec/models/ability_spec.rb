@@ -18,6 +18,7 @@ describe Ability do
     it { should be_able_to(:download, datastream) }
     it { should be_able_to(:create, CourseCollection) }
     it { should be_able_to(:append_to, course_collection) }
+    it { should be_able_to(:remove_from, course_collection) }
     it { should be_able_to(:destroy, course_collection) }
     it { should be_able_to(:edit, course_collection) }
     it { should be_able_to(:show, course_collection) }
@@ -27,11 +28,13 @@ describe Ability do
     context 'my own PersonalCollection' do
       let(:collection) { FactoryGirl.create(:personal_collection, user: admin) }
       it { should be_able_to(:append_to, collection) }
+      it { should be_able_to(:remove_from, collection) }
       it { should be_able_to(:destroy, collection) }
     end
 
     context 'someone elses PersonalCollection' do
       it { should_not be_able_to(:append_to, personal_collection) }
+      it { should_not be_able_to(:remove_from, personal_collection) }
       it { should_not be_able_to(:destroy, personal_collection) }
     end
   end
@@ -43,6 +46,7 @@ describe Ability do
     it { should be_able_to(:download, datastream) }
     it { should_not be_able_to(:create, CourseCollection) }
     it { should_not be_able_to(:append_to, course_collection) }
+    it { should_not be_able_to(:remove_from, course_collection) }
     it { should_not be_able_to(:destroy, course_collection) }
     it { should_not be_able_to(:edit, course_collection) }
     it { should     be_able_to(:show, course_collection) }
@@ -52,10 +56,12 @@ describe Ability do
     context 'my own PersonalCollection' do
       let(:collection) { FactoryGirl.create(:personal_collection, user: user) }
       it { should be_able_to(:append_to, collection) }
+      it { should be_able_to(:remove_from, collection) }
     end
 
     context 'someone elses PersonalCollection' do
       it { should_not be_able_to(:append_to, personal_collection) }
+      it { should_not be_able_to(:remove_from, personal_collection) }
     end
   end
 
@@ -67,6 +73,7 @@ describe Ability do
     it { should_not be_able_to(:download, datastream) }
     it { should_not be_able_to(:create, CourseCollection) }
     it { should_not be_able_to(:append_to, course_collection) }
+    it { should_not be_able_to(:remove_from, course_collection) }
     it { should_not be_able_to(:show, course_collection) }
     it { should_not be_able_to(:create, PersonalCollection) }
     it { should_not be_able_to(:show, personal_collection) }
