@@ -11,7 +11,11 @@
          <span class="document-counter">
          <%= t('blacklight.search.documents.counter', :counter => counter) if counter %>
          </span>
-         <%= link_to_document document, :label=>document_show_link_field(document), :counter => counter %>
+         <% if document.image? %>
+           <%= link_to_document document, :label=>document_show_link_field(document), :counter => counter %>
+         <% else %>
+           <%= link_to render_document_index_label(document, label: document_show_link_field(document)), ActiveFedora::Base.find(document.id) %>
+         <% end %>
         </h5>
 
       </div>
