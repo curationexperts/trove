@@ -3,7 +3,7 @@ class CuratedCollectionsController < ApplicationController
   load_and_authorize_resource instance_name: :curated_collection
 
   def create
-    @curated_collection.attributes = collection_params
+    @curated_collection.attributes = collection_params.except(:members)
     @curated_collection.read_groups = ['public']
     @curated_collection.displays = ['tdil']
     @curated_collection.apply_depositor_metadata(current_user)
@@ -16,13 +16,19 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def update
-    if members = params[controller_name.singularize].delete(:members)
+    if members = collection_params[:members]
       members = members.sort_by { |i, _| i.to_i }.map { |_, attributes| attributes } if members.is_a? Hash
       member_ids = members.sort_by { |e| e[:weight] }.map { |e| e[:id] } 
       @curated_collection.member_ids = member_ids 
     end
+    if collection_params[:type].present?
+      # we're changing the type of collection this is
+      @curated_collection.clear_relationship(:has_model)
+      @curated_collection.add_relationship(:has_model, class_uri(collection_params[:type]))
+    end
+    @curated_collection.attributes = collection_params.except(:members)
     if @curated_collection.save
-      redirect_to @curated_collection 
+      redirect_to curated_collection_path(@curated_collection)
     end
   end
 
@@ -64,7 +70,32 @@ protected
   end
 
   def collection_params
-    params.require(controller_name.singularize).permit(:title)
+    if can?(:manage, CourseCollection)
+      params.require(controller_name.singularize).permit(:title, {description: []}, :members, :type)
+    else
+      params.require(controller_name.singularize).permit(:title, {description: []}).merge({members: params[controller_name.singularize][:members]})
+    end
   end
 
+  def class_uri(collection_type)
+    case collection_type
+    when 'course'
+      CourseCollection.to_class_uri
+    when 'personal'
+      PersonalCollection.to_class_uri
+    else
+      raise ArgumentError.new("Unknown collection type")
+    end
+  end
+
+  def curated_collection_path(collection)
+    case collection.relationships(:has_model).first
+    when CourseCollection.to_class_uri
+      course_collection_path(collection)
+    when PersonalCollection.to_class_uri
+      personal_collection_path(collection)
+    else
+      raise ArgumentError.new("Unknown has_model relationship")
+    end
+  end
 end

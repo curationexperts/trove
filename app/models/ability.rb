@@ -19,6 +19,7 @@ class Ability
 
     if current_user.admin?
       can :manage, CourseCollection
+      can :manage, PersonalCollection
     end
   end
 

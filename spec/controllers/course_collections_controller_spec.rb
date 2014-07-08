@@ -167,6 +167,23 @@ describe CourseCollectionsController do
         expect(collection.reload.members).to eq []
       end
     end
+
+    describe "PATCH update" do
+      it "updates collection attributes" do
+        patch :update, id: collection, course_collection: {title: 'new title', description: ['new description']}
+        collection.reload
+        expect(collection.title).to eq 'new title'
+        expect(collection.description).to eq ['new description']
+      end
+
+      it "updates the collection type" do
+        patch :update, id: collection, course_collection: {type: 'personal'}
+        # reload manually to see if the class changed
+        reloaded = ActiveFedora::Base.find(collection.pid, cast: true)
+        expect(reloaded.type).to eq 'personal'
+        expect(response).to redirect_to(personal_collection_path(reloaded))
+      end
+    end
   end  # describe admin user
 
 end

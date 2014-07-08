@@ -33,9 +33,9 @@ describe Ability do
     end
 
     context 'someone elses PersonalCollection' do
-      it { should_not be_able_to(:append_to, personal_collection) }
-      it { should_not be_able_to(:remove_from, personal_collection) }
-      it { should_not be_able_to(:destroy, personal_collection) }
+      it { should be_able_to(:append_to, personal_collection) }
+      it { should be_able_to(:remove_from, personal_collection) }
+      it { should be_able_to(:destroy, personal_collection) }
     end
   end
 

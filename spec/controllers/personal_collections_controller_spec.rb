@@ -158,7 +158,21 @@ describe PersonalCollectionsController do
           patch :update, id: collection, personal_collection: {members: {"0"=>{"id"=>image1.id, "weight"=>"1"}, "1"=>{"id"=>image1.id, "weight"=>"2"}, "2"=>{"id"=>image1.id, "weight"=>"3"}, "3"=>{"id"=>image2.id, "weight"=>"4"}, "4"=>{"id"=>image3.id, "weight"=>"0"}}}
           expect(response).to redirect_to collection
           expect(collection.reload.member_ids).to eq [image3.id, image1.id, image1.id, image1.id, image2.id]
+        end
 
+        it "updates collection attributes" do
+          patch :update, id: collection, personal_collection: {title: 'new title', description: ['new description']}
+          collection.reload
+          expect(collection.title).to eq 'new title'
+          expect(collection.description).to eq ['new description']
+        end
+
+        it "doesn't update the collection type" do
+          patch :update, id: collection, personal_collection: {type: 'course'}
+          # reload manually to see if the class changed
+          reloaded = ActiveFedora::Base.find(collection.pid, cast: true)
+          expect(reloaded.type).to eq 'personal'
+          expect(response).to redirect_to(personal_collection_path(reloaded))
         end
       end
 
@@ -183,6 +197,18 @@ describe PersonalCollectionsController do
         expect(response).to render_template(:show)
         expect(assigns[:curated_collection]).to eq collection
         expect(response).to be_successful
+      end
+    end
+
+    describe "PATCH update" do
+      context 'my own collection' do
+        it "updates the collection type" do
+          patch :update, id: collection, personal_collection: {type: 'course'}
+          # reload manually to see if the class changed
+          reloaded = ActiveFedora::Base.find(collection.pid, cast: true)
+          expect(reloaded.type).to eq 'course'
+          expect(response).to redirect_to(course_collection_path(reloaded))
+        end
       end
     end
   end
