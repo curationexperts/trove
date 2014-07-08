@@ -1,32 +1,15 @@
 <% cache do %>
-  <% feat1 = ActiveFedora::Base.find('changeme:13942') %>
-  <% feat2 = ActiveFedora::Base.find('changeme:13942') %>
-  <% feat3 = ActiveFedora::Base.find('changeme:13942') %>
   <div class="row">
-    <div class="col-md-4">
-      <div class="thumbnail">
-        <div class="text-center">
-          <%= thumbnail_tag(feat1) %>
-          <%= render 'curated_collections/index_header_default', document: feat1 %>
+    <% featured_records.each do |feature| %>
+      <div class="col-md-4">
+        <div class="thumbnail">
+          <div class="text-center">
+            <%= thumbnail_tag(feature) %>
+            <%= render 'curated_collections/index_header_default', document: feature %>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-4">
-      <div class="thumbnail">
-        <div class="text-center">
-          <%= thumbnail_tag(feat2) %>
-          <%= render 'curated_collections/index_header_default', document: feat2 %>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="thumbnail">
-        <div class="text-center">
-          <%= thumbnail_tag(feat3) %>
-          <%= render 'curated_collections/index_header_default', document: feat3 %>
-        </div>
-      </div>
-    </div>
+    <% end %>
   </div>
 
   <strong>Finding Course Collections:</strong> click on the course collections at the left of the screen and select a course to view.<br>

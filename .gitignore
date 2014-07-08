@@ -6,6 +6,7 @@
 
 
 config/secrets.yml
+config/feature_data.yml
 
 */.DS_Store
 
