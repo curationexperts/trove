@@ -48,6 +48,7 @@
 		emptyClass      : 'dd-empty',
 		expandBtnHTML   : '<button data-action="expand" type="button">Expand</button>',
 		collapseBtnHTML : '<button data-action="collapse" type="button">Collapse</button>',
+    horizontalList  : false, /* Allows list to be laid out horizontaly instead of vertical */
 		group           : 0,
 		maxDepth        : 5,
 		threshold       : 20,
@@ -569,6 +570,7 @@
                 return;
             }
 
+
             /**
              * move vertical
              */
@@ -582,7 +584,7 @@
                 if (depth > opt.maxDepth) {
                     return;
                 }
-                var before = e.pageY < (this.pointEl.offset().top + this.pointEl.height() / 2);
+                var before = this.isBefore(e);
                     parent = this.placeEl.parent();
                 // if empty create new list to replace empty placeholder
                 if (isEmpty) {
@@ -608,6 +610,13 @@
                     this.hasNewRoot = this.el[0] !== this.dragRootEl[0];
                 }
             }
+        },
+
+        isBefore: function(e) {
+          if (this.options.horizontalList)
+              return e.pageX < (this.pointEl.offset().left + this.pointEl.width() / 2);
+          else
+              return e.pageY < (this.pointEl.offset().top + this.pointEl.height() / 2);
         }
 
     };

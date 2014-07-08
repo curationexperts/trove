@@ -1,5 +1,5 @@
 Blacklight.onLoad(function(){
-  $('#orderable').nestable({maxDepth: 1});
+  $('#orderable').nestable({maxDepth: 1, horizontalList: true});
   updateWeights($('#orderable'));
 });
 
@@ -10,7 +10,6 @@ function updateWeights(selector) {
       container = $(event.currentTarget);
       var data = $(this).nestable('serialize')
       var weight = 0;
-      console.log(data);
       for(var i in data) {
         var node_id = data[i]['id'];
         node = findNode(node_id, container);
