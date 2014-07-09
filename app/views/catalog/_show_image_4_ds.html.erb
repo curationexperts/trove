@@ -6,6 +6,24 @@
 
   <div class="col-md-6">
     <%= render partial: 'show_default', locals: {document: document} %>
+
+    <dl class="dl-horizontal dl-invert">
+      <dt> Course Collections: </dt>
+      <dd>
+        <% course_collections = CourseCollection.where(member_ids_ssim:document.id) %>
+        <% if course_collections.empty? %>
+          none
+        <% else %>
+          <ul>
+            <% course_collections.each do |cc| %>
+              <li>
+                <%= link_to cc.title, course_collection_path(cc.pid) %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </dd>
+    </dl>
   </div>
 
 </div>
