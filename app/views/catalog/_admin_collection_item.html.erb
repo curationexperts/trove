@@ -1,0 +1,6 @@
+<% # like _collection_item.html.erb but displays extra information for admin users %>
+<li>
+  <%= link_to admin_collection_item do %>
+    &lt;<%= admin_collection_item.creator %>&gt; <%= admin_collection_item.title %>
+  <% end %>
+</li>

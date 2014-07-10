@@ -1,0 +1,25 @@
+ul.scrollable {
+  list-style-type: none;
+  padding-left: 2px;
+  max-height: 100px;
+  overflow-x: auto;
+}
+
+ul.personal-collections {
+  border: 1px solid rgba(0, 0, 0, .5);
+  border-radius: 4px;
+}
+
+ul.personal-collections::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+ul.personal-collections::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+ul.personal-collections::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}

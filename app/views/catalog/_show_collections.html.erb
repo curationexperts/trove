@@ -1,15 +1,12 @@
 <dl class="dl-horizontal dl-invert">
-  <dt> <%= title %> </dt>
+  <dt><%= title %></dt>
   <dd>
   <% if collections.empty? %>
     none
   <% else %>
-    <ul>
-      <% collections.each do |coll| %>
-        <li>
-        <%= link_to coll.title, polymorphic_path(coll) %>
-        </li>
-      <% end %>
+    <ul class="scrollable <%= title.gsub(/\s/, '-').downcase %>">
+      <% item_partial ||= 'collection_item' %>
+      <%= render partial: item_partial, collection: collections %>
     </ul>
   <% end %>
   </dd>
