@@ -52,6 +52,28 @@ describe CourseCollection do
     end
   end
 
+  describe "parents" do
+    let(:child) { CourseCollection.create title: 'some title' }
+    let(:parent1) { CourseCollection.create title: 'some title' }
+    let(:parent2) { CourseCollection.create title: 'some title' }
+    subject { child.parent_count }
+
+    context "without a parent" do
+      it { should eq 0 }
+    end
+
+    context "when it has a parent" do
+      before do
+        parent1.members << child
+        parent1.save!
+        parent2.members << child
+        parent2.save!
+      end
+
+      it { should eq 2 }
+    end
+  end
+
   describe "to_class_uri" do
     it "sets the displays" do
       expect(subject.displays).to eq ['tdil']
