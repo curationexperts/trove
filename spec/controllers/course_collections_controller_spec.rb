@@ -98,17 +98,6 @@ describe CourseCollectionsController do
           expect(response).to render_template(:new)
         end
       end
-
-      it 'uses the next sequence for the pid' do
-        pending
-        Sequence.where(name: nil, value: 100).create
-        n = Sequence.where(name: 'curated_collection').first_or_create.value
-        # if multiple sequences have the same value, this test doesn't test anything
-        expect(Sequence.pluck(:value).uniq).to be_truthy
-
-        post 'create', course_collection: {title: 'foo'}
-        expect(assigns[:curated_collection].pid).to eq "tufts:uc.#{n + 1}"
-      end
     end
 
     describe "GET 'show'" do

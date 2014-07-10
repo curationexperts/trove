@@ -7,13 +7,13 @@ Rails.application.routes.draw do
 
   resources :downloads, only: [:show], constraints: { id: ALLOW_DOTS }
 
-  resources :course_collections do
+  resources :course_collections, constraints: { id: ALLOW_DOTS } do
     member do
       patch :append_to
       delete :remove_from
     end
   end
-  resources :personal_collections do
+  resources :personal_collections, constraints: { id: ALLOW_DOTS } do
     member do
       patch :append_to
       delete :remove_from

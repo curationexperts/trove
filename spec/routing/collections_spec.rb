@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Course Collections' do
 
   it 'routes to show' do
-    expect(get: 'course_collections/1').to route_to(controller: 'course_collections', action: 'show', id: '1')
+    expect(get: 'course_collections/tufts.uc:1').to route_to(controller: 'course_collections', action: 'show', id: 'tufts.uc:1')
   end
 
   it 'routes to new' do
@@ -46,8 +46,8 @@ end
 describe 'Personal Collections' do
 
   it 'routes to show' do
-    expect(get: 'personal_collections/1').to route_to(
-      controller: 'personal_collections', action: 'show', id: '1')
+    expect(get: 'personal_collections/tufts.uc:1').to route_to(
+      controller: 'personal_collections', action: 'show', id: 'tufts.uc:1')
   end
 
   it 'routes to new' do
