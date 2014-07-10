@@ -7,23 +7,11 @@
   <div class="col-md-6">
     <%= render partial: 'show_default', locals: {document: document} %>
 
-    <dl class="dl-horizontal dl-invert">
-      <dt> Course Collections: </dt>
-      <dd>
-        <% course_collections = CourseCollection.where(member_ids_ssim:document.id) %>
-        <% if course_collections.empty? %>
-          none
-        <% else %>
-          <ul>
-            <% course_collections.each do |cc| %>
-              <li>
-                <%= link_to cc.title, course_collection_path(cc.pid) %>
-              </li>
-            <% end %>
-          </ul>
-        <% end %>
-      </dd>
-    </dl>
+    <% course_collections = CourseCollection.where(member_ids_ssim:document.id) %>
+    <% my_collections = current_user.personal_collections.where(member_ids_ssim:document.id) %>
+
+    <%= render partial: 'show_collections', locals: { title: 'Course Collections', collections: course_collections, } %>
+    <%= render partial: 'show_collections', locals: { title: 'My Collections', collections: my_collections, } %>
   </div>
 
 </div>
