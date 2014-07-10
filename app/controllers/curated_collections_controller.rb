@@ -26,7 +26,7 @@ class CuratedCollectionsController < ApplicationController
       @curated_collection.clear_relationship(:has_model)
       @curated_collection.add_relationship(:has_model, class_uri(collection_params[:type]))
     end
-    @curated_collection.attributes = collection_params.except(:members)
+    @curated_collection.attributes = collection_params.except(:members, :type)
     if @curated_collection.save
       redirect_to curated_collection_path(@curated_collection)
     end

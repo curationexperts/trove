@@ -1,10 +1,8 @@
 class PersonalCollection < CuratedCollection
+
+  # Sets the default value for the edit form.
   def type
     'personal'
-  end
-
-  def type= val
-    # TODO, this casts to whatever they set
   end
 
   def creator

@@ -1,14 +1,13 @@
 class CourseCollection < CuratedCollection
+
+  # Sets the default value for the edit form.
   def type
     'course'
-  end
-
-  def type= val
-    # TODO, this casts to whatever they set
   end
 
   def creator
     super.first
   end
+
 
 end
