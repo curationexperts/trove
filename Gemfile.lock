@@ -16,18 +16,6 @@ GIT
       titleize
 
 GIT
-  remote: git://github.com/no-reply/ActiveTriples.git
-  revision: dc61794d4822ac5e3a534b73cfc727a733b8056d
-  ref: dc61794
-  specs:
-    active-triples (0.2.0)
-      activemodel (>= 3.0.0)
-      activesupport (>= 3.0.0)
-      deprecation (~> 0.1)
-      linkeddata (~> 1.1)
-      rdf (~> 1.1)
-
-GIT
   remote: git://github.com/projectblacklight/blacklight-gallery.git
   revision: 2f9f342518585a6e48d93a8e4ed5621afcf918a7
   ref: 2f9f342518
@@ -69,6 +57,12 @@ GEM
       activesupport (= 4.1.4)
       builder (~> 3.1)
       erubis (~> 2.7.0)
+    active-triples (0.2.1)
+      activemodel (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      deprecation (~> 0.1)
+      linkeddata (~> 1.1)
+      rdf (~> 1.1)
     activemodel (4.1.4)
       activesupport (= 4.1.4)
       builder (~> 3.1)
@@ -431,7 +425,7 @@ PLATFORMS
 
 DEPENDENCIES
   active-fedora!
-  active-triples!
+  active-triples (= 0.2.1)
   blacklight-gallery!
   byebug
   capybara
