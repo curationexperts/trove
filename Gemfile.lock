@@ -78,7 +78,7 @@ GEM
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.7)
-    blacklight (5.4.0)
+    blacklight (5.5.1)
       bootstrap-sass (~> 3.0)
       deprecation
       kaminari (~> 0.13)
@@ -151,18 +151,6 @@ GEM
     hooks (0.3.6)
       uber (~> 0.0.4)
     htmlentities (4.3.2)
-    hydra (7.0.0)
-      active-fedora (~> 7.0.2)
-      blacklight (~> 5.4.0)
-      hydra-head (~> 7.0.1)
-      jettywrapper (~> 1.7.0)
-      nokogiri (~> 1.6.0)
-      nom-xml (~> 0.5.1)
-      om (~> 3.0.4)
-      rails (>= 3.2.15, < 5.0)
-      rsolr (~> 1.0.10)
-      rubydora (~> 1.7.4)
-      solrizer (~> 3.1.1)
     hydra-access-controls (7.0.2)
       active-fedora (~> 7.0.0)
       activesupport
@@ -426,6 +414,7 @@ PLATFORMS
 DEPENDENCIES
   active-fedora!
   active-triples (= 0.2.1)
+  blacklight (~> 5.5.1)
   blacklight-gallery!
   byebug
   capybara
@@ -433,8 +422,8 @@ DEPENDENCIES
   devise
   devise-guests (~> 0.3)
   factory_girl_rails
-  hydra (= 7.0.0)
   hydra-editor (~> 0.4.0)
+  hydra-head (~> 7.0.1)
   jbuilder (~> 2.0)
   jettywrapper
   jquery-rails
