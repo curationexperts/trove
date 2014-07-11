@@ -7,7 +7,7 @@ class CatalogController < ApplicationController
   include Hydra::Controller::ControllerBehavior
 
   CatalogController.solr_search_params_logic += [:only_displays_in_tdil]
-  CatalogController.solr_search_params_logic += [:filter_personal_collections]
+  CatalogController.solr_search_params_logic += [:only_images_and_collections]
 
   configure_blacklight do |config|
     config.default_solr_params = {
@@ -135,14 +135,14 @@ class CatalogController < ApplicationController
 
 protected
 
+  def only_images_and_collections(solr_parameters, user_parameters)
+    solr_parameters[:fq] ||= []
+    solr_parameters[:fq] << "has_model_ssim:(\"#{TuftsImage.to_class_uri}\" OR \"#{CourseCollection.to_class_uri}\")"
+  end
+
   def only_displays_in_tdil(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] << "displays_ssim:tdil"
-  end
-
-  def filter_personal_collections(solr_parameters, user_parameters)
-    solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "-has_model_ssim:\"info:fedora/afmodel:PersonalCollection\""
   end
 
   # Override method from blacklight to check for 'tdil' display
