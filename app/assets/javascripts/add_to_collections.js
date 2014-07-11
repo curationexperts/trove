@@ -1,5 +1,5 @@
 Blacklight.onLoad(function() {
-  $(".document").draggable({
+  $('[data-behavior="dragable"]').draggable({
     helper: function(event) {
       return $('<span style="white-space:nowrap;"/>')
             .html($(this).find('img').clone().css('opacity', '0.6'));

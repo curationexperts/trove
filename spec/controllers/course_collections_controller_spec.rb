@@ -143,6 +143,22 @@ describe CourseCollectionsController do
         expect(response).to be_successful
         expect(collection.reload.members).to eq [image]
       end
+
+      context "when it has a parent" do
+        let(:child) { CourseCollection.create title: 'some title' }
+        let(:parent) { CourseCollection.create title: 'some title' }
+
+        before do
+          parent.members << child
+          parent.save!
+        end
+
+        it "doesn't allow a second parent" do
+          patch :append_to, id: collection, pid: child.pid
+          expect(response).to be_forbidden
+          expect(collection.reload.members).to eq []
+        end
+      end
     end
 
     describe "DELETE 'remove_from'" do

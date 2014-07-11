@@ -17,8 +17,8 @@ GIT
 
 GIT
   remote: git://github.com/projectblacklight/blacklight-gallery.git
-  revision: 2f9f342518585a6e48d93a8e4ed5621afcf918a7
-  ref: 2f9f342518
+  revision: 98c8724552f0d444c753c5ca9f7dab2757bc74b3
+  branch: customize_wrapper
   specs:
     blacklight-gallery (0.0.1)
       blacklight (>= 5.0.0.pre4, < 6.0)

@@ -1,0 +1,5 @@
+<% # container for a single doc -%>
+<div class="document" <%= dragability course_collection %> data-document-id="<%= course_collection.id %>" itemscope itemtype="<%= course_collection.itemtype %>">
+  <%= render_document_partials course_collection, blacklight_config.view_config(document_index_view_type).partials, document_counter: course_collection_counter %>
+</div>
+

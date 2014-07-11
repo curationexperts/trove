@@ -50,9 +50,13 @@ class CuratedCollectionsController < ApplicationController
 
   def append_to
     record = ActiveFedora::Base.find(params[:pid])
-    @curated_collection.members << record
-    status = @curated_collection.save ? 'success' : 'error'
-    render json: { status: status }
+    if record.kind_of?(CuratedCollection) && record.parent_count > 0
+      render json: { status: 'error', message: 'The collection already has a parent' }, status: :forbidden
+    else
+      @curated_collection.members << record
+      status = @curated_collection.save ? 'success' : 'error'
+      render json: { status: status }
+    end
   end
 
   def remove_from

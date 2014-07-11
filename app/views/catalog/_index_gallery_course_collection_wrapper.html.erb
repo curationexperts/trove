@@ -1,4 +1,5 @@
-<div class="document col-xs-6 col-md-3" data-behavior="dragable" data-document-id="<%= document.id %>">
+<%# gallery should not be draggable if parent_count > 1 on collections %>
+<div class="document col-xs-6 col-md-3" <%= dragability(document) %> data-document-id="<%= document.id %>">
   <div class="thumbnail">
     <%= render_thumbnail_tag(document, {}, :counter => document_counter_with_offset(document_counter)) %>
     <div class="caption">
@@ -6,4 +7,3 @@
     </div>
   </div>
 </div>
-
