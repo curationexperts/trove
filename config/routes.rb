@@ -11,12 +11,14 @@ Rails.application.routes.draw do
     member do
       patch :append_to
       delete :remove_from
+      patch :update_type
     end
   end
   resources :personal_collections, constraints: { id: ALLOW_DOTS } do
     member do
       patch :append_to
       delete :remove_from
+      patch :update_type
     end
   end
 

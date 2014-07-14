@@ -21,14 +21,24 @@ class CuratedCollectionsController < ApplicationController
       member_ids = members.sort_by { |e| e[:weight] }.map { |e| e[:id] } 
       @curated_collection.member_ids = member_ids 
     end
-    if collection_params[:type].present?
-      # we're changing the type of collection this is
-      @curated_collection.clear_relationship(:has_model)
-      @curated_collection.add_relationship(:has_model, class_uri(collection_params[:type]))
-    end
     @curated_collection.attributes = collection_params.except(:members, :type)
     if @curated_collection.save
       redirect_to curated_collection_path(@curated_collection)
+    end
+  end
+
+  def update_type
+    params.require(:collection_type)
+    # can't figure out how to require specific values using strong_parameters
+    if not ['personal', 'course'].include?(params[:collection_type])
+      raise ActiveModel::ForbiddenAttributes.new
+    end
+    @curated_collection.clear_relationship(:has_model)
+    @curated_collection.add_relationship(:has_model, class_uri(params[:collection_type]))
+    if @curated_collection.save
+      redirect_to curated_collection_path(@curated_collection)
+    else
+      render :show
     end
   end
 
@@ -74,11 +84,8 @@ protected
   end
 
   def collection_params
-    if can?(:manage, CourseCollection)
-      params.require(controller_name.singularize).permit(:title, {description: []}, :members, :type)
-    else
-      params.require(controller_name.singularize).permit(:title, {description: []}).merge({members: params[controller_name.singularize][:members]})
-    end
+    params.require(controller_name.singularize).permit(:title, {description: []}, :members)
+    params[controller_name.singularize]
   end
 
   def class_uri(collection_type)

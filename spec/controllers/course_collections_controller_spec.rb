@@ -180,9 +180,11 @@ describe CourseCollectionsController do
         expect(collection.title).to eq 'new title'
         expect(collection.description).to eq ['new description']
       end
+    end
 
+    describe "PATCH update_type" do
       it "updates the collection type" do
-        patch :update, id: collection, course_collection: {type: 'personal'}
+        patch :update_type, id: collection, collection_type: 'personal'
         # reload manually to see if the class changed
         reloaded = ActiveFedora::Base.find(collection.pid, cast: true)
         expect(reloaded.type).to eq 'personal'
