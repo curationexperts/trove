@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/curationexperts/tufts_models.git
-  revision: 7273641b2bd7d5ac10763302dfdceb8c7ccbe84f
+  revision: 6a4a0b2e31c5b7f929e6091ef1e4a3e88c5642e6
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -27,11 +27,11 @@ GIT
 
 GIT
   remote: git://github.com/projecthydra/active_fedora.git
-  revision: 6dd79a2a57a09950d2c30c6801770f23c5de9de3
+  revision: ec9311de4d1f78d55d883985d95f359e1f7749e9
   branch: feature/active-triples
   specs:
     active-fedora (7.0.4)
-      active-triples (>= 0.2.0)
+      active-triples (~> 0.2.0)
       activesupport (>= 3.0.0)
       deprecation
       mediashelf-loggable
