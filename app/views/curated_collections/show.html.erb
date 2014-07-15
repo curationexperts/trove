@@ -19,6 +19,11 @@
         <% end %>
       </li>
     <% end %>
+    <% if can? :update_type, @curated_collection %>
+      <li>
+        <%= update_collection_type_button(@curated_collection) %>
+      </li>
+    <% end %>
   </ul>
 
   <h1><%=@curated_collection.title %> <small><%=@curated_collection.type.capitalize %> Collection</small></h1>

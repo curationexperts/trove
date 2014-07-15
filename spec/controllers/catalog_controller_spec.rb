@@ -21,6 +21,18 @@ describe CatalogController do
       expect(assigns[:my_collections]).to eq [my_collection1, my_collection2]
       expect(assigns[:course_collections]).to eq [course_collection1, course_collection2]
     end
+
+    it "only shows images and collections" do
+      image = FactoryGirl.create(:tufts_image, displays: ['tdil'])
+      template = FactoryGirl.create(:tufts_template, displays: ['tdil'])
+      pdf = FactoryGirl.create(:tufts_pdf, displays: ['tdil'])
+      get :index
+      found = assigns[:document_list].map(&:id)
+      expect(found).to include(course_collection1.pid)
+      expect(found).to include(image.pid)
+      expect(found).to_not include(template.pid)
+      expect(found).to_not include(pdf.pid)
+    end
   end
 
   describe "GET show" do

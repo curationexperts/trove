@@ -203,7 +203,7 @@ describe PersonalCollectionsController do
     describe "PATCH update" do
       context 'my own collection' do
         it "updates the collection type" do
-          patch :update, id: collection, personal_collection: {type: 'course'}
+          patch :update_type, id: collection, collection_type: 'course'
           # reload manually to see if the class changed
           reloaded = ActiveFedora::Base.find(collection.pid, cast: true)
           expect(reloaded.type).to eq 'course'
