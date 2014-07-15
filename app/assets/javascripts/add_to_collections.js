@@ -18,7 +18,7 @@ Blacklight.onLoad(function() {
 
   function addToCollection(event, ui, path) {
     pid = ui.draggable.data('document-id');
-    collection_id = $(event.target).data('collection-id');
+    collection_id = $(event.target).data('id');
     $.ajax({
       type: "PATCH",
       url: '/' + path + '/' + collection_id + '/append_to',

@@ -16,10 +16,9 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def update
+    # TODO change to member_attributes
     if members = collection_params[:members]
-      members = members.sort_by { |i, _| i.to_i }.map { |_, attributes| attributes } if members.is_a? Hash
-      member_ids = members.sort_by { |e| e[:weight] }.map { |e| e[:id] } 
-      @curated_collection.member_ids = member_ids 
+      @curated_collection.member_attributes = members
     end
     @curated_collection.attributes = collection_params.except(:members, :type)
     if @curated_collection.save

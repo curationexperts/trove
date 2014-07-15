@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/curationexperts/tufts_models.git
-  revision: 6a4a0b2e31c5b7f929e6091ef1e4a3e88c5642e6
+  revision: 02d4febedaa25540a5b0038ce6c8ce612048fcdf
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -308,7 +308,7 @@ GEM
       vegas (~> 0.1.2)
     resque-status (0.4.3)
       resque (~> 1.19)
-    rest-client (1.7.1)
+    rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     rmagick (2.13.2)

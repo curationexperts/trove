@@ -52,17 +52,38 @@ describe CourseCollection do
     end
   end
 
+  describe "setting nested member_attributes" do
+    before do
+      CourseCollection.destroy_all
+    end
+    let(:root) { CourseCollection.root }
+    let(:collection1) { FactoryGirl.create(:course_collection) }
+    let(:collection2) { FactoryGirl.create(:course_collection) }
+    let(:collection3) { FactoryGirl.create(:course_collection) }
+
+    it "sets the children" do
+      root.member_attributes = {"0"=>{"id"=>collection3.id, "weight"=>"1", 'parent_page_id' => collection1.id}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => root.id}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}
+      expect(root.member_ids).to eq [collection2.id, collection1.id]
+      expect(collection1.reload.member_ids).to eq [collection3.id]
+    end
+
+    it "sets the children to root when parent_page_id is blank" do
+      root.member_attributes = {"0"=>{"id"=>collection3.id, "weight"=>"1", 'parent_page_id' => ''}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => ''}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}
+      expect(root.member_ids).to eq [collection3.id, collection2.id, collection1.id]
+    end
+  end
+
   describe "parents" do
     let(:child) { CourseCollection.create title: 'some title' }
     let(:parent1) { CourseCollection.create title: 'some title' }
     let(:parent2) { CourseCollection.create title: 'some title' }
     subject { child.parent_count }
 
-    context "without a parent" do
-      it { should eq 0 }
+    context "without an explicit parent (child of root)" do
+      it { should eq 1 }
     end
 
-    context "when it has a parent" do
+    context "when it has many parents" do
       before do
         parent1.members << child
         parent1.save!
@@ -70,7 +91,7 @@ describe CourseCollection do
         parent2.save!
       end
 
-      it { should eq 2 }
+      it { should eq 3 }
     end
   end
 

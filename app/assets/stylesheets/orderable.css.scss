@@ -1,21 +1,37 @@
 $handle-height: 270px;
 .dd { position: relative; display: block; margin: 0; padding: 0; line-height: 20px; }
 
-.dd .dd-item {
-  @include make-xs-column(6);
-  @include make-sm-column(4);
-  @include make-md-column(3);
+#orderable.dd {
+  .dd-item {
+    @include make-xs-column(6);
+    @include make-sm-column(4);
+    @include make-md-column(3);
+  }
+
+  .dd-list {
+    margin: 0; padding: 0;
+    .dd-placeholder, .dd-empty {
+      @include make-xs-column(6);
+      @include make-sm-column(4);
+      @include make-md-column(3);
+      margin: 0;
+      min-height: 30px; background: #f2fbff; border: 1px dashed #b6bcbf; box-sizing: border-box; -moz-box-sizing: border-box;
+    }
+  }
 }
+
+.course-collection-list {
+  padding: 2px;
+}
+
 .dd-list {
   display: block;
   position: relative;
   list-style: none;
-  margin: 0; padding: 0;
 
-  li .dd-handle {
+  li.collection-member .dd-handle {
     height: $handle-height;
-    -webkit-border-radius: 3px;
-            border-radius: 3px;
+    border-radius: 3px;
 
     .frame {
       padding: 4px;
@@ -23,17 +39,29 @@ $handle-height: 270px;
       height: $handle-height - 20;
     }
   }
+
+  li.collection .dd-handle {
+    display: block; margin: 2px 0; padding: 5px 10px; color: #333; text-decoration: none;
+    font-weight: bold; border: 1px solid #ccc;
+    background: #fafafa;
+    background: linear-gradient(top, #fafafa 0%, #eee 100%);
+    box-sizing: border-box;
+  }
+
+  .dd-list { padding-left: 30px; }
+  
 }
 
 .dd-item, .dd-empty, .dd-placeholder {
-  display: block; position: relative; margin: 0; padding: 0; min-height: 20px; }
+  display: block; position: relative; margin: 0; padding: 0; }
 
 .dd-handle:hover { background: #fff; }
 
+.dd-item > button { display: block; position: relative; cursor: pointer; float: left; width: 25px; height: 20px; margin: 5px 0; padding: 0; text-indent: 100%; white-space: nowrap; overflow: hidden; border: 0; background: transparent; font-size: 12px; line-height: 1; text-align: center; font-weight: bold; }
+.dd-item > button:before { content: '+'; display: block; position: absolute; width: 100%; text-align: center; text-indent: 0; }
+.dd-item > button[data-action="collapse"]:before { content: '-'; }
+
 .dd-placeholder, .dd-empty {
-  @include make-xs-column(6);
-  @include make-sm-column(4);
-  @include make-md-column(3);
   margin: 0;
   min-height: 30px; background: #f2fbff; border: 1px dashed #b6bcbf; box-sizing: border-box; -moz-box-sizing: border-box;
 }

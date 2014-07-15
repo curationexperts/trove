@@ -1,4 +1,5 @@
 class PersonalCollection < CuratedCollection
+  include WithNestedMembers
 
   # Sets the default value for the edit form.
   def type

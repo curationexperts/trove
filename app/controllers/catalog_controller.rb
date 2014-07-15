@@ -128,8 +128,8 @@ class CatalogController < ApplicationController
   end
 
   def index
+    @root_collection = CourseCollection.root
     @my_collections = current_user.personal_collections
-    @course_collections = CourseCollection.all
     super
   end
 

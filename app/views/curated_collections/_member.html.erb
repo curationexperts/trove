@@ -1,4 +1,4 @@
-          <li class="dd-item" data-id="<%= member_counter %>">
+          <li class="dd-item collection-member" data-id="<%= member_counter %>">
           <%= hidden_field_tag "#{ActiveModel::Naming.singular(@curated_collection)}[members][#{member_counter}][id]", member.id, id: "#{ActiveModel::Naming.singular(@curated_collection)}_members_#{member_counter}_id" %>
           <%= hidden_field_tag "#{ActiveModel::Naming.singular(@curated_collection)}[members][#{member_counter}][weight]", member_counter, id: "#{ActiveModel::Naming.singular(@curated_collection)}_members_#{member_counter}_weight", data: { property: 'weight' } %>
             <div class="dd-handle">

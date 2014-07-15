@@ -9,29 +9,33 @@ describe CatalogController do
       CourseCollection.destroy_all
       sign_in user
     end
-    let!(:my_collection1) { FactoryGirl.create(:personal_collection, user: user) }
-    let!(:my_collection2) { FactoryGirl.create(:personal_collection, user: user) }
-    let!(:not_my_collection) { FactoryGirl.create(:personal_collection) }
-    let!(:course_collection1) { FactoryGirl.create(:course_collection) }
-    let!(:course_collection2) { FactoryGirl.create(:course_collection) }
 
-    it "should be a great success" do
-      get :index
-      expect(response).to be_success
-      expect(assigns[:my_collections]).to eq [my_collection1, my_collection2]
-      expect(assigns[:course_collections]).to eq [course_collection1, course_collection2]
+    describe "the sidebar" do
+      let!(:my_collection1) { FactoryGirl.create(:personal_collection, user: user) }
+      let!(:my_collection2) { FactoryGirl.create(:personal_collection, user: user) }
+      let!(:not_my_collection) { FactoryGirl.create(:personal_collection) }
+
+      it "should be a great success" do
+        get :index
+        expect(response).to be_success
+        expect(assigns[:my_collections]).to eq [my_collection1, my_collection2]
+        expect(assigns[:root_collection]).to eq CourseCollection.root
+      end
     end
 
-    it "only shows images and collections" do
-      image = FactoryGirl.create(:tufts_image, displays: ['tdil'])
-      template = FactoryGirl.create(:tufts_template, displays: ['tdil'])
-      pdf = FactoryGirl.create(:tufts_pdf, displays: ['tdil'])
-      get :index
-      found = assigns[:document_list].map(&:id)
-      expect(found).to include(course_collection1.pid)
-      expect(found).to include(image.pid)
-      expect(found).to_not include(template.pid)
-      expect(found).to_not include(pdf.pid)
+    describe "the search results" do
+      let!(:course_collection) { FactoryGirl.create(:course_collection) }
+      let!(:image) { FactoryGirl.create(:tufts_image, displays: ['tdil']) }
+      let!(:template) { FactoryGirl.create(:tufts_template, displays: ['tdil']) }
+      let!(:pdf) { FactoryGirl.create(:tufts_pdf, displays: ['tdil']) }
+
+      it "only shows images and collections" do
+        get :index
+        found = assigns[:document_list].map(&:id)
+        expect(found).to include(course_collection.pid, image.pid)
+        expect(found).to_not include(template.pid)
+        expect(found).to_not include(pdf.pid)
+      end
     end
   end
 

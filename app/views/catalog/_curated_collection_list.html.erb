@@ -1,16 +1,29 @@
 <div class="panel-group">
-  <div class="panel panel-default">
+  <div class="panel panel-default dd" id="<%if can? :append_to, @root_collection %>orderable-course-collections<% end %>">
     <div class="panel-heading">
       <h5 class="panel-title">Course Collections:
         <% if can?(:create, CourseCollection) %><%= link_to "+", new_course_collection_path,
                class: 'btn btn-default btn-sm' %><% end %>
       </h5>
     </div>
-    <ul class="panel-body course-collection-list list-unstyled">
-      <% @course_collections.each do |collection| %>
-        <li class="<% if can?(:append_to, collection) %>drop-target<% end %>" data-collection-id="<%= collection.pid %>"><%= link_to collection.title, collection %></li>
+    <% if can?(:append_to, @root_collection) %>
+      <%= bootstrap_form_for @root_collection do |f| %>
+        <ol class="panel-body course-collection-list dd-list">
+          <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
+          <%= render partial: 'collection_member', collection: @root_collection.collection_members,
+            locals: { counter: counter, parent_id: @root_collection.id} %>
+        </ol>
+        <%= f.primary t('.save_order') %>
       <% end %>
-    </ul>
+    <% else %>
+      <ol class="panel-body course-collection-list dd-list">
+        <% @root_collection.collection_members.each do |collection| %>
+          <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
+          <%= render partial: 'collection_member', collection: @root_collection.collection_members,
+            locals: { counter: counter, parent_id: @root_collection.id} %>
+        <% end %>
+      </ol>
+    <% end %>
   </div>
 </div>
 <div class="panel panel-default">
@@ -22,7 +35,7 @@
   </div>
   <ul class="panel-body personal-collection-list list-unstyled">
     <% @my_collections.each do |collection| %>
-      <li class="<% if can?(:append_to, collection) %>drop-target<% end %>" data-collection-id="<%= collection.pid %>"><%= link_to collection.title, collection %></li>
+      <li class="<% if can?(:append_to, collection) %>drop-target<% end %>" data-id="<%= collection.pid %>"><%= link_to collection.title, collection %></li>
     <% end %>
   </ol>
 </div>
