@@ -2,7 +2,9 @@
   <div id="previousNextDocument">
     <%= link_back_to_catalog %></li>
   </div>
+
   <ul class="pull-right show-tools">
+    <%= render 'link_to_copy_collection', collection: @curated_collection %>
     <% if can? :edit, @curated_collection %>
       <li>
         <%= link_to [:edit, @curated_collection] do %>
@@ -23,6 +25,7 @@
       </li>
     <% end %>
   </ul>
+
   <h1><%=@curated_collection.title %> <small><%=@curated_collection.type.capitalize %> Collection</small></h1>
   <p class="lead"><%= @curated_collection.description.first %></p>
 

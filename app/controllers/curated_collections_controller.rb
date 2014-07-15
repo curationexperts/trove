@@ -3,7 +3,7 @@ class CuratedCollectionsController < ApplicationController
   load_and_authorize_resource instance_name: :curated_collection
 
   def create
-    @curated_collection.attributes = collection_params.except(:members)
+    @curated_collection.attributes = collection_params
     @curated_collection.read_groups = ['public']
     @curated_collection.displays = ['tdil']
     @curated_collection.apply_depositor_metadata(current_user)
@@ -84,7 +84,7 @@ protected
   end
 
   def collection_params
-    params.require(controller_name.singularize).permit(:title, {description: []}, :members)
+    params.require(controller_name.singularize).permit(:title, {description: []}, :members, :member_ids)
     params[controller_name.singularize]
   end
 
