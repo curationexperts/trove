@@ -10,7 +10,4 @@ module CatalogHelper
     end
   end
 
-  def dragability col
-    'data-behavior="dragable"'.html_safe if col.parent_count == 0
-  end
 end
