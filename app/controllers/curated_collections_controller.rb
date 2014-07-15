@@ -3,7 +3,7 @@ class CuratedCollectionsController < ApplicationController
   load_and_authorize_resource instance_name: :curated_collection
 
   def create
-    @curated_collection.attributes = collection_params.except(:members)
+    @curated_collection.attributes = collection_params
     @curated_collection.read_groups = ['public']
     @curated_collection.displays = ['tdil']
     @curated_collection.apply_depositor_metadata(current_user)
@@ -74,10 +74,19 @@ protected
   end
 
   def collection_params
+    members = params[controller_name.singularize][:members]
+    member_ids = params[controller_name.singularize][:member_ids]
+
     if can?(:manage, CourseCollection)
       params.require(controller_name.singularize).permit(:title, {description: []}, :members, :type)
     else
-      params.require(controller_name.singularize).permit(:title, {description: []}).merge({members: params[controller_name.singularize][:members]})
+      allowed_params = params.require(controller_name.singularize).
+        permit(:title, { description: [] }).
+        merge({ members: members }).
+        merge({ member_ids: member_ids })
+      allowed_params.delete(:members) if members.blank?
+      allowed_params.delete(:member_ids) if member_ids.blank?
+      allowed_params
     end
   end
 
