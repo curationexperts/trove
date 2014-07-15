@@ -20,3 +20,10 @@
 @import 'collection';
 @import 'catalog';
 @import 'tufts';
+
+#documents.row.gallery {
+  display: block;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+}
