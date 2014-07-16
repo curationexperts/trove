@@ -33,7 +33,6 @@ function updateSingleNode(data, container, weight) {
 }
 
 function updateChildren(data, container, parent_id) {
-  console.log(data);
   var weight = 0;
   for(var i in data){
     updateSingleChild(data[i], container, parent_id, weight++)
@@ -47,8 +46,6 @@ function updateSingleChild(data, container, parent_id, weight) {
   setParent(node, parent_id);
   if(data['children']) {
     updateChildren(data['children'], container, id);
-  } else {
-    console.log("no children");
   }
 }
 
