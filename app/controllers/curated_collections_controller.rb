@@ -53,6 +53,14 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.pptx {
+        send_file(@curated_collection.to_pptx,
+                  filename: @curated_collection.pptx_file_name,
+                  type: "application/vnd.openxmlformats-officedocument.presentationml.presentation")
+      }
+    end
   end
 
   def new

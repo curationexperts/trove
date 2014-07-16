@@ -8,6 +8,9 @@ gem 'active-fedora', github: 'projecthydra/active_fedora', branch: 'feature/acti
 gem 'active-triples', '0.2.1'
 gem 'hydra-editor', '~> 0.4.0'
 
+#gem 'powerpoint', path: '../powerpoint'
+gem 'powerpoint', github: 'curationexperts/powerpoint'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets

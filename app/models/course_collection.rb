@@ -1,5 +1,6 @@
 class CourseCollection < CuratedCollection
   include WithNestedMembers
+  include PowerPoint
 
   after_create :add_to_root_collection
 
@@ -32,6 +33,5 @@ class CourseCollection < CuratedCollection
       root ||= CourseCollection.create!(pid: ROOT_PID, title: 'Root')
     end
   end
-
 
 end

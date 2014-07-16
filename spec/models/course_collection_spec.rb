@@ -153,4 +153,39 @@ describe CourseCollection do
       expect(subject.edit_users).to eq ['jcoyne']
     end
   end
+
+  describe "powerpoint" do
+    let(:timestamp) { '2012_12_25_051545' }
+    let(:export_dir) { File.join(PowerPoint::PPTX_DIR, timestamp) }
+
+    before do
+      xmas = Time.local(2012, 12, 25, 5, 15, 45)
+      allow(Time).to receive(:now) { xmas }
+
+      # https://github.com/travisjeffery/timecop/issues/25
+      allow(Zip::DOSTime).to receive(:now) { Zip::DOSTime.new(xmas.to_s) }
+    end
+
+    it 'makes the export dir if it doesnt exist' do
+      FileUtils.rm_rf(export_dir, :secure => true)
+      subject.export_dir
+      expect(File.exist?(export_dir)).to eq true
+      FileUtils.rm_rf(export_dir, :secure => true)
+    end
+
+    it 'has a name for the export file' do
+      subject.title = "Student Research in the 1960's"
+      expect(subject.pptx_file_name).to eq 'student_research_in_the_1960_s.pptx'
+    end
+
+    it 'generates the file and returns the file path' do
+      subject.title = "Student Research in the 1960's"
+      subject.save!
+      export_file_path = File.join(export_dir, 'student_research_in_the_1960_s.pptx')
+
+      expect(subject.to_pptx).to eq export_file_path
+      expect(File.exist?(export_file_path)).to eq true
+      FileUtils.rm_rf(export_dir, :secure => true)
+    end
+  end
 end

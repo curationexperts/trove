@@ -67,4 +67,12 @@ describe PersonalCollection do
       expect(subject.edit_users).to eq ['jcoyne']
     end
   end
+
+  describe "powerpoint" do
+    # More testing for powerpoint is done in spec/models/course_collection_spec.rb
+
+    it 'can generate powerpoint format' do
+      expect(subject.respond_to?(:to_pptx)).to eq true
+    end
+  end
 end
