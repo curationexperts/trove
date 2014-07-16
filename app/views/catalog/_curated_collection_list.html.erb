@@ -45,3 +45,7 @@
     <% end %>
   </div>
 </div>
+
+<% if can? :index, PersonalCollection %>
+  <%= link_to t('.personal_collections'), personal_collections_path, class: 'btn btn-default' %>
+<% end %>

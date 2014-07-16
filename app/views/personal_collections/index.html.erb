@@ -1,0 +1,11 @@
+<h2>Personal Collections</h2>
+
+<ul>
+<% @user_collections.each do |u| %>
+  <li>
+    <%= u.title %>
+    <ol>
+      <%= render partial: 'personal_collection', collection: u.collection_members %>
+    </ol>
+  </li>
+<% end %>

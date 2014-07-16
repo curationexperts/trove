@@ -24,6 +24,11 @@ class CollectionSolrProxy
     @loaded || (properties && @loaded)
   end
 
+  # This is used by form_for to determine whether to use :patch or :post as the method
+  def persisted?
+    exists?
+  end
+
   def == other
     other.class == self.class && id == other.id
   end

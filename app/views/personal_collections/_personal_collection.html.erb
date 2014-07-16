@@ -1,0 +1,9 @@
+  <li>
+    <%= link_to personal_collection.title, personal_collection %>
+    <% unless personal_collection.collection_members.empty? %>
+      <ol class="">
+        <%= render partial: 'personal_collection', collection: personal_collection.collection_members %>
+      </ol>
+    <% end %>
+  </li>
+

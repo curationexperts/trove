@@ -24,6 +24,7 @@ describe Ability do
     it { should be_able_to(:show, course_collection) }
     it { should be_able_to(:create, PersonalCollection) }
     it { should be_able_to(:show, personal_collection) }
+    it { should be_able_to(:index, PersonalCollection) }
 
     context 'my own PersonalCollection' do
       let(:collection) { FactoryGirl.create(:personal_collection, user: admin) }
@@ -62,13 +63,16 @@ describe Ability do
     it { should_not be_able_to(:destroy, course_collection) }
     it { should_not be_able_to(:edit, course_collection) }
     it { should     be_able_to(:show, course_collection) }
+
     it { should     be_able_to(:create, PersonalCollection) }
-    it { should     be_able_to(:show, personal_collection) }
+    it { should_not be_able_to(:index, PersonalCollection) }
 
     context 'my own PersonalCollection' do
       let(:collection) { FactoryGirl.create(:personal_collection, user: user) }
       it { should be_able_to(:append_to, collection) }
       it { should be_able_to(:remove_from, collection) }
+      it { should be_able_to(:read, collection) }
+      it { should be_able_to(:update, collection) }
 
       context 'proxy' do
         let(:collection_proxy) { PersonalCollectionSolrProxy.new(id: collection.id) }
@@ -80,6 +84,7 @@ describe Ability do
     context 'someone elses PersonalCollection' do
       it { should_not be_able_to(:append_to, personal_collection) }
       it { should_not be_able_to(:remove_from, personal_collection) }
+      it { should_not be_able_to(:show, personal_collection) }
       context 'proxy' do
         let(:collection_proxy) { PersonalCollectionSolrProxy.new(id: personal_collection.id) }
         it { should_not be_able_to(:append_to, collection_proxy) }

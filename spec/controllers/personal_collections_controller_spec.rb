@@ -60,6 +60,14 @@ describe PersonalCollectionsController do
       end
     end
 
+    describe "GET 'index'" do
+      it "returns an error" do
+        expect{
+          get :index
+        }.to raise_error(CanCan::AccessDenied)
+      end
+    end
+
     describe "POST 'create'" do
       before do
         user.personal_collection
@@ -199,6 +207,15 @@ describe PersonalCollectionsController do
         get :show, id: collection
         expect(response).to render_template(:show)
         expect(assigns[:curated_collection]).to eq collection
+        expect(response).to be_successful
+      end
+    end
+
+    describe "GET 'index'" do
+      it "returns http success" do
+        get :index
+        expect(response).to render_template(:index)
+        expect(assigns[:user_collections]).to be_kind_of Array
         expect(response).to be_successful
       end
     end
