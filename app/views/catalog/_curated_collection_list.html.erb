@@ -7,23 +7,21 @@
       </h5>
     </div>
     <% if can?(:append_to, @root_collection) %>
-      <%= bootstrap_form_for [:collections, @root_collection] do |f| %>
+      <%= bootstrap_form_for @root_collection do |f| %>
         <ol class="panel-body course-collection-list dd-list">
           <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
           <%= render partial: 'course_collection', collection: @root_collection.collection_members,
-            as: :collection_member, 
+            as: :collection_member,
             locals: { counter: counter, parent_id: @root_collection.id} %>
         </ol>
         <%= f.primary t('.save_order') %>
       <% end %>
     <% else %>
       <ol class="panel-body course-collection-list dd-list">
-        <% @root_collection.collection_members.each do |collection| %>
-          <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
-          <%= render partial: 'course_collection', collection: @root_collection.collection_members,
-            as: :collection_member, 
-            locals: { counter: counter, parent_id: @root_collection.id} %>
-        <% end %>
+        <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
+        <%= render partial: 'course_collection', collection: @root_collection.collection_members,
+          as: :collection_member,
+          locals: { counter: counter, parent_id: @root_collection.id} %>
       </ol>
     <% end %>
   </div>
@@ -36,12 +34,12 @@
                  class: 'btn btn-default btn-sm' %><% end %>
       </h5>
     </div>
-    <%= bootstrap_form_for [:collections, @my_collection] do |f| %>
+    <%= bootstrap_form_for @my_collection do |f| %>
       <ol class="panel-body personal-collection-list dd-list">
-          <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
-          <%= render partial: 'course_collection', collection: @my_collection.collection_members,
-            as: :collection_member, 
-            locals: { counter: counter, parent_id: @my_collection.id} %>
+        <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
+        <%= render partial: 'course_collection', collection: @my_collection.collection_members,
+          as: :collection_member,
+          locals: { counter: counter, parent_id: @my_collection.id} %>
       </ol>
       <%= f.primary t('.save_order') %>
     <% end %>
