@@ -9,27 +9,47 @@ function updateWeightsAndRelationships(selector){
   $.each(selector, function() {
     $(this).on('change', function(event){
       // Scope to a container because we may have two orderable sections on the page (e.g. About page has pages and contacts)
-      container = $(event.currentTarget);
-      var data = $(this).nestable('serialize')
-      var weight = 0;
-      for(var i in data){
-        var parent_id = data[i]['id'];
-        parent_node = findNode(parent_id, container);
-        setWeight(parent_node, weight++);
-        if(data[i]['children']){
-          var children = data[i]['children'];
-          for(var child in children){
-            var id = children[child]['id']
-            child_node = findNode(id, container);
-            setWeight(child_node, weight++);
-            setParent(child_node, parent_id);
-          }
-        } else {
-          setParent(parent_node, "");
-        }
-      }
+      updateTopLevel($(this).nestable('serialize'), $(event.currentTarget));
     });
   });
+}
+
+function updateTopLevel(data, container) {
+  var weight = 0;
+  for(var i in data){
+    updateSingleNode(data[i], container, weight++)
+  }
+}
+
+function updateSingleNode(data, container, weight) {
+  var id = data['id'];
+  node = findNode(id, container);
+  setWeight(node, weight);
+  if(data['children']){
+    updateChildren(data['children'], container, id);
+  } else {
+    setParent(node, "");
+  }
+}
+
+function updateChildren(data, container, parent_id) {
+  console.log(data);
+  var weight = 0;
+  for(var i in data){
+    updateSingleChild(data[i], container, parent_id, weight++)
+  }
+}
+
+function updateSingleChild(data, container, parent_id, weight) {
+  var id = data['id']
+  node = findNode(id, container);
+  setWeight(node, weight);
+  setParent(node, parent_id);
+  if(data['children']) {
+    updateChildren(data['children'], container, id);
+  } else {
+    console.log("no children");
+  }
 }
 
 function setParent(node, parent_id) {

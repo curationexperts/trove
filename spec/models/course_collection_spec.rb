@@ -61,10 +61,24 @@ describe CourseCollection do
     let(:collection2) { FactoryGirl.create(:course_collection) }
     let(:collection3) { FactoryGirl.create(:course_collection) }
 
-    it "sets the children" do
-      root.collection_attributes = {"0"=>{"id"=>collection3.id, "weight"=>"1", 'parent_page_id' => collection1.id}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => root.id}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}
+    it "assigns multiple members at the root" do
+      root.collection_attributes = {
+        "0"=>{"id"=>collection3.id, "weight"=>"1", 'parent_page_id' => collection1.id},
+        "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => root.id},
+        "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}
       expect(root.member_ids).to eq [collection2.id, collection1.id]
       expect(collection1.reload.member_ids).to eq [collection3.id]
+    end
+
+    it "sets the children 3 deep" do
+      root.collection_attributes = {
+        "0"=>{"id"=>collection1.id, "weight"=>"0", "parent_page_id"=>"tufts:root_collection"},
+        "1"=>{"id"=>collection2.id, "weight"=>"1", "parent_page_id"=>collection1.id},
+        "2"=>{"id"=>collection3.id, "weight"=>"0", "parent_page_id"=>collection2.id}
+      }
+      expect(root.member_ids).to eq [collection1.id]
+      expect(collection1.reload.member_ids).to eq [collection2.id]
+      expect(collection2.reload.member_ids).to eq [collection3.id]
     end
 
     it "sets the children to root when parent_page_id is blank" do
