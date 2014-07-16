@@ -37,6 +37,18 @@ describe Ability do
       it { should be_able_to(:remove_from, personal_collection) }
       it { should be_able_to(:destroy, personal_collection) }
     end
+
+    context 'a personal collection proxy' do
+      let(:collection_proxy) { PersonalCollectionSolrProxy.new(id: 'foo:bar') }
+      it { should be_able_to(:append_to, collection_proxy) }
+      it { should be_able_to(:remove_from, collection_proxy) }
+    end
+
+    context 'a course collection proxy' do
+      let(:collection_proxy) { CourseCollectionSolrProxy.new(id: 'foo:bar') }
+      it { should be_able_to(:append_to, collection_proxy) }
+      it { should be_able_to(:remove_from, collection_proxy) }
+    end
   end
 
 
@@ -57,11 +69,29 @@ describe Ability do
       let(:collection) { FactoryGirl.create(:personal_collection, user: user) }
       it { should be_able_to(:append_to, collection) }
       it { should be_able_to(:remove_from, collection) }
+
+      context 'proxy' do
+        let(:collection_proxy) { PersonalCollectionSolrProxy.new(id: collection.id) }
+        it { should be_able_to(:append_to, collection_proxy) }
+        it { should be_able_to(:remove_from, collection_proxy) }
+      end
     end
 
     context 'someone elses PersonalCollection' do
       it { should_not be_able_to(:append_to, personal_collection) }
       it { should_not be_able_to(:remove_from, personal_collection) }
+      context 'proxy' do
+        let(:collection_proxy) { PersonalCollectionSolrProxy.new(id: personal_collection.id) }
+        it { should_not be_able_to(:append_to, collection_proxy) }
+        it { should_not be_able_to(:remove_from, collection_proxy) }
+      end
+    end
+
+
+    context 'a course collection proxy' do
+      let(:collection_proxy) { CourseCollectionSolrProxy.new(id: 'foo:bar') }
+      it { should_not be_able_to(:append_to, collection_proxy) }
+      it { should_not be_able_to(:remove_from, collection_proxy) }
     end
   end
 

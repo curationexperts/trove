@@ -15,11 +15,15 @@ class Ability
       can [:create, :show], PersonalCollection
 
       can :read, TuftsImage
+
+      can [:append_to, :remove_from], PersonalCollectionSolrProxy do |proxy|
+        test_edit(proxy.id)
+      end
     end
 
     if current_user.admin?
-      can :manage, CourseCollection
-      can :manage, PersonalCollection
+      can :manage, [CourseCollection, CourseCollectionSolrProxy, PersonalCollection,
+                    PersonalCollectionSolrProxy]
     end
   end
 

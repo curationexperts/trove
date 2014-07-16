@@ -128,8 +128,8 @@ class CatalogController < ApplicationController
   end
 
   def index
-    @root_collection = CourseCollection.root
-    @my_collection = current_user.personal_collection
+    @root_collection = CourseCollectionSolrProxy.root
+    @my_collection = current_user.personal_collection_proxy
     super
   end
 

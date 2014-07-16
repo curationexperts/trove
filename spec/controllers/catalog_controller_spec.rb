@@ -18,8 +18,8 @@ describe CatalogController do
       it "should be a great success" do
         get :index
         expect(response).to be_success
-        expect(assigns[:my_collection]).to eq user.personal_collection
-        expect(assigns[:root_collection]).to eq CourseCollection.root
+        expect(assigns[:my_collection]).to eq user.personal_collection_proxy
+        expect(assigns[:root_collection]).to eq CourseCollectionSolrProxy.root
       end
     end
 

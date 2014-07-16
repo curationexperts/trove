@@ -21,6 +21,14 @@ class User < ActiveRecord::Base
     root ||= PersonalCollection.create!(pid: root_pid, title: "Collections for #{self}")
   end
 
+  def personal_collection_proxy
+    root = PersonalCollectionSolrProxy.new(id: root_pid)
+    return root if root.exists?
+    title = "Collections for #{self}"
+    root = PersonalCollection.create!(pid: root_pid, title: "Collections for #{self}")
+    PersonalCollectionSolrProxy.new(id: root_pid, title: "Collections for #{self}")
+  end
+
   private
     def root_pid
       "tufts.uc:personal_#{user_key.gsub(/@/, '_')}"
