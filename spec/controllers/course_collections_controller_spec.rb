@@ -203,7 +203,7 @@ describe CourseCollectionsController do
         let(:collection3) { FactoryGirl.create(:course_collection) }
 
         it "sets the children" do
-          post :update, id: root, course_collection: {collection_attributes: {"0"=>{"id"=>collection3, "weight"=>"1", 'parent_page_id' => collection1.id}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => root.id}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}}
+          post :update, id: root, course_collection: {collection_attributes: {"0"=>{"id"=>collection3.id, "weight"=>"1", 'parent_page_id' => collection1.id}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => root.id}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}}
           expect(root.reload.member_ids).to eq [collection2.id, collection1.id]
           expect(collection1.reload.member_ids).to eq [collection3.id]
           expect(response).to redirect_to root_path

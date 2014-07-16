@@ -22,17 +22,9 @@ module WithNestedMembers
     
     self.member_ids = noncollection_members.map(&:id) + members.map { |e| e['id'] } 
     members.each do |node|
-      if node['children'].empty?
-        # clear out any child nodes that may have been previously set.
-        self.collection_members.each do |collection|
-          collection.member_attributes = node['children']
-          collection.save! #TODO We could move this save into an after_save hook.
-        end
-      else
-        b = ActiveFedora::Base.find(node['id'])
-        b.member_attributes = node['children']
-        b.save! #TODO We could move this save into an after_save hook.
-      end
+      b = ActiveFedora::Base.find(node['id'])
+      b.collection_attributes = node['children']
+      b.save! #TODO We could move this save into an after_save hook.
     end
   end
 

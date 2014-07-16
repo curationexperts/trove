@@ -17,6 +17,7 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def update
+    # TODO consolidate
     if members = collection_params[:member_attributes]
       @curated_collection.member_attributes = members
     elsif collections = collection_params[:collection_attributes]
