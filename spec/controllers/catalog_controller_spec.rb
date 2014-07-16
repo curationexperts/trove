@@ -18,7 +18,7 @@ describe CatalogController do
       it "should be a great success" do
         get :index
         expect(response).to be_success
-        expect(assigns[:my_collections]).to eq [my_collection1, my_collection2]
+        expect(assigns[:my_collection]).to eq user.personal_collection
         expect(assigns[:root_collection]).to eq CourseCollection.root
       end
     end

@@ -61,6 +61,9 @@ describe PersonalCollectionsController do
     end
 
     describe "POST 'create'" do
+      before do
+        user.personal_collection
+      end
       it 'creates a personal collection' do
         expect {
           post 'create', personal_collection: {title: 'foo'}
@@ -155,7 +158,7 @@ describe PersonalCollectionsController do
         end
 
         it "reorders the collection" do
-          patch :update, id: collection, personal_collection: {members: {"0"=>{"id"=>image1.id, "weight"=>"1"}, "1"=>{"id"=>image1.id, "weight"=>"2"}, "2"=>{"id"=>image1.id, "weight"=>"3"}, "3"=>{"id"=>image2.id, "weight"=>"4"}, "4"=>{"id"=>image3.id, "weight"=>"0"}}}
+          patch :update, id: collection, personal_collection: {member_attributes: {"0"=>{"id"=>image1.id, "weight"=>"1"}, "1"=>{"id"=>image1.id, "weight"=>"2"}, "2"=>{"id"=>image1.id, "weight"=>"3"}, "3"=>{"id"=>image2.id, "weight"=>"4"}, "4"=>{"id"=>image3.id, "weight"=>"0"}}}
           expect(response).to redirect_to collection
           expect(collection.reload.member_ids).to eq [image3.id, image1.id, image1.id, image1.id, image2.id]
         end

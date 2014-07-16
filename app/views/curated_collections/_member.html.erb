@@ -1,6 +1,6 @@
           <li class="dd-item collection-member" data-id="<%= member_counter %>">
-          <%= hidden_field_tag "#{ActiveModel::Naming.singular(@curated_collection)}[members][#{member_counter}][id]", member.id, id: "#{ActiveModel::Naming.singular(@curated_collection)}_members_#{member_counter}_id" %>
-          <%= hidden_field_tag "#{ActiveModel::Naming.singular(@curated_collection)}[members][#{member_counter}][weight]", member_counter, id: "#{ActiveModel::Naming.singular(@curated_collection)}_members_#{member_counter}_weight", data: { property: 'weight' } %>
+          <%= hidden_field_tag "#{ActiveModel::Naming.singular(@curated_collection)}[member_attributes][#{member_counter}][id]", member.id, id: "#{ActiveModel::Naming.singular(@curated_collection)}_member_attributes_#{member_counter}_id" %>
+          <%= hidden_field_tag "#{ActiveModel::Naming.singular(@curated_collection)}[member_attributes][#{member_counter}][weight]", member_counter, id: "#{ActiveModel::Naming.singular(@curated_collection)}_member_attributes_#{member_counter}_weight", data: { property: 'weight' } %>
             <div class="dd-handle">
               <div class="frame">
                 <% if can? :update, @curated_collection %>

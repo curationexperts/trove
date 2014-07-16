@@ -7,15 +7,17 @@ feature 'Copying Collections:' do
 
   context 'an admin user' do
     let(:admin) { FactoryGirl.create(:admin) }
-    before { sign_in admin }
+    before do
+      CourseCollection.destroy_all
+      sign_in admin
+    end
 
     scenario 'copies a course collection' do
-      CourseCollection.delete_all
       visit course_collection_path(course_collection)
       expect {
         click_button('copy this collection')
       }.to change { CourseCollection.count }.by(1)
-      expect(CourseCollection.all.map(&:members)).to eq [[image], [image]]
+      expect(CourseCollection.root.members.map(&:members)).to eq [[image], [image]]
     end
 
     scenario 'copies a personal collection' do

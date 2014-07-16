@@ -3,6 +3,7 @@ class CuratedCollectionsController < ApplicationController
   load_and_authorize_resource instance_name: :curated_collection
 
   def create
+    @curated_collection.active_user = current_user if @curated_collection.is_a? PersonalCollection
     @curated_collection.attributes = collection_params
     @curated_collection.read_groups = ['public']
     @curated_collection.displays = ['tdil']
@@ -16,13 +17,18 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def update
-    # TODO change to member_attributes
-    if members = collection_params[:members]
+    if members = collection_params[:member_attributes]
       @curated_collection.member_attributes = members
+    elsif collections = collection_params[:collection_attributes]
+      @curated_collection.collection_attributes = collections
     end
-    @curated_collection.attributes = collection_params.except(:members, :type)
+    @curated_collection.attributes = collection_params.except(:member_attributes, :collection_attributes, :type)
     if @curated_collection.save
-      redirect_to curated_collection_path(@curated_collection)
+      if @curated_collection.root?
+        redirect_to root_path
+      else
+        redirect_to curated_collection_path(@curated_collection)
+      end
     end
   end
 

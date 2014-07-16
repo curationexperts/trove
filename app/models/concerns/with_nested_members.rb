@@ -1,12 +1,34 @@
 module WithNestedMembers
   extend ActiveSupport::Concern
 
+  # TODO this is slow (loads every object, even TuftsImages) and could be optimized.
+  def collection_members
+    @collection_members ||= members.select { |member| member.is_a? self.class }
+  end
+
+  # TODO this is slow (loads every object, even TuftsImages) and could be optimized.
+  def noncollection_members
+    @noncollection_members ||= members.reject { |member| member.is_a? self.class }
+  end
+
   def member_attributes=(members)
     members = members.sort_by { |i, _| i.to_i }.map { |_, attributes| attributes } if members.is_a? Hash
+    self.member_ids = members.sort_by { |e| e['weight'] }.map { |e| e['id'] }
+  end
+
+  def collection_attributes=(members)
+    members = members.sort_by { |i, _| i.to_i }.map { |_, attributes| attributes } if members.is_a? Hash
     members = make_tree(members).sort_by { |e| e['weight'] } 
-    self.member_ids = members.map { |e| e['id'] } 
+    
+    self.member_ids = noncollection_members.map(&:id) + members.map { |e| e['id'] } 
     members.each do |node|
-      unless node['children'].empty?
+      if node['children'].empty?
+        # clear out any child nodes that may have been previously set.
+        self.collection_members.each do |collection|
+          collection.member_attributes = node['children']
+          collection.save! #TODO We could move this save into an after_save hook.
+        end
+      else
         b = ActiveFedora::Base.find(node['id'])
         b.member_attributes = node['children']
         b.save! #TODO We could move this save into an after_save hook.

@@ -13,10 +13,16 @@ class User < ActiveRecord::Base
   # user class to get a user-displayable login/identifier for
   # the account.
   def to_s
-    email
+    user_key
   end
 
-  def personal_collections
-    PersonalCollection.where(edit_access_person_ssim: user_key)
+  def personal_collection
+    root = PersonalCollection.where(id: root_pid).first
+    root ||= PersonalCollection.create!(pid: root_pid, title: "Collections for #{self}")
   end
+
+  private
+    def root_pid
+      "tufts.uc:personal_#{user_key.gsub(/@/, '_')}"
+    end
 end

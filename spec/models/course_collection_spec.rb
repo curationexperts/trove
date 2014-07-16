@@ -52,7 +52,7 @@ describe CourseCollection do
     end
   end
 
-  describe "setting nested member_attributes" do
+  describe "setting collection_attributes" do
     before do
       CourseCollection.destroy_all
     end
@@ -62,14 +62,35 @@ describe CourseCollection do
     let(:collection3) { FactoryGirl.create(:course_collection) }
 
     it "sets the children" do
-      root.member_attributes = {"0"=>{"id"=>collection3.id, "weight"=>"1", 'parent_page_id' => collection1.id}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => root.id}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}
+      root.collection_attributes = {"0"=>{"id"=>collection3.id, "weight"=>"1", 'parent_page_id' => collection1.id}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => root.id}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}
       expect(root.member_ids).to eq [collection2.id, collection1.id]
       expect(collection1.reload.member_ids).to eq [collection3.id]
     end
 
     it "sets the children to root when parent_page_id is blank" do
-      root.member_attributes = {"0"=>{"id"=>collection3.id, "weight"=>"1", 'parent_page_id' => ''}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => ''}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}
+      root.collection_attributes = {"0"=>{"id"=>collection3.id, "weight"=>"1", 'parent_page_id' => ''}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => ''}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}
       expect(root.member_ids).to eq [collection3.id, collection2.id, collection1.id]
+    end
+
+    context "with some existing images" do
+      let(:image) { FactoryGirl.create(:image) }
+      before do
+        root.member_ids = [image.id]
+      end
+      it "retains the images" do
+        root.collection_attributes = {"0"=>{"id"=>collection1.id, "weight"=>"1", 'parent_page_id' => ''}}
+        expect(root.member_ids).to eq [image.id, collection1.id]
+      end
+    end
+
+    context "when moving a child up a level" do
+      before do
+        root.collection_attributes = {"0"=>{"id"=>collection1.id, "weight"=>"1", 'parent_page_id' => ''}, "1"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => collection1.id}}
+      end
+      it "clears the lower level" do
+        root.collection_attributes = {"0"=>{"id"=>collection1.id, "weight"=>"1", 'parent_page_id' => ''}, "1"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => ''}}
+        expect(collection1.reload.member_ids).to eq []
+      end
     end
   end
 

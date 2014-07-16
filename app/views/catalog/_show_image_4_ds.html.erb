@@ -14,7 +14,7 @@
       <% collections = PersonalCollection.where(member_ids_ssim: document.id) %>
       <%= render 'show_collections', title: 'Personal Collections', collections: collections, item_partial: 'admin_collection_item' %>
     <% else %>
-      <% my_collections = current_user.personal_collections.where(member_ids_ssim: document.id) %>
+      <% my_collections = PersonalCollection.where(edit_access_person_ssim: current_user.user_key).where(member_ids_ssim: document.id) %>
       <%= render 'show_collections', title: 'My Collections', collections: my_collections %>
     <% end %>
   </div>

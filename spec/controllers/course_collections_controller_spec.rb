@@ -188,20 +188,22 @@ describe CourseCollectionsController do
         let(:image3) { FactoryGirl.create(:image) }
 
         it "reorders the collection" do
-          patch :update, id: collection, course_collection: {members: {"0"=>{"id"=>image1.id, "weight"=>"1"}, "1"=>{"id"=>image1.id, "weight"=>"2"}, "2"=>{"id"=>image1.id, "weight"=>"3"}, "3"=>{"id"=>image2.id, "weight"=>"4"}, "4"=>{"id"=>image3.id, "weight"=>"0"}}}
+          patch :update, id: collection, course_collection: {member_attributes: {"0"=>{"id"=>image1.id, "weight"=>"1"}, "1"=>{"id"=>image1.id, "weight"=>"2"}, "2"=>{"id"=>image1.id, "weight"=>"3"}, "3"=>{"id"=>image2.id, "weight"=>"4"}, "4"=>{"id"=>image3.id, "weight"=>"0"}}}
           expect(response).to redirect_to collection
           expect(collection.reload.member_ids).to eq [image3.id, image1.id, image1.id, image1.id, image2.id]
         end
       end
 
       context "with nested collections" do
+        before { CourseCollection.destroy_all }
+
         let(:root) { CourseCollection.root }
         let(:collection1) { FactoryGirl.create(:course_collection) }
         let(:collection2) { FactoryGirl.create(:course_collection) }
         let(:collection3) { FactoryGirl.create(:course_collection) }
 
         it "sets the children" do
-          patch :update, id: root, course_collection: {members: {"0"=>{"id"=>collection3, "weight"=>"1", 'parent_page_id' => collection1.id}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => root.id}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}}
+          post :update, id: root, course_collection: {collection_attributes: {"0"=>{"id"=>collection3, "weight"=>"1", 'parent_page_id' => collection1.id}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => root.id}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}}
           expect(root.reload.member_ids).to eq [collection2.id, collection1.id]
           expect(collection1.reload.member_ids).to eq [collection3.id]
           expect(response).to redirect_to root_path

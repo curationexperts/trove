@@ -20,11 +20,6 @@ class CourseCollection < CuratedCollection
     super.first
   end
 
-  # TODO this is slow (loads every object, even TuftsImages) and could be optimized.
-  def collection_members
-    @collection_members ||= members.select { |member| member.is_a? CourseCollection }
-  end
-
   ROOT_PID = 'tufts:root_collection'
 
   def root?

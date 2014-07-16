@@ -1,8 +1,8 @@
 // This script is responsible for ordering/nesting the collections in the sidebar
 
 Blacklight.onLoad(function(){
-  $('#orderable-course-collections').nestable({ maxDepth: 3 });
-  updateWeightsAndRelationships($('#orderable-course-collections'));
+  $('#orderable-course-collections, #orderable-personal-collections').nestable({ maxDepth: 3 });
+  updateWeightsAndRelationships($('#orderable-course-collections, #orderable-personal-collections'));
 });
 
 function updateWeightsAndRelationships(selector){
