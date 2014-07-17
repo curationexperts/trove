@@ -87,7 +87,7 @@ describe CourseCollectionsController do
         expect(assigns[:curated_collection].read_groups).to eq ['public']
         expect(assigns[:curated_collection].edit_users).to eq [user.user_key]
         expect(assigns[:curated_collection].displays).to eq ['tdil']
-        expect(CourseCollection.root.member_ids).to include(assigns[:curated_collection].id)
+        expect(CourseCollection.root.member_ids.first).to eq assigns[:curated_collection].id
       end
 
       context 'with a bad title' do

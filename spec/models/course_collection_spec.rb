@@ -52,10 +52,19 @@ describe CourseCollection do
     end
   end
 
-  describe "setting collection_attributes" do
-    before do
-      CourseCollection.destroy_all
+  describe "create" do
+    before { CourseCollection.destroy_all }
+    let(:root) { CourseCollection.root }
+    let!(:existing_collection) { CourseCollection.create! title: 'some title' } 
+
+    it "should get added to the root collection in the first position" do
+      subject.save!
+      expect(root.member_ids).to eq([subject.id, existing_collection.id])
     end
+  end
+
+  describe "setting collection_attributes" do
+    before { CourseCollection.destroy_all }
     let(:root) { CourseCollection.root }
     let(:collection1) { FactoryGirl.create(:course_collection) }
     let(:collection2) { FactoryGirl.create(:course_collection) }
@@ -106,6 +115,10 @@ describe CourseCollection do
         expect(collection1.reload.member_ids).to eq []
       end
     end
+
+
+    it "A member moved into a collection should be at the beginning"
+    it "If it's added after a sibling, then it should be inserted after the sibling." 
   end
 
   describe "parents" do

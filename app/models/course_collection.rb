@@ -6,7 +6,7 @@ class CourseCollection < CuratedCollection
   def add_to_root_collection
     return if root?
     CourseCollection.root.tap do |root|
-      root.members << self
+      root.member_ids = [id] + root.member_ids
       root.save!
     end
   end

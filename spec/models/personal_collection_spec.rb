@@ -4,6 +4,22 @@ describe PersonalCollection do
 
   subject { PersonalCollection.new title: 'some title' }
 
+  describe "create" do
+    before { PersonalCollection.destroy_all }
+    let(:user) { FactoryGirl.create(:user) }
+    let(:root) { user.personal_collection }
+    let!(:existing_collection) { PersonalCollection.create! title: 'some title', active_user: user } 
+
+    before do
+      subject.active_user = user
+    end
+
+    it "should get added to the root collection in the first position" do
+      subject.save!
+      expect(root.member_ids).to eq([subject.id, existing_collection.id])
+    end
+  end
+
   describe "members" do
     context "when it's empty" do
       it "has an empty list of members" do
