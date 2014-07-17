@@ -17,20 +17,25 @@ class User < ActiveRecord::Base
   end
 
   def personal_collection
-    root = PersonalCollection.where(id: root_pid).first
-    root ||= PersonalCollection.create!(pid: root_pid, title: "Collections for #{self}")
+    PersonalCollection.where(id: root_pid).first || create_personal_collection!
   end
 
   def personal_collection_proxy
     root = PersonalCollectionSolrProxy.new(id: root_pid)
     return root if root.exists?
-    title = "Collections for #{self}"
-    root = PersonalCollection.create!(pid: root_pid, title: "Collections for #{self}")
-    PersonalCollectionSolrProxy.new(id: root_pid, title: "Collections for #{self}")
+    PersonalCollectionSolrProxy.new(id: root_pid, title: personal_collection.title)
   end
 
   private
     def root_pid
       "tufts.uc:personal_#{user_key.gsub(/@/, '_')}"
+    end
+
+    def create_personal_collection!
+      PersonalCollection.new(pid: root_pid, title: "Collections for #{self}",
+                            displays: ['tdil'], creator: [self.user_key]).tap do |coll|
+        coll.apply_depositor_metadata(self)
+        coll.save!
+      end
     end
 end

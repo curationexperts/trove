@@ -25,6 +25,9 @@ class Ability
   def edit_permissions
     alias_action :append_to, :remove_from, to: :update
     if current_user.registered?
+      can :destroy, PersonalCollection do |proxy|
+        test_edit(proxy.id)
+      end
       can [:update], [PersonalCollection, PersonalCollectionSolrProxy] do |proxy|
         test_edit(proxy.id)
       end

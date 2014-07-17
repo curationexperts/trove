@@ -3,16 +3,16 @@ require "cancan/matchers"
 
 describe Ability do
   before :all do
+    PersonalCollection.destroy_all
     User.delete_all
   end
-  let(:user) { FactoryGirl.create(:user) }
-  let(:admin) { FactoryGirl.create(:admin) }
   let(:course_collection) { FactoryGirl.create(:course_collection) }
   let(:personal_collection) { FactoryGirl.create(:personal_collection) }
   let(:datastream) { ActiveFedora::Datastream.new }
 
 
   describe "an admin user" do
+    let(:admin) { FactoryGirl.create(:admin) }
     subject { Ability.new(admin) }
 
     it { should be_able_to(:download, datastream) }
@@ -54,6 +54,7 @@ describe Ability do
 
 
   describe "a non-admin user" do
+    let(:user) { FactoryGirl.create(:user) }
     subject { Ability.new(user) }
 
     it { should be_able_to(:download, datastream) }
@@ -73,6 +74,8 @@ describe Ability do
       it { should be_able_to(:remove_from, collection) }
       it { should be_able_to(:read, collection) }
       it { should be_able_to(:update, collection) }
+      it { should be_able_to(:update, user.personal_collection) }
+      it { should be_able_to(:destroy, collection) }
 
       context 'proxy' do
         let(:collection_proxy) { PersonalCollectionSolrProxy.new(id: collection.id) }
