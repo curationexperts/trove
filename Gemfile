@@ -4,8 +4,7 @@ gem 'rails', '4.1.4'
 gem 'sqlite3'
 gem 'hydra-head', '~> 7.0.1'
 gem 'blacklight', '~> 5.5.1'
-gem 'active-fedora', github: 'projecthydra/active_fedora', branch: 'feature/active-triples'
-gem 'active-triples', '0.2.1'
+gem 'active-fedora', github: 'projecthydra/active_fedora', ref: 'e58e328'
 gem 'hydra-editor', '~> 0.4.0'
 
 # Use SCSS for stylesheets
