@@ -8,6 +8,7 @@ class CatalogController < ApplicationController
 
   CatalogController.solr_search_params_logic += [:only_displays_in_tdil]
   CatalogController.solr_search_params_logic += [:only_images_and_collections]
+  CatalogController.solr_search_params_logic += [:exclude_root_collection]
 
   configure_blacklight do |config|
     config.default_solr_params = {
@@ -138,6 +139,11 @@ protected
   def only_images_and_collections(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] << "has_model_ssim:(\"#{TuftsImage.to_class_uri}\" OR \"#{CourseCollection.to_class_uri}\")"
+  end
+
+  def exclude_root_collection(solr_parameters, user_parameters)
+    solr_parameters[:fq] ||= []
+    solr_parameters[:fq] << "-id:\"#{CourseCollection::ROOT_PID}\""
   end
 
   def only_displays_in_tdil(solr_parameters, user_parameters)

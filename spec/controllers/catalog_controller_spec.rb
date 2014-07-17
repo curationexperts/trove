@@ -35,7 +35,9 @@ describe CatalogController do
         expect(found).to include(course_collection.pid, image.pid)
         expect(found).to_not include(template.pid)
         expect(found).to_not include(pdf.pid)
+        expect(found).to_not include(CourseCollection::ROOT_PID)
       end
+
     end
   end
 
