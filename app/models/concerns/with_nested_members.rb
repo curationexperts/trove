@@ -19,7 +19,13 @@ module WithNestedMembers
   # @see make_tree
   def assign_tree(tree)
     nodes = tree.sort_by { |e| e['weight'] } 
-    self.member_ids = nodes.map { |e| e['id'] } + noncollection_member_ids
+    new_collection_ids = nodes.map { |e| e['id'] }
+    if ordered_subset?(new_collection_ids)
+      removed_collection_ids = collection_member_ids - new_collection_ids
+      self.member_ids = (member_ids.map(&:to_s) - removed_collection_ids) unless removed_collection_ids.empty?
+    else
+      self.member_ids = new_collection_ids + noncollection_member_ids
+    end
     nodes.each do |node|
       b = ActiveFedora::Base.find(node['id'])
       b.assign_tree node['children']
@@ -28,17 +34,21 @@ module WithNestedMembers
   end
 
   protected
-    def noncollection_member_ids
-      @noncollection_member_ids ||= begin
-        return [] if member_ids.empty?
-        ActiveFedora::SolrService.query(noncollection_member_query, fl: 'id').map { |result| result['id'] }
-      end
+
+    def proxy
+      @proxy ||= CollectionSolrProxy.new(id: id, member_ids: member_ids.map(&:to_s), klass: self.class)
     end
 
-    def noncollection_member_query
-      ['(' + ActiveFedora::SolrService.construct_query_for_pids(member_ids.map(&:to_s)) + ')',
-       ActiveFedora::SolrService.construct_query_for_rel(has_model: TuftsImage.to_class_uri)].
-      join(' AND ')
+    delegate :collection_member_ids, :noncollection_member_ids, to: :proxy
+
+    def ordered_subset?(new_ids)
+      positions = new_ids.map { |new_id| member_ids.find_index(new_id) }
+      min = -1
+      positions.each do |pos|
+        return false if pos.nil? || pos < min
+        min = pos
+      end
+      true
     end
 
     # Takes in a linked list with parent pointers and transforms it to a tree

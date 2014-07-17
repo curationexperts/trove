@@ -69,6 +69,7 @@ describe CourseCollection do
     let(:collection1) { FactoryGirl.create(:course_collection) }
     let(:collection2) { FactoryGirl.create(:course_collection) }
     let(:collection3) { FactoryGirl.create(:course_collection) }
+    let(:image) { FactoryGirl.create(:image) }
 
     it "assigns multiple members at the root" do
       root.collection_attributes = {
@@ -97,7 +98,6 @@ describe CourseCollection do
 
     context "adding subcollections to the collection" do
       context "with some existing images" do
-        let(:image) { FactoryGirl.create(:image) }
         before do
           root.member_ids = [image.id]
           root.save!
@@ -112,7 +112,6 @@ describe CourseCollection do
 
     context "reordering subcollections within a collection" do
       context "with some existing images" do
-        let(:image) { FactoryGirl.create(:image) }
         before do
           root.member_ids = [collection1.id, image.id, collection2.id]
           root.save!
@@ -126,11 +125,18 @@ describe CourseCollection do
 
     context "when moving a child up a level" do
       before do
-        root.collection_attributes = {"0"=>{"id"=>collection1.id, "weight"=>"1", 'parent_page_id' => ''}, "1"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => collection1.id}}
+        root.member_ids = [collection1.id]
+        collection1.member_ids = [image.id, collection2.id, collection3.id]
+        collection1.save!
       end
-      it "clears the lower level" do
-        root.collection_attributes = {"0"=>{"id"=>collection1.id, "weight"=>"1", 'parent_page_id' => ''}, "1"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => ''}}
-        expect(collection1.reload.member_ids).to eq []
+      it "clears the lower level and preserves the order of the remaining members" do
+        # collection2 moves out of collection1 to root
+        root.collection_attributes = {
+          "0"=>{"id"=>collection1.id, "weight"=>"0", 'parent_page_id' => ''},
+          "1"=>{"id"=>collection2.id, "weight"=>"1", 'parent_page_id' => ''},
+          "2"=>{"id"=>collection3.id, "weight"=>"2", 'parent_page_id' => collection1.id}
+        }
+        expect(collection1.reload.member_ids).to eq [image.id, collection3.id]
       end
     end
   end
@@ -178,6 +184,34 @@ describe CourseCollection do
     it "should set the depositor" do
       subject.apply_depositor_metadata('jcoyne')
       expect(subject.edit_users).to eq ['jcoyne']
+    end
+  end
+
+  describe "#ordered_subset?" do
+    let(:collection) { CourseCollection.new }
+    before do
+      collection.member_ids = ['one', 'two', 'three', 'four']
+    end
+    subject { collection.send(:ordered_subset?, new_ids) }
+
+    context 'with extra elements (not a subset)' do
+      let(:new_ids) { ['three', 'four', 'five'] }
+      it { should be false }
+    end
+
+    context 'out of order' do
+      let(:new_ids) { ['three', 'two'] }
+      it { should be false }
+    end
+
+    context 'same as original' do
+      let(:new_ids) { ['one', 'two', 'three', 'four'] }
+      it { should be true }
+    end
+
+    context 'in order' do
+      let(:new_ids) { ['two', 'three'] }
+      it { should be true }
     end
   end
 end

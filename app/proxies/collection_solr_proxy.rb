@@ -3,17 +3,29 @@ class CollectionSolrProxy
   attr_reader :id
 
   def initialize(attrs)
-    @id = attrs[:id]
-    @properties = { title: attrs[:title] } if attrs[:title]
+    @id = attrs.delete(:id)
+    @properties = attrs unless attrs.empty?
     @loaded = false
+  end
+
+  def collection_member_ids
+    @collection_member_ids ||= begin
+      return [] if member_ids.blank?
+      member_results = ActiveFedora::SolrService.query(collection_member_query, fl: 'id')
+      member_results.map { |result| result['id'] }
+    end
   end
 
   def collection_members
     @collection_members ||= begin
-      return [] if member_ids.blank?
-      # TODO could we load more fields here?
-      member_results = ActiveFedora::SolrService.query(collection_member_query, fl: 'id title')
-      member_results.map { |result| self.class.new(id: result['id']) }
+      collection_member_ids.map { |member_id| self.class.new(id: member_id) }
+    end
+  end
+
+  def noncollection_member_ids
+    @noncollection_member_ids ||= begin
+      return [] if member_ids.empty?
+      ActiveFedora::SolrService.query(noncollection_member_query, fl: 'id').map { |result| result['id'] }
     end
   end
 
@@ -55,6 +67,12 @@ class CollectionSolrProxy
       ['(' + ActiveFedora::SolrService.construct_query_for_pids(member_ids) + ')',
        ActiveFedora::SolrService.construct_query_for_rel(has_model: klass.to_class_uri)
       ].join(' AND ')
+    end
+
+    def noncollection_member_query
+      ['(' + ActiveFedora::SolrService.construct_query_for_pids(member_ids.map(&:to_s)) + ')',
+       ActiveFedora::SolrService.construct_query_for_rel(has_model: TuftsImage.to_class_uri)].
+      join(' AND ')
     end
 
     def properties
