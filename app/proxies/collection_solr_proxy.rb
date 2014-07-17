@@ -12,7 +12,8 @@ class CollectionSolrProxy
     @collection_member_ids ||= begin
       return [] if member_ids.blank?
       member_results = ActiveFedora::SolrService.query(collection_member_query, fl: 'id')
-      member_results.map { |result| result['id'] }
+      collection_ids = member_results.map { |result| result['id'] }
+      member_ids & collection_ids
     end
   end
 
