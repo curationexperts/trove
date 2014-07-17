@@ -28,7 +28,10 @@ class User < ActiveRecord::Base
 
   private
     def root_pid
-      "tufts.uc:personal_#{user_key.gsub(/@/, '_')}"
+      # escape invalid chars in pids
+      # https://wiki.duraspace.org/display/FEDORA37/Fedora+Identifiers#FedoraIdentifiers-PIDspids
+      escaped_user_key = user_key.gsub(/[^([A-Za-z0-9])|\-|\.|~|_]/){|c| '%' + c.ord.to_s(16)}
+      "tufts.uc:personal_#{escaped_user_key.parameterize}"
     end
 
     def create_personal_collection!

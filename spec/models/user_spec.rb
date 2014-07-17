@@ -8,4 +8,10 @@ RSpec.describe User, :type => :model do
     user.save
     expect(user).to be_registered
   end
+
+  it "generates a pid that works with fedora" do
+    user = FactoryGirl.create(:user, email: "a%b+c++d@e.com")
+    # if you get "400 Bad Request" for this, you'll have to look in the fedora logs
+    expect(user.personal_collection_proxy).to be_exists
+  end
 end
