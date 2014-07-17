@@ -2,10 +2,10 @@ require 'rails_helper'
 
 feature 'Copying Collections:' do
   let(:course_collection) { FactoryGirl.create(:course_collection, member_ids: [image.id]) }
-  let(:personal_collection) { FactoryGirl.create(:personal_collection) }
   let(:image) { FactoryGirl.create(:image) }
 
   context 'an admin user' do
+    let(:personal_collection) { FactoryGirl.create(:personal_collection) }
     let(:admin) { FactoryGirl.create(:admin) }
     before do
       CourseCollection.destroy_all
@@ -30,6 +30,7 @@ feature 'Copying Collections:' do
 
   context 'a non-admin user' do
     let(:user) { FactoryGirl.create(:user) }
+    let(:personal_collection) { FactoryGirl.create(:personal_collection, user: user) }
     before { sign_in user }
 
     scenario 'makes a personal copy of a course collection' do

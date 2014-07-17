@@ -1,6 +1,6 @@
 <% collection_class =
      if can? :create, CourseCollection
-       collection.is_a?(PersonalCollection) ? PersonalCollection : CourseCollection
+       collection.class
      elsif can? :create, PersonalCollection
        PersonalCollection
      end
