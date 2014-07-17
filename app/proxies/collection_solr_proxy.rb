@@ -31,7 +31,8 @@ class CollectionSolrProxy
   end
 
   def exists?
-    @loaded || (properties && @loaded)
+    fetch_properties unless @loaded
+    @loaded
   end
 
   # This is used by form_for to determine whether to use :patch or :post as the method
@@ -77,7 +78,7 @@ class CollectionSolrProxy
     end
 
     def properties
-      @properties ||= fetch_properties
+      @properties || fetch_properties
     end
 
     def fetch_properties
@@ -85,7 +86,7 @@ class CollectionSolrProxy
       result = ActiveFedora::SolrService.query(query, fl: 'id member_ids_ssim title_tesim has_model_ssim').first
       return {} if result.nil?
       @loaded = true
-      result_to_properties(result)
+      @properties = result_to_properties(result)
     end
 
     def result_to_properties(result)
