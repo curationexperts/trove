@@ -1,26 +1,6 @@
 require 'rails_helper'
 
 describe TuftsImage do
-  
-  describe "with access rights" do
-    let(:image) do
-      TuftsImage.new(title: 'test image', displays: ['dl']).tap do |image|
-        image.read_groups = ['public']
-        image.save!
-      end
-    end
-
-    after do
-      image.destroy
-    end
-
-    let (:ability) {  Ability.new(nil) }
-
-    it "should be visible to a not-signed-in user" do
-      expect(ability.can?(:read, image.pid)).to be true
-    end
-  end
-
   describe "to_class_uri" do
     subject {TuftsImage}
     it "has sets the class_uri" do

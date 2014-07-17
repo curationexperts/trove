@@ -9,6 +9,12 @@ describe Ability do
   let(:course_collection) { FactoryGirl.create(:course_collection) }
   let(:personal_collection) { FactoryGirl.create(:personal_collection) }
   let(:datastream) { ActiveFedora::Datastream.new }
+  let(:image) do
+    TuftsImage.new(title: 'test image', displays: ['dl']).tap do |image|
+      image.read_groups = ['public']
+      image.save!
+    end
+  end
 
 
   describe "an admin user" do
@@ -116,5 +122,6 @@ describe Ability do
     it { should_not be_able_to(:create, PersonalCollection) }
     it { should_not be_able_to(:show, personal_collection) }
     it { should_not be_able_to(:append_to, personal_collection) }
+    it { should_not be_able_to(:show, image) }
   end
 end
