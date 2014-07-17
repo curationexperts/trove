@@ -19,8 +19,7 @@ module WithNestedMembers
   # @see make_tree
   def assign_tree(tree)
     nodes = tree.sort_by { |e| e['weight'] } 
-    
-    self.member_ids = noncollection_member_ids + nodes.map { |e| e['id'] } 
+    self.member_ids = nodes.map { |e| e['id'] } + noncollection_member_ids
     nodes.each do |node|
       b = ActiveFedora::Base.find(node['id'])
       b.assign_tree node['children']
@@ -32,11 +31,14 @@ module WithNestedMembers
     def noncollection_member_ids
       @noncollection_member_ids ||= begin
         return [] if member_ids.empty?
-        query = [ActiveFedora::SolrService.construct_query_for_pids(member_ids.map(&:to_s)),
-                 ActiveFedora::SolrService.construct_query_for_rel(has_model: TuftsImage.to_class_uri)].
-                join(' AND ')
-        ActiveFedora::SolrService.query(query, fl: 'id').map { |result| result['id'] }
+        ActiveFedora::SolrService.query(noncollection_member_query, fl: 'id').map { |result| result['id'] }
       end
+    end
+
+    def noncollection_member_query
+      ['(' + ActiveFedora::SolrService.construct_query_for_pids(member_ids.map(&:to_s)) + ')',
+       ActiveFedora::SolrService.construct_query_for_rel(has_model: TuftsImage.to_class_uri)].
+      join(' AND ')
     end
 
     # Takes in a linked list with parent pointers and transforms it to a tree

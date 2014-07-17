@@ -95,14 +95,32 @@ describe CourseCollection do
       expect(root.member_ids).to eq [collection3.id, collection2.id, collection1.id]
     end
 
-    context "with some existing images" do
-      let(:image) { FactoryGirl.create(:image) }
-      before do
-        root.member_ids = [image.id]
+    context "adding subcollections to the collection" do
+      context "with some existing images" do
+        let(:image) { FactoryGirl.create(:image) }
+        before do
+          root.member_ids = [image.id]
+          root.save!
+        end
+        it "retains the images" do
+          root.collection_attributes = {"0"=>{"id"=>collection1.id, "weight"=>"1", 'parent_page_id' => ''}, "1"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => ''}}
+          root.save!
+          expect(root.reload.member_ids).to eq [collection1.id, collection2.id, image.id]
+        end
       end
-      it "retains the images" do
-        root.collection_attributes = {"0"=>{"id"=>collection1.id, "weight"=>"1", 'parent_page_id' => ''}}
-        expect(root.member_ids).to eq [image.id, collection1.id]
+    end
+
+    context "reordering subcollections within a collection" do
+      context "with some existing images" do
+        let(:image) { FactoryGirl.create(:image) }
+        before do
+          root.member_ids = [collection1.id, image.id, collection2.id]
+          root.save!
+        end
+        it "retains the images" do
+          root.collection_attributes = {"0"=>{"id"=>collection1.id, "weight"=>"1", 'parent_page_id' => ''}, "1"=>{"id"=>collection2.id, "weight"=>"0", 'parent_page_id' => ''}}
+          expect(root.member_ids).to eq [collection2.id, collection1.id, image.id]
+        end
       end
     end
 
@@ -115,10 +133,6 @@ describe CourseCollection do
         expect(collection1.reload.member_ids).to eq []
       end
     end
-
-
-    it "A member moved into a collection should be at the beginning"
-    it "If it's added after a sibling, then it should be inserted after the sibling." 
   end
 
   describe "parents" do

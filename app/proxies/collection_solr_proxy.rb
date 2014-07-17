@@ -11,11 +11,8 @@ class CollectionSolrProxy
   def collection_members
     @collection_members ||= begin
       return [] if member_ids.blank?
-      query = ['(' + ActiveFedora::SolrService.construct_query_for_pids(member_ids) + ')',
-               ActiveFedora::SolrService.construct_query_for_rel(has_model: klass.to_class_uri)].
-              join(' AND ')
       # TODO could we load more fields here?
-      member_results = ActiveFedora::SolrService.query(query, fl: 'id title')
+      member_results = ActiveFedora::SolrService.query(collection_member_query, fl: 'id title')
       member_results.map { |result| self.class.new(id: result['id']) }
     end
   end
@@ -54,6 +51,12 @@ class CollectionSolrProxy
   end
 
   private
+    def collection_member_query
+      ['(' + ActiveFedora::SolrService.construct_query_for_pids(member_ids) + ')',
+       ActiveFedora::SolrService.construct_query_for_rel(has_model: klass.to_class_uri)
+      ].join(' AND ')
+    end
+
     def properties
       @properties ||= fetch_properties
     end
