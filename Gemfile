@@ -7,6 +7,9 @@ gem 'blacklight', '~> 5.5.1'
 gem 'active-fedora', github: 'projecthydra/active_fedora', ref: 'e58e328'
 gem 'hydra-editor', '~> 0.4.0'
 
+#gem 'powerpoint', path: '../powerpoint'
+gem 'powerpoint', github: 'curationexperts/powerpoint'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
