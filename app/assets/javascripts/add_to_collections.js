@@ -29,11 +29,13 @@ Blacklight.onLoad(function() {
   }
 
   $(".personal-collection-list li.drop-target").droppable({
+    greedy: true,
     hoverClass: 'drop-target-hover',
     tolerance: 'pointer',
     drop: addToPersonalCollection
   });
   $(".course-collection-list li.drop-target").droppable({
+    greedy: true,
     hoverClass: 'drop-target-hover',
     tolerance: 'pointer',
     drop: addToCourseCollection
