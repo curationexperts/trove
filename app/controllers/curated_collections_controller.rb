@@ -2,6 +2,13 @@ class CuratedCollectionsController < ApplicationController
   include Blacklight::Catalog::SearchContext
   load_and_authorize_resource instance_name: :curated_collection
 
+  ##
+  # If the current action should start a new search session, this should be
+  # set to true
+  def start_new_search_session?
+    false
+  end
+
   def create
     @curated_collection.active_user = current_user if @curated_collection.is_a? PersonalCollection
     @curated_collection.attributes = collection_params

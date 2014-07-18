@@ -32,6 +32,19 @@ GIT
       bootstrap-sass (~> 3.0)
       rails
 
+GIT
+  remote: git://github.com/projectblacklight/blacklight.git
+  revision: 9573a6418c28f616588cd93ed622eb5a9c4c51a9
+  branch: back_to_nil
+  specs:
+    blacklight (5.5.1)
+      bootstrap-sass (~> 3.0)
+      deprecation
+      kaminari (~> 0.13)
+      nokogiri (~> 1.6)
+      rails (>= 3.2.6, < 5)
+      rsolr (~> 1.0.6)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -78,13 +91,6 @@ GEM
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.7)
-    blacklight (5.5.1)
-      bootstrap-sass (~> 3.0)
-      deprecation
-      kaminari (~> 0.13)
-      nokogiri (~> 1.6)
-      rails (>= 3.2.6, < 5)
-      rsolr (~> 1.0.6)
     block_helpers (0.3.3)
       activesupport (>= 2.0)
     bootstrap-sass (3.2.0.0)
@@ -409,7 +415,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  blacklight (~> 5.5.1)
+  blacklight!
   blacklight-gallery!
   byebug
   capybara
