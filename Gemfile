@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.4'
 gem 'sqlite3'
 gem 'blacklight', '~> 5.5.1'
-gem 'hydra-head', github: 'projecthydra/hydra-head' # just prior to 7.2.0
+gem 'hydra-head', '~> 7.2.0'
 gem 'hydra-editor', '~> 0.4.0'
 
 #gem 'powerpoint', path: '../powerpoint'

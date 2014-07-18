@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/curationexperts/tufts_models.git
-  revision: 7d15bb74c00d47de52cfcfa6759369a9e9e43345
+  revision: 3a81594f20e58942231ce1d09d42f1dfd6b3772f
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -31,28 +31,6 @@ GIT
       blacklight (>= 5.0.0.pre4, < 6.0)
       bootstrap-sass (~> 3.0)
       rails
-
-GIT
-  remote: git://github.com/projecthydra/hydra-head.git
-  revision: b3835657a92372f86bcb76319fdd06f9358c964b
-  specs:
-    hydra-access-controls (7.1.0)
-      active-fedora (~> 7.0)
-      activesupport
-      blacklight (~> 5.3)
-      cancancan
-      deprecation
-      om (~> 3.0, >= 3.0.7)
-      sass-rails
-    hydra-core (7.1.0)
-      block_helpers
-      hydra-access-controls (= 7.1.0)
-      jettywrapper (>= 1.4.1)
-      rails (>= 3.2.3, < 5)
-    hydra-head (7.1.0)
-      hydra-access-controls (= 7.1.0)
-      hydra-core (= 7.1.0)
-      rails (>= 3.2.6)
 
 GEM
   remote: https://rubygems.org/
@@ -173,12 +151,29 @@ GEM
     hooks (0.3.6)
       uber (~> 0.0.4)
     htmlentities (4.3.2)
+    hydra-access-controls (7.2.0)
+      active-fedora (~> 7.0)
+      activesupport
+      blacklight (~> 5.3)
+      cancancan
+      deprecation
+      om (~> 3.0, >= 3.0.7)
+      sass-rails
+    hydra-core (7.2.0)
+      block_helpers
+      hydra-access-controls (= 7.2.0)
+      jettywrapper (>= 1.4.1)
+      rails (>= 3.2.3, < 5)
     hydra-editor (0.4.0)
       active-fedora (>= 6.3.0)
       bootstrap_form (~> 2.1.1)
       cancancan
       deprecation
       rails (>= 3.2.13, < 5.0)
+    hydra-head (7.2.0)
+      hydra-access-controls (= 7.2.0)
+      hydra-core (= 7.2.0)
+      rails (>= 3.2.6)
     hydra-role-management (0.2.0)
       blacklight
       bootstrap_form
@@ -399,7 +394,7 @@ GEM
     tzinfo (1.2.1)
       thread_safe (~> 0.1)
     uber (0.0.7)
-    uglifier (2.5.1)
+    uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     vegas (0.1.11)
@@ -423,7 +418,7 @@ DEPENDENCIES
   devise-guests (~> 0.3)
   factory_girl_rails
   hydra-editor (~> 0.4.0)
-  hydra-head!
+  hydra-head (~> 7.2.0)
   jbuilder (~> 2.0)
   jettywrapper
   jquery-rails
