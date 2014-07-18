@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/curationexperts/tufts_models.git
-  revision: 02d4febedaa25540a5b0038ce6c8ce612048fcdf
+  revision: 7d15bb74c00d47de52cfcfa6759369a9e9e43345
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -34,18 +34,41 @@ GIT
 
 GIT
   remote: git://github.com/projecthydra/active_fedora.git
-  revision: e58e32855038990649b7f68ba8c26bcb4f416375
-  ref: e58e328
+  revision: bc796709d49513965bfebacb2d57243fc88b0950
+  ref: bc79670
   specs:
     active-fedora (7.0.4)
       active-triples (~> 0.2.2)
       activesupport (>= 3.0.0)
       deprecation
       nom-xml (>= 0.5.1)
-      om (~> 3.0.0)
+      om (~> 3.1)
       rdf-rdfxml (~> 1.1.0)
-      rsolr (~> 1.0.10.pre1)
-      rubydora (~> 1.7.4)
+      rsolr (~> 1.0.10)
+      rubydora (~> 1.8)
+
+GIT
+  remote: git://github.com/projecthydra/hydra-head.git
+  revision: 600771b1a8800c2f6ca0a3d314111efd1553fe47
+  ref: 600771b
+  specs:
+    hydra-access-controls (7.1.0)
+      active-fedora (~> 7.0)
+      activesupport
+      blacklight (~> 5.3)
+      cancancan
+      deprecation
+      om (~> 3.0, >= 3.0.7)
+      sass-rails
+    hydra-core (7.1.0)
+      block_helpers
+      hydra-access-controls (= 7.1.0)
+      jettywrapper (>= 1.4.1)
+      rails (>= 3.2.3, < 5)
+    hydra-head (7.1.0)
+      hydra-access-controls (= 7.1.0)
+      hydra-core (= 7.1.0)
+      rails (>= 3.2.6)
 
 GEM
   remote: https://rubygems.org/
@@ -157,28 +180,12 @@ GEM
     hooks (0.3.6)
       uber (~> 0.0.4)
     htmlentities (4.3.2)
-    hydra-access-controls (7.0.2)
-      active-fedora (~> 7.0.0)
-      activesupport
-      blacklight (~> 5.3)
-      cancancan
-      deprecation
-      sass-rails
-    hydra-core (7.0.2)
-      block_helpers
-      hydra-access-controls (= 7.0.2)
-      jettywrapper (>= 1.4.1)
-      rails (>= 3.2.3, < 5)
     hydra-editor (0.4.0)
       active-fedora (>= 6.3.0)
       bootstrap_form (~> 2.1.1)
       cancancan
       deprecation
       rails (>= 3.2.13, < 5.0)
-    hydra-head (7.0.2)
-      hydra-access-controls (= 7.0.2)
-      hydra-core (= 7.0.2)
-      rails (>= 3.2.6)
     hydra-role-management (0.2.0)
       blacklight
       bootstrap_form
@@ -187,12 +194,11 @@ GEM
     jbuilder (2.1.3)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
-    jettywrapper (1.7.0)
+    jettywrapper (1.8.1)
       activesupport (>= 3.0.0)
       childprocess
       i18n
       logger
-      mediashelf-loggable
     jquery-rails (3.1.1)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
@@ -223,7 +229,6 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mediashelf-loggable (0.4.10)
     mime-types (1.25.1)
     mini_portile (0.6.0)
     minitest (5.4.0)
@@ -237,13 +242,11 @@ GEM
       activesupport
       i18n
       nokogiri
-    om (3.0.7)
+    om (3.1.0)
       activemodel
       activesupport
-      deprecation
-      mediashelf-loggable
       nokogiri (>= 1.4.2)
-      solrizer (~> 3.1.0)
+      solrizer (~> 3.3)
     orm_adapter (0.5.0)
     polyglot (0.3.5)
     rack (1.5.2)
@@ -336,7 +339,7 @@ GEM
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.2)
-    rubydora (1.7.5)
+    rubydora (1.8.0)
       activemodel
       activesupport
       deprecation
@@ -361,10 +364,9 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
-    solrizer (3.1.1)
+    solrizer (3.3.0)
       activesupport
       daemons
-      mediashelf-loggable (~> 0.4.7)
       nokogiri
       stomp
       xml-simple
@@ -429,7 +431,7 @@ DEPENDENCIES
   devise-guests (~> 0.3)
   factory_girl_rails
   hydra-editor (~> 0.4.0)
-  hydra-head (~> 7.0.1)
+  hydra-head!
   jbuilder (~> 2.0)
   jettywrapper
   jquery-rails
