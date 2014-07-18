@@ -33,24 +33,8 @@ GIT
       rails
 
 GIT
-  remote: git://github.com/projecthydra/active_fedora.git
-  revision: bc796709d49513965bfebacb2d57243fc88b0950
-  ref: bc79670
-  specs:
-    active-fedora (7.0.4)
-      active-triples (~> 0.2.2)
-      activesupport (>= 3.0.0)
-      deprecation
-      nom-xml (>= 0.5.1)
-      om (~> 3.1)
-      rdf-rdfxml (~> 1.1.0)
-      rsolr (~> 1.0.10)
-      rubydora (~> 1.8)
-
-GIT
   remote: git://github.com/projecthydra/hydra-head.git
-  revision: 600771b1a8800c2f6ca0a3d314111efd1553fe47
-  ref: 600771b
+  revision: b3835657a92372f86bcb76319fdd06f9358c964b
   specs:
     hydra-access-controls (7.1.0)
       active-fedora (~> 7.0)
@@ -86,6 +70,15 @@ GEM
       activesupport (= 4.1.4)
       builder (~> 3.1)
       erubis (~> 2.7.0)
+    active-fedora (7.1.0)
+      active-triples (~> 0.2.2)
+      activesupport (>= 3.0.0)
+      deprecation
+      nom-xml (>= 0.5.1)
+      om (~> 3.1)
+      rdf-rdfxml (~> 1.1.0)
+      rsolr (~> 1.0.10)
+      rubydora (~> 1.8)
     active-triples (0.2.2)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -421,7 +414,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora!
   blacklight (~> 5.5.1)
   blacklight-gallery!
   byebug
