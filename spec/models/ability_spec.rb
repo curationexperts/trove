@@ -25,6 +25,7 @@ describe Ability do
     it { should be_able_to(:create, CourseCollection) }
     it { should be_able_to(:append_to, course_collection) }
     it { should be_able_to(:remove_from, course_collection) }
+    it { should_not be_able_to(:destroy, CourseCollection.root) }
     it { should be_able_to(:destroy, course_collection) }
     it { should be_able_to(:edit, course_collection) }
     it { should be_able_to(:show, course_collection) }

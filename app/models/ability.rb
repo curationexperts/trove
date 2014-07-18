@@ -17,6 +17,9 @@ class Ability
     if current_user.admin?
       can :manage, [CourseCollection, CourseCollectionSolrProxy, PersonalCollection,
                     PersonalCollectionSolrProxy]
+      cannot :destroy, CourseCollection do |collection|
+        collection == CourseCollection.root
+      end
     else
       cannot :index, PersonalCollection
     end
