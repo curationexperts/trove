@@ -1,0 +1,13 @@
+<% if options.present? %>
+  <%= form_tag add_to_collection_catalog_path(image_pid), method: :patch, class: "" do %>
+    <div class="row">
+      <div class="col-sm-9">
+        <% options = '<option selected="selected" disabled="disabled">Select a Collection</option>'.html_safe + options %>
+        <%= select_tag :collection_id, options, class: "form-control" %>
+      </div>
+      <div class="col-sm-3">
+        <%= submit_tag "Add", class: "form-control" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

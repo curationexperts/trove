@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/curationexperts/tufts_models.git
-  revision: 9dd62bfe413619538b822ae496bef7c152fce98a
+  revision: f2e5fed249a59c560676eb6cd5911b72fc7d06f8
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -34,8 +34,8 @@ GIT
 
 GIT
   remote: git://github.com/projectblacklight/blacklight.git
-  revision: 9573a6418c28f616588cd93ed622eb5a9c4c51a9
-  branch: back_to_nil
+  revision: 14bca522e283a40633b2d264b34f826daa78e2af
+  ref: 14bca522e283a40633b2d264b34f826daa78e2af
   specs:
     blacklight (5.5.1)
       bootstrap-sass (~> 3.0)
@@ -188,7 +188,7 @@ GEM
     jbuilder (2.1.3)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
-    jettywrapper (1.8.1)
+    jettywrapper (1.8.2)
       activesupport (>= 3.0.0)
       childprocess
       i18n

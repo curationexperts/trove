@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   resources :downloads, only: [:show], constraints: { id: ALLOW_DOTS }
 
+  patch 'catalog/:id/add_to_collection', to: 'catalog#add_to_collection', as: 'add_to_collection_catalog'
+
   resources :course_collections, constraints: { id: ALLOW_DOTS } do
     member do
       patch :append_to

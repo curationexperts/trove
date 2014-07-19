@@ -134,6 +134,19 @@ class CatalogController < ApplicationController
     super
   end
 
+  def add_to_collection
+    get_solr_response_for_doc_id(params[:id])
+    collection = ActiveFedora::Base.find(params[:collection_id], cast: true)
+    authorize! :update, collection
+    collection.member_ids << @document.id
+    if collection.save
+      redirect_to catalog_path(@document.id)
+    else
+      flash[:error] = "We were unable to add this to the collection"
+      render :show
+    end
+  end
+
 protected
 
   def only_images_and_collections(solr_parameters, user_parameters)

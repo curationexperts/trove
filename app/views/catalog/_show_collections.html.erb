@@ -1,13 +1,14 @@
 <dl class="dl-horizontal dl-invert">
   <dt><%= title %></dt>
   <dd>
-  <% if collections.empty? %>
-    none
-  <% else %>
-    <ul class="scrollable <%= title.gsub(/\s/, '-').downcase %>">
-      <% item_partial ||= 'collection_item' %>
-      <%= render partial: item_partial, collection: collections %>
-    </ul>
-  <% end %>
+    <%= render 'add_to_collection', image_pid: image_pid, options: add_to_collection_options %>
+    <% if collections.empty? %>
+      none
+    <% else %>
+      <ul class="scrollable <%= title.gsub(/\s/, '-').downcase %>">
+        <% item_partial ||= 'collection_item' %>
+        <%= render partial: item_partial, collection: collections %>
+      </ul>
+    <% end %>
   </dd>
 </dl>

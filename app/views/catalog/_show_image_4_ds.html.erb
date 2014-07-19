@@ -8,14 +8,21 @@
     <%= render 'show_default', document: document %>
 
     <% course_collections = CourseCollection.where(member_ids_ssim: document.id) %>
-    <%= render 'show_collections', title: 'Course Collections', collections: course_collections %>
+    <% if can? :update, CourseCollection %>
+      <% options = nested_collection_options(CourseCollectionSolrProxy.root.collection_members) %>
+    <% end %>
+    <%= render 'show_collections', title: 'Course Collections', collections: course_collections, image_pid: document.id, add_to_collection_options: options %>
 
     <% if current_user.admin? %>
       <% collections = PersonalCollection.where(member_ids_ssim: document.id) %>
-      <%= render 'show_collections', title: 'Personal Collections', collections: collections, item_partial: 'admin_collection_item' %>
+      <% options = grouped_collection_options(User.all.map(&:personal_collection_proxy)) %>
+      <%= render 'show_collections', title: 'Personal Collections', collections: collections, item_partial: 'admin_collection_item', image_pid: document.id, add_to_collection_options: options %>
     <% else %>
-      <% my_collections = PersonalCollection.where(edit_access_person_ssim: current_user.user_key).where(member_ids_ssim: document.id) %>
-      <%= render 'show_collections', title: 'My Collections', collections: my_collections %>
+      <% my_collections = PersonalCollection
+        .where(member_ids_ssim: document.id)
+        .where(edit_access_person_ssim: current_user.user_key) %>
+      <% options = nested_collection_options(current_user.personal_collection_proxy.collection_members) %>
+      <%= render 'show_collections', title: 'My Collections', collections: my_collections, image_pid: document.id, add_to_collection_options: options %>
     <% end %>
   </div>
 

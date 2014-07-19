@@ -26,14 +26,14 @@ class User < ActiveRecord::Base
     PersonalCollectionSolrProxy.new(id: root_pid, title: personal_collection.title)
   end
 
-  private
-    def root_pid
-      # escape invalid chars in pids
-      # https://wiki.duraspace.org/display/FEDORA37/Fedora+Identifiers#FedoraIdentifiers-PIDspids
-      escaped_user_key = user_key.gsub(/[^([A-Za-z0-9])|\-|\.|~]/){|c| '_' + c.ord.to_s(16)}
-      "tufts.uc:personal_#{escaped_user_key}"
-    end
+  def root_pid
+    # escape invalid chars in pids
+    # https://wiki.duraspace.org/display/FEDORA37/Fedora+Identifiers#FedoraIdentifiers-PIDspids
+    escaped_user_key = user_key.gsub(/[^([A-Za-z0-9])|\-|\.|~]/){|c| '_' + c.ord.to_s(16)}
+    "tufts.uc:personal_#{escaped_user_key}"
+  end
 
+  private
     def create_personal_collection!
       PersonalCollection.new(pid: root_pid, title: "Collections for #{self}",
                             displays: ['tdil'], creator: [self.user_key]).tap do |coll|
