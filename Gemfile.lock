@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/curationexperts/tufts_models.git
-  revision: 8ab6c0bb5037da88bb5378a6121ad27c795e7cfd
+  revision: a6cb65e9777b95a3e81eaabe4929390fc7b512d2
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -284,7 +284,7 @@ GEM
       htmlentities (~> 4.3)
       rdf (~> 1.1)
       rdf-xsd (~> 1.1)
-    rdf-rdfxml (1.1.0.1)
+    rdf-rdfxml (1.1.1)
       rdf (~> 1.1)
       rdf-rdfa (~> 1.1)
       rdf-xsd (~> 1.1)
