@@ -60,6 +60,9 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def show
+    @curated_collection.ancestors_and_self.each do |s|
+      add_breadcrumb s, s
+    end
     respond_to do |format|
       format.html
       format.pptx {

@@ -35,6 +35,8 @@ describe PersonalCollectionsController do
 
     describe "GET 'show'" do
       it "returns http success" do
+        puts "Coll #{collection.id}"
+        expect(controller).to receive(:add_breadcrumb).with(collection, collection)
         get :show, id: collection
         expect(response).to render_template(:show)
         expect(assigns[:curated_collection]).to eq collection

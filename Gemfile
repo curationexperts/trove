@@ -49,6 +49,8 @@ gem "devise-guests", "~> 0.3"
 gem 'blacklight-gallery', github: 'projectblacklight/blacklight-gallery', branch: 'customize_wrapper'
 gem 'settingslogic' # for settings
 
+gem 'breadcrumbs_on_rails', '~> 2.3.0'
+
 
 group :development, :test do
   gem 'rspec-rails'

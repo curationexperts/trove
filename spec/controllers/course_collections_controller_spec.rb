@@ -49,6 +49,7 @@ describe CourseCollectionsController do
 
     describe "GET 'show'" do
       it "returns http success" do
+        expect(controller).to receive(:add_breadcrumb).with(collection, collection)
         get :show, id: collection
         expect(response).to be_successful
         expect(assigns[:curated_collection]).to eq collection
