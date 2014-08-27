@@ -26,4 +26,13 @@
   display: -moz-box;
   display: -ms-flexbox;
   display: flex;
+
+  .document {
+    display: flex;
+    flex: none;
+    align-items: stretch;
+    .thumbnail {
+      width: 100%
+    }
+  }
 }
