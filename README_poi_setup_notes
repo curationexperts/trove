@@ -1,0 +1,56 @@
+============================
+
+The ruby code calls a java class to generate the powerpoint file using the Apache POI library.
+These 2 classes send and receive messages from each other, so they are highly coupled.
+
+* app/models/concerns/power_point.rb
+* lib/powerpoint/Powerpoint.java
+
+============================
+Developer setup for running the Java powerpoint generator.
+
+Download and install a Java JDK
+(I'm using version "1.8.0_20")
+
+Download and unzip POI 3.10.1
+http://poi.apache.org/download.html
+
+Download v 2.4 of the commons-io jar:
+http://commons.apache.org/proper/commons-io/download_io.cgi
+
+Add the directories for those jar files into config/java.yml.
+
+Note:  We might not really need all these jars
+
+POI_CLASSPATH="/Users/valerie/dce/tufts-java-files/poi-3.10.1/poi-3.10.1-20140818.jar:/Users/valerie/dce/tufts-java-files/poi-3.10.1/poi-examples-3.10.1-20140818.jar:/Users/valerie/dce/tufts-java-files/poi-3.10.1/poi-excelant-3.10.1-20140818.jar:/Users/valerie/dce/tufts-java-files/poi-3.10.1/poi-ooxml-3.10.1-20140818.jar:/Users/valerie/dce/tufts-java-files/poi-3.10.1/poi-ooxml-schemas-3.10.1-20140818.jar:/Users/valerie/dce/tufts-java-files/poi-3.10.1/poi-scratchpad-3.10.1-20140818.jar:/Users/valerie/dce/tufts-java-files/poi-3.10.1/ooxml-lib/dom4j-1.6.1.jar:/Users/valerie/dce/tufts-java-files/poi-3.10.1/ooxml-lib/stax-api-1.0.1.jar:/Users/valerie/dce/tufts-java-files/poi-3.10.1/ooxml-lib/xmlbeans-2.6.0.jar:/Users/valerie/dce/tufts-java-files/poi-3.10.1/lib/commons-codec-1.5.jar:/Users/valerie/dce/tufts-java-files/poi-3.10.1/lib/commons-logging-1.1.jar:/Users/valerie/dce/tufts-java-files/poi-3.10.1/lib/log4j-1.2.13.jar"
+
+export POI_CLASSPATH
+
+Compile the java source:
+
+javac -cp $POI_CLASSPATH:/Users/valerie/dce/tufts-java-files/commons-io-2.4/commons-io-2.4.jar -d tmp/classes lib/powerpoint/Powerpoint.java 
+
+To make a powerpoint file:
+Browse to the show page for a collection and click the link to download a powerpoint.
+
+============================
+TODO:
+
+* When the code is finalized, get rid of this file, and put all the relevant info into the project README.
+
+* Get these steps into the deploy script
+
+============================
+Links:
+
+The original commit using the powerpoint gem:
+https://github.com/curationexperts/tufts-image-library/commit/fe4a5db5bc263b777b4197f46cdef0ede792692c
+
+POI example code:
+http://poi.apache.org/slideshow/xslf-cookbook.html
+
+Info about pptx format:
+http://technet.microsoft.com/en-us/library/gg278335.aspx
+
+============================
+

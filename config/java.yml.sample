@@ -1,0 +1,11 @@
+development: &dev
+  poi_dir: "/Users/valerie/dce/tufts-java-files/poi-3.10.1"
+  poi_lib_dir: "/Users/valerie/dce/tufts-java-files/poi-3.10.1/lib"
+  poi_ooxml_dir: "/Users/valerie/dce/tufts-java-files/poi-3.10.1/ooxml-lib"
+  commons_io_dir: "/Users/valerie/dce/tufts-java-files/commons-io-2.4"
+  class_files_dir: "<%= File.join(Rails.root, 'tmp', 'classes') %>"
+
+test:
+  <<: *dev
+
+production:
