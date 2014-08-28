@@ -32,19 +32,6 @@ GIT
       bootstrap-sass (~> 3.0)
       rails
 
-GIT
-  remote: git://github.com/projectblacklight/blacklight.git
-  revision: 14bca522e283a40633b2d264b34f826daa78e2af
-  ref: 14bca522e283a40633b2d264b34f826daa78e2af
-  specs:
-    blacklight (5.5.1)
-      bootstrap-sass (~> 3.0)
-      deprecation
-      kaminari (~> 0.13)
-      nokogiri (~> 1.6)
-      rails (>= 3.2.6, < 5)
-      rsolr (~> 1.0.6)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -91,6 +78,13 @@ GEM
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.7)
+    blacklight (5.6.0)
+      bootstrap-sass (~> 3.2)
+      deprecation
+      kaminari (~> 0.13)
+      nokogiri (~> 1.6)
+      rails (>= 3.2.6, < 5)
+      rsolr (~> 1.0.6)
     block_helpers (0.3.3)
       activesupport (>= 2.0)
     bootstrap-sass (3.2.0.1)
@@ -416,7 +410,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  blacklight!
+  blacklight (~> 5.6.0)
   blacklight-gallery!
   breadcrumbs_on_rails (~> 2.3.0)
   byebug
