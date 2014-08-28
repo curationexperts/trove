@@ -4,7 +4,7 @@ module CatalogHelper
   def featured_records
     pids = FeatureDataSettings['featured_pids']
     if pids.present?
-      ActiveFedora::Base.find(pids, cast: true)
+      ActiveFedora::Base.find(pids)
     else
       TuftsImage.where(displays_ssim: 'tdil').limit(3)
     end
