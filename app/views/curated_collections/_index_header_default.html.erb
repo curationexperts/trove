@@ -1,13 +1,7 @@
 <%# based on blacklight-5.4.0/app/views/catalog/_index_header_default.html.erb -%>
       <% # header bar for doc items in index view -%>
       <div class="documentHeader row">
-
-        <%# main title container for doc partial view
-            How many bootstrap columns need to be reserved
-            for bookmarks control depends on size.
-        -%>
          <h5 class="index_title col-sm-9 col-lg-10">
-         <% path = document.kind_of?(TuftsImage) ? catalog_path(document) : document %>
-         <%= link_to document.title, path, class: 'dd-nodrag' %>
+         <%= link_to document.title, document, class: 'dd-nodrag' %>
         </h5>
       </div>

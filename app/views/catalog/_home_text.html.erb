@@ -2,13 +2,16 @@
   <div class="row">
     <% featured_records.each do |feature| %>
       <div class="col-md-4">
-        <div class="thumbnail">
+        <% path = feature.kind_of?(TuftsImage) ? catalog_path(feature) : feature %>
+        <%= link_to path, class: "thumbnail" do %>
           <div class="text-center">
             <% image = (feature.is_a?(CuratedCollection) && feature.members.first) || feature %>
             <%= thumbnail_tag(image, datastream_id: 'Basic.jpg') %>
-            <%= render 'curated_collections/index_header_default', document: feature %>
+             <h5 class="index_title">
+               <%= feature.title %>
+            </h5>
           </div>
-        </div>
+        <% end %>
       </div>
     <% end %>
   </div>
