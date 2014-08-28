@@ -1,10 +1,16 @@
 Blacklight.onLoad(function() {
-  $('[data-behavior="dragable"]').draggable({
+  $('[data-behavior="draggable"]').draggable({
     helper: function(event) {
       return $('<span style="white-space:nowrap;"/>')
             .html($(this).find('img').clone().css('opacity', '0.6'));
     },
-  cursorAt: { left: 5, top: 5 }
+    cursorAt: { left: 5, top: 5 }
+  }).click(function() {
+    if ( $(this).is('.ui-draggable-dragging') ) {
+      return;
+    }
+
+    $(this).find('a').click();
   });
 
   function addToPersonalCollection(event, ui) {
