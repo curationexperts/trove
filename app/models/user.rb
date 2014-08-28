@@ -16,14 +16,20 @@ class User < ActiveRecord::Base
     user_key
   end
 
-  def personal_collection
-    PersonalCollection.where(id: root_pid).first || create_personal_collection!
+  # Find the users own PersonalCollection which is the root collection of all their other collections.
+  # @param [Boolean] create (false) When true, the personal collection will be created if it doesn't already exist
+  def personal_collection(create = false)
+    if create
+      personal_collection || create_personal_collection!
+    else
+      PersonalCollection.where(id: root_pid).first
+    end
   end
 
   def personal_collection_proxy
     root = PersonalCollectionSolrProxy.new(id: root_pid)
     return root if root.exists?
-    PersonalCollectionSolrProxy.new(id: root_pid, title: personal_collection.title)
+    PersonalCollectionSolrProxy.new(id: root_pid, title: collection_title)
   end
 
   def root_pid
@@ -35,10 +41,14 @@ class User < ActiveRecord::Base
 
   private
     def create_personal_collection!
-      PersonalCollection.new(pid: root_pid, title: "Collections for #{self}",
+      PersonalCollection.new(pid: root_pid, title: collection_title,
                             displays: ['tdil'], creator: [self.user_key]).tap do |coll|
         coll.apply_depositor_metadata(self)
         coll.save!
       end
+    end
+
+    def collection_title
+      "Collections for #{self}"
     end
 end

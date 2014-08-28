@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe User, :type => :model do
+describe User do
 
   it 'by default has the role of a registered user (after it is saved)' do
     user = FactoryGirl.build(:user)
@@ -9,9 +9,12 @@ RSpec.describe User, :type => :model do
     expect(user).to be_registered
   end
 
-  it "generates a pid that works with fedora" do
-    user = FactoryGirl.create(:user, email: "a%b+c++d@e.com")
-    root_pid = user.personal_collection_proxy.id
-    expect(PersonalCollection.exists?(root_pid)).to eq true
+  describe "#personal_collection" do
+    let(:user) { FactoryGirl.create(:user, email: "a%b+c++d@e.com") }
+    let(:collection) { user.personal_collection(true) }
+
+    it "generates a pid that works with fedora" do
+      expect(PersonalCollection).to exist(collection.id)
+    end
   end
 end

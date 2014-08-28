@@ -8,7 +8,7 @@ class PersonalCollection < CuratedCollection
 
   def add_to_root_collection
     return unless active_user
-    active_user.personal_collection.tap do |root|
+    active_user.personal_collection(true).tap do |root|
       root.member_ids = [id] + root.member_ids
       root.save!
     end

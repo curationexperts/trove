@@ -81,7 +81,7 @@ describe Ability do
       it { should be_able_to(:remove_from, collection) }
       it { should be_able_to(:read, collection) }
       it { should be_able_to(:update, collection) }
-      it { should be_able_to(:update, user.personal_collection) }
+      it { should be_able_to(:update, user.personal_collection(true)) }
       it { should be_able_to(:destroy, collection) }
 
       context 'proxy' do

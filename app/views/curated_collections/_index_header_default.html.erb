@@ -2,6 +2,7 @@
       <% # header bar for doc items in index view -%>
       <div class="documentHeader row">
          <h5 class="index_title col-sm-9 col-lg-10">
-         <%= link_to document.title, document, class: 'dd-nodrag' %>
+         <% path = document.kind_of?(TuftsImage) ? catalog_path(document) : document %>
+         <%= link_to document.title, path, class: 'dd-nodrag' %>
         </h5>
       </div>

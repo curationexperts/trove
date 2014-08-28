@@ -24,7 +24,7 @@ feature 'Copying Collections:' do
       visit personal_collection_path(personal_collection)
       expect {
         click_button('copy this collection')
-      }.to change { PersonalCollection.count }.by(1)
+      }.to change { PersonalCollection.count }.by(2)
     end
   end
 
@@ -37,7 +37,7 @@ feature 'Copying Collections:' do
       visit course_collection_path(course_collection)
       expect {
         click_button('copy this collection')
-      }.to change { PersonalCollection.count }.by(1)
+      }.to change { PersonalCollection.count }.by(2)
     end
 
     scenario 'makes a personal copy of a personal collection' do

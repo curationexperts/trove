@@ -52,7 +52,7 @@ class CollectionSolrProxy
     properties[:member_ids]
   end
 
-  def klass 
+  def klass
     properties[:klass]
   end
 

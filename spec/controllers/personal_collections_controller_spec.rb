@@ -76,7 +76,7 @@ describe PersonalCollectionsController do
       it 'creates a personal collection' do
         expect {
           post 'create', personal_collection: {title: 'foo'}
-        }.to change { PersonalCollection.count }.by(1)
+        }.to change { PersonalCollection.count }.by(2) #once for the root collection, once for the new collection.
 
         expect(response.status).to eq 302
         expect(assigns[:curated_collection].read_groups).to eq ['public']
