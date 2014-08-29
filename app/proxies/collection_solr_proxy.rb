@@ -2,10 +2,15 @@ class CollectionSolrProxy
 
   attr_reader :id
 
-  def initialize(attrs)
+  def initialize(attrs, _=nil)
     @id = attrs.delete(:id)
-    @properties = attrs unless attrs.empty?
-    @loaded = false
+    if @loaded = attrs.key?('has_model_ssim')
+      # this is a full solr document
+      @properties = result_to_properties(attrs)
+    elsif !attrs.empty?
+      # this is just klass and member_ids
+      @properties = attrs
+    end
   end
 
   def collection_member_ids

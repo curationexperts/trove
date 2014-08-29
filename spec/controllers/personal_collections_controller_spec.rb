@@ -216,7 +216,7 @@ describe PersonalCollectionsController do
       it "returns http success" do
         get :index
         expect(response).to render_template(:index)
-        expect(assigns[:user_collections]).to be_kind_of Array
+        expect(assigns[:solr_response]).to be_kind_of Blacklight::SolrResponse
         expect(response).to be_successful
       end
     end

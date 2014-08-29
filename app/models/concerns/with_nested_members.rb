@@ -18,7 +18,7 @@ module WithNestedMembers
   # update the nested collections with attributes arranged in a tree structure.
   # @see make_tree
   def assign_tree(tree)
-    nodes = tree.sort_by { |e| e['weight'] } 
+    nodes = tree.sort_by { |e| e['weight'] }
     new_collection_ids = nodes.map { |e| e['id'] }
     if ordered_subset?(new_collection_ids)
       removed_collection_ids = collection_member_ids - new_collection_ids

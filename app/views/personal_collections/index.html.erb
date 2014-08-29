@@ -1,7 +1,8 @@
 <h2>Personal Collections</h2>
 
+<%= paginate @solr_response, :outer_window => 2, :theme => 'blacklight' %>
 <ul>
-<% @user_collections.each do |u| %>
+<% @solr_response.documents.each do |u| %>
   <li>
     <%= u.title %>
     <ol>

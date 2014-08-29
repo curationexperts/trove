@@ -1,6 +1,25 @@
 class PersonalCollectionsController < CuratedCollectionsController
   def index
     authorize! :index, PersonalCollection
-    @user_collections = User.all.map {|u| u.personal_collection_proxy }
+    @solr_response = build_solr_response
   end
+
+  private
+
+  def build_solr_response
+    Blacklight::SolrResponse.new(solr_result, solr_parameters, solr_document_model: PersonalCollectionSolrProxy)
+  end
+
+  def solr_result
+    ActiveFedora::SolrService.instance.conn.
+      send_and_receive(blacklight_config.solr_path, params: solr_parameters)
+  end
+
+  def solr_parameters
+    @params ||= {q: 'is_root_bsi:true', rows: 10}.tap do |solr_parameters|
+      solr_parameters[:start] = solr_parameters[:rows] * (params[:page].to_i - 1) if params[:page].to_i > 0
+      solr_parameters[:fq] = "has_model_ssim:\"#{PersonalCollection.to_class_uri}\""
+    end
+  end
+
 end

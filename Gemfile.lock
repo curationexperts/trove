@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/curationexperts/tufts_models.git
-  revision: a6cb65e9777b95a3e81eaabe4929390fc7b512d2
+  revision: 43e831044fb6ffb1f7dcf152448821ebc9b21e94
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -259,7 +259,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.3.2)
-    rdf (1.1.5)
+    rdf (1.1.5.1)
     rdf-aggregate-repo (1.1.0)
       rdf (>= 1.1)
     rdf-isomorphic (1.1.0)
@@ -271,8 +271,8 @@ GEM
       nokogiri (~> 1.6)
       rdf (~> 1.1)
       rdf-xsd (~> 1.1)
-    rdf-n3 (1.1.1)
-      rdf (~> 1.1, >= 1.1.4)
+    rdf-n3 (1.1.2)
+      rdf (~> 1.1, >= 1.1.5)
     rdf-rdfa (1.1.3.2)
       haml (~> 4.0)
       htmlentities (~> 4.3)
