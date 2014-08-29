@@ -2,7 +2,7 @@
           <%= hidden_field_tag "#{ActiveModel::Naming.singular(@curated_collection)}[member_attributes][#{member_counter}][id]", member.id, id: "#{ActiveModel::Naming.singular(@curated_collection)}_member_attributes_#{member_counter}_id" %>
           <%= hidden_field_tag "#{ActiveModel::Naming.singular(@curated_collection)}[member_attributes][#{member_counter}][weight]", member_counter, id: "#{ActiveModel::Naming.singular(@curated_collection)}_member_attributes_#{member_counter}_weight", data: { property: 'weight' } %>
             <div class="dd-handle">
-              <div class="frame">
+              <div class="thumbnail">
                 <% if can? :update, @curated_collection %>
                   <%= link_to [:remove_from, @curated_collection, { position: member_counter}], method: :delete, class: "removeButton dd-nodrag" do %>
                     <span class="glyphicon glyphicon-remove-circle"></span>
@@ -13,7 +13,7 @@
                 </div>
                 <div class="caption">
                   <%= render 'curated_collections/index_header_default', document: member%>
-                  <%= render 'curated_collections/index_default', document: member %>
+                  <%= render 'catalog/index_gallery_default', document: member %>
                 </div>
                 <div style="clear: left"/>
               </div>

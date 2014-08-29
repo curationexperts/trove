@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-class SolrDocument 
+class SolrDocument
 
   include Blacklight::Solr::Document
   include Tufts::SolrDocument
@@ -7,6 +7,10 @@ class SolrDocument
   # @overriden To add more collection types
   def collection?
     ['CourseCollection', 'PersonalCollection'].include? self['active_fedora_model_ssi']
+  end
+
+  def description
+    self[Solrizer.solr_name('description', :stored_searchable, type: :string)]
   end
 
   # @overriden so that the value is cached

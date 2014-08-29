@@ -33,9 +33,7 @@ $handle-height: 270px;
     height: $handle-height;
     border-radius: 3px;
 
-    .frame {
-      padding: 4px;
-      border: 1px solid #dddddd;
+    .thumbnail {
       height: $handle-height - 20;
     }
   }
@@ -85,7 +83,7 @@ $handle-height: 270px;
   z-index: 9999;
 }
 .dd-dragel > .dd-item .dd-handle { margin-top: 0; }
-.dd-dragel .dd-handle .frame {
+.dd-dragel .dd-handle .thumbnail {
   -webkit-box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
           box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
 }
