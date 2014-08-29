@@ -3,6 +3,12 @@
 Blacklight.onLoad(function(){
   $('#orderable-course-collections, #orderable-personal-collections').nestable({ maxDepth: 3 });
   updateWeightsAndRelationships($('#orderable-course-collections, #orderable-personal-collections'));
+
+  // Collapse all the collections in the sidebar
+  plugin = $('#orderable-course-collections').data("nestable")
+  $('#orderable-course-collections li, #orderable-personal-collections li').each(function() {
+    plugin['collapseItem']($(this));
+  })
 });
 
 function updateWeightsAndRelationships(selector){
