@@ -56,6 +56,24 @@ describe CatalogController do
           expect(found).to_not include(pdf.pid)
           expect(found).to_not include(CourseCollection::ROOT_PID)
         end
+      end
+
+      describe "preferred view" do
+        it "should save" do
+          get :index, q: 'foo', view: 'gallery'
+          expect(session[:preferred_view]).to eq 'gallery'
+        end
+
+        context "when they have a preferred view" do
+          before do
+            session[:preferred_view] = 'gallery'
+          end
+
+          it "should use the saved preference" do
+            get :index, q: 'foo'
+            expect(controller.params[:view]).to eq 'gallery'
+          end
+        end
 
       end
     end

@@ -131,6 +131,11 @@ class CatalogController < ApplicationController
   def index
     @root_collection = CourseCollectionSolrProxy.root
     @my_collection = current_user.personal_collection_proxy
+
+    # record preference for view type. Remove when we get:
+    # https://github.com/projectblacklight/blacklight/pull/982
+    session[:preferred_view] = params[:view] if params[:view]
+    params[:view] ||= session[:preferred_view]
     super
   end
 
