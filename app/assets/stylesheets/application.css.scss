@@ -32,8 +32,15 @@
     flex: none;
     .thumbnail {
       &> a {
-        display: block;
-        height: 80px;
+        display: inline-block;
+        height: 120px;
+        width: 100%;
+        text-align: center;
+        img {
+          height: 100%;
+          display: inline-block;
+          vertical-align: middle;
+        }
       }
       .caption {
         height: 160px;
