@@ -8,7 +8,7 @@ describe ThumbnailHelper do
       subject { helper.thumbnail_tag(solr_doc) }
 
       it "should display the thumbnail datastream" do
-        expect(subject).to eq "<img alt=\"Tufts:999?datastream id=thumnail\" src=\"/downloads/tufts:999?datastream_id=Thumnail.png\" />"
+        expect(subject).to eq "<img alt=\"Tufts:999?datastream id=thumbnail\" src=\"/downloads/tufts:999?datastream_id=Thumbnail.png\" />"
       end
     end
 

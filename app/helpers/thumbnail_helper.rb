@@ -3,9 +3,9 @@ module ThumbnailHelper
   # Displays the thumbnail image for the object
   # @param [SolrDocument, ActiveFedora::Base] document
   # @param [Hash] image_options
-  # @option image_options :datastream_id ('Thumnail.png') the datastream to draw
+  # @option image_options :datastream_id ('Thumbnail.png') the datastream to draw
   def thumbnail_tag(document, image_options={})
-    image_options = { datastream_id: 'Thumnail.png' }.merge(image_options)
+    image_options = { datastream_id: 'Thumbnail.png' }.merge(image_options)
     if is_a(document, TuftsImage)
       image_tag download_path(document.id, datastream_id: image_options[:datastream_id])
     elsif is_a(document, CuratedCollection)
