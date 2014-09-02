@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.4'
 gem 'sqlite3'
 gem 'blacklight', '~> 5.7.0'
-gem 'hydra-head', '~> 7.2.0'
+gem 'hydra-head', '~> 7.2.1'
 gem 'hydra-editor', '~> 0.4.0'
 
 # production and deployment gems
