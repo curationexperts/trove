@@ -136,7 +136,6 @@
 
             var onDragStartEvent = function(e)
             {
-              console.log("in the dr start");
                 var handle = $(e.target);
 
                 list.nestableCopy = handle.closest('.'+list.options.rootClass).clone(true);

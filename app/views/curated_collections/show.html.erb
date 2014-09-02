@@ -40,7 +40,7 @@
   <% else %>
     <h2>Members:</h2>
     <% if can?(:edit, @curated_collection) %>
-      <%= bootstrap_form_for @curated_collection do |f| %>
+      <%= bootstrap_form_for @curated_collection, html: {:'data-form-observer' => true}  do |f| %>
         <div id="orderable" class="dd row gallery">
           <ol class="dd-list">
             <%= render partial: 'member',  collection: @curated_collection.members %>
