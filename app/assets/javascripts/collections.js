@@ -1,14 +1,13 @@
 // This script is responsible for ordering/nesting the collections in the sidebar
 
 Blacklight.onLoad(function(){
-  $('#orderable-course-collections, #orderable-personal-collections').nestable({ maxDepth: 3 });
+  // For admin users
+  $('#orderable-course-collections, #orderable-personal-collections').nestable({ maxDepth: 3 }).nestable('collapseAll');
   updateWeightsAndRelationships($('#orderable-course-collections, #orderable-personal-collections'));
 
-  // Collapse all the collections in the sidebar
-  plugin = $('#orderable-course-collections').data("nestable")
-  $('#orderable-course-collections li, #orderable-personal-collections li').each(function() {
-    plugin['collapseItem']($(this));
-  })
+  // For a non-admin user
+  $('#collapsable-course-collections').collapsable().collapsable('collapseAll');
+
 });
 
 function updateWeightsAndRelationships(selector){
