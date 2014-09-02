@@ -1,5 +1,9 @@
 Blacklight.onLoad(function(){
   $('#orderable').nestable({maxDepth: 1, horizontalList: true});
+  $('#orderable li').bind('click', function(e) {
+    anchor = $(this).find('a:not(.removeButton)')
+    window.location.href = $(anchor).attr('href');
+  });
   updateWeights($('#orderable'));
 });
 

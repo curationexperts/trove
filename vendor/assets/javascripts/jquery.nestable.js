@@ -32,7 +32,7 @@
 		 eMove   = hasTouch ? 'touchmove'   : 'mousemove',
 	  	 eEnd    = hasTouch ? 'touchend'    : 'mouseup',
 	  	 eCancel = hasTouch ? 'touchcancel' : 'mouseup';
-		  
+
 	var defaults = {
 		listNodeName    : 'ol',
 		itemNodeName    : 'li',
@@ -53,6 +53,7 @@
 		maxDepth        : 5,
 		threshold       : 20,
 		reject          : [],
+    distance        : 1,
 		//method for call when an item has been successfully dropped
 		//method has 1 argument in which sends an object containing all
 		//necessary details
@@ -104,8 +105,38 @@
                 }
             });
 
-            var onStartEvent = function(e)
+            var moving = function(e) {
+              if (distanceMet(e)) {
+                list._dragStarted = true
+              }
+              if (list._dragStarted) {
+                onDragStartEvent(e);
+              }
+            };
+
+            var doneMoving = function(e) {
+              list.w.unbind(eMove, moving).unbind(eEnd, doneMoving);
+            };
+
+            var onStartEvent = function(e) {
+              list._dragStarted = false;
+              list._startEvent = e;
+              list.w.bind(eMove, moving).bind(eEnd, doneMoving);
+              e.preventDefault();
+            };
+
+
+            var distanceMet = function(e) {
+              return (Math.max(
+                  Math.abs(list._startEvent.pageX - event.pageX),
+                  Math.abs(list._startEvent.pageY - event.pageY)
+                ) >= list.options.distance
+              );
+            };
+
+            var onDragStartEvent = function(e)
             {
+              console.log("in the dr start");
                 var handle = $(e.target);
 
                 list.nestableCopy = handle.closest('.'+list.options.rootClass).clone(true);
