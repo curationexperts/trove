@@ -6,6 +6,13 @@ gem 'blacklight', '~> 5.7.0'
 gem 'hydra-head', '~> 7.2.0'
 gem 'hydra-editor', '~> 0.4.0'
 
+# production and deployment gems
+gem 'mysql2'
+gem 'therubyracer',  platforms: :ruby
+gem 'capistrano'
+gem 'capistrano-rails'
+gem 'capistrano-bundler'
+
 #gem 'powerpoint', path: '../powerpoint'
 gem 'powerpoint', github: 'curationexperts/powerpoint'
 
