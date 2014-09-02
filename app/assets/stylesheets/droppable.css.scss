@@ -1,9 +1,15 @@
+$nav-collections-active-hover-bg: lighten($brand-primary, 40%);
+$nav-collections-active-hover-border-color: $brand-primary;
+
 .drop-target {
   padding: 0;
   border: 1px solid transparent; //keep it from hoping around when it's hovered
 }
-.drop-target-hover {
-  padding: 0;
-  background: #f2fbff;
-  border: 1px dashed #b6bcbf;
+
+li.collection.drop-target-hover { // needs to be this specific to override orderable.css
+  .dd-handle {
+    margin: 1px -1px;
+    background: $nav-collections-active-hover-bg;
+    border: 3px solid $nav-collections-active-hover-border-color;
+  }
 }
