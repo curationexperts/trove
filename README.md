@@ -1,5 +1,8 @@
 #Tufts Digital Image Library
 
+This application was developed for Ruby 2.1.2, which was the most recently released version of Ruby as of Sept 2014.
+
+
 ##Initial Setup for Developers
 
 ### Add secrets to your secrets file
