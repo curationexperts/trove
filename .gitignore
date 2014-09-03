@@ -24,10 +24,6 @@ config/feature_data.yml
 # Ignore jetty data and config files
 jetty
 
-# Don't send local rvm config
-.rvmrc
-.ruby-gemset
-
 # test derivatives are generated here:
 spec/fixtures/local_object_store/data01/tufts/central/dca/MISS/advanced_jpg/
 spec/fixtures/local_object_store/data01/tufts/central/dca/MISS/basic_jpg/
