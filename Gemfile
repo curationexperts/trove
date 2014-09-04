@@ -2,7 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.1.4'
 gem 'sqlite3'
-gem 'blacklight', '~> 5.7.0'
+# gem 'blacklight', '~> 5.7.0'
+gem 'blacklight', github: 'projectblacklight/blacklight', ref: '6896d05cbbd994e93ea27df71fadfb36f44f7008'
 gem 'hydra-head', '~> 7.2.1'
 gem 'hydra-editor', '~> 0.4.0'
 

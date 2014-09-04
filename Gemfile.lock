@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/curationexperts/tufts_models.git
-  revision: 1ff6f997dee10b423603c34623d8d5054e0eb6ae
+  revision: f25256bb38ecc2daec066426de2d4bb1d1d78a8b
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -31,6 +31,19 @@ GIT
       blacklight (>= 5.0.0.pre4, < 6.0)
       bootstrap-sass (~> 3.0)
       rails
+
+GIT
+  remote: git://github.com/projectblacklight/blacklight.git
+  revision: 6896d05cbbd994e93ea27df71fadfb36f44f7008
+  ref: 6896d05cbbd994e93ea27df71fadfb36f44f7008
+  specs:
+    blacklight (5.7.0)
+      bootstrap-sass (~> 3.2)
+      deprecation
+      kaminari (~> 0.13)
+      nokogiri (~> 1.6)
+      rails (>= 3.2.6, < 5)
+      rsolr (~> 1.0.6)
 
 GEM
   remote: https://rubygems.org/
@@ -78,16 +91,9 @@ GEM
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.7)
-    blacklight (5.7.0)
-      bootstrap-sass (~> 3.2)
-      deprecation
-      kaminari (~> 0.13)
-      nokogiri (~> 1.6)
-      rails (>= 3.2.6, < 5)
-      rsolr (~> 1.0.6)
     block_helpers (0.3.3)
       activesupport (>= 2.0)
-    bootstrap-sass (3.2.0.1)
+    bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
     bootstrap_form (2.1.1)
     breadcrumbs_on_rails (2.3.0)
@@ -104,7 +110,7 @@ GEM
     capistrano-bundler (1.1.3)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
-    capistrano-rails (1.1.1)
+    capistrano-rails (1.1.2)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
     capybara (2.4.1)
@@ -436,7 +442,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  blacklight (~> 5.7.0)
+  blacklight!
   blacklight-gallery!
   breadcrumbs_on_rails (~> 2.3.0)
   byebug
