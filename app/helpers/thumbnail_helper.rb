@@ -9,7 +9,7 @@ module ThumbnailHelper
     if is_a(document, TuftsImage)
       image_tag download_path(document.id, datastream_id: image_options[:datastream_id])
     elsif is_a(document, CuratedCollection)
-      image_tag '/folder_thumbnail.png'
+      image_tag 'folder_thumbnail.png'
     else
       content_tag :span, '', class: 'canonical-image'
     end
