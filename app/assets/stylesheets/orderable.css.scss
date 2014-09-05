@@ -1,7 +1,7 @@
 $handle-height: 270px;
 .dd { position: relative; display: block; margin: 0; padding: 0; line-height: 20px; }
 
-#orderable.dd {
+.gallery.dd {
   .dd-item {
     @include make-xs-column(6);
     @include make-sm-column(4);
