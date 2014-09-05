@@ -7,7 +7,7 @@ $nav-collections-active-hover-border-color: $brand-primary;
 }
 
 li.collection.drop-target-hover { // needs to be this specific to override orderable.css
-  .dd-handle {
+  & > .dd-handle {
     margin: 1px -1px;
     background: $nav-collections-active-hover-bg;
     border: 3px solid $nav-collections-active-hover-border-color;

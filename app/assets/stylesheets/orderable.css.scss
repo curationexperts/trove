@@ -22,6 +22,10 @@ $handle-height: 270px;
 
 .course-collection-list, .personal-collection-list {
   padding: 2px;
+  /* nested collection children */
+  ol {
+    padding-right: 0
+  }
 }
 
 .dd-list {

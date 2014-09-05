@@ -12,7 +12,7 @@
           <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
           <%= render partial: 'course_collection', collection: @root_collection.collection_members,
             as: :collection_member,
-            locals: { counter: counter, parent_id: @root_collection.id} %>
+            locals: { counter: counter, parent_id: @root_collection.id, level: 1} %>
         </ol>
         <%= f.primary t('.save_order') %>
       <% end %>
@@ -21,7 +21,7 @@
         <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
         <%= render partial: 'course_collection', collection: @root_collection.collection_members,
           as: :collection_member,
-          locals: { counter: counter, parent_id: @root_collection.id} %>
+          locals: { counter: counter, parent_id: @root_collection.id, level: 1} %>
       </ol>
     <% end %>
   </div>
@@ -39,7 +39,7 @@
         <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
         <%= render partial: 'course_collection', collection: @my_collection.collection_members,
           as: :collection_member,
-          locals: { counter: counter, parent_id: @my_collection.id} %>
+          locals: { counter: counter, parent_id: @my_collection.id, level: 1} %>
       </ol>
       <%= f.primary t('.save_order') %>
     <% end %>

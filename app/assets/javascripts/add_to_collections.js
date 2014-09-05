@@ -4,7 +4,9 @@ Blacklight.onLoad(function() {
       return $('<span style="white-space:nowrap;"/>')
             .html($(this).find('img').clone().css('opacity', '0.6'));
     },
-    cursorAt: { left: 5, top: 5 }
+    cursorAt: { left: 5, top: 5 },
+    // enable dropping onto child items that are collapsed (display: none) when dragging starts.
+    refreshPositions: true
   }).click(function() {
     if ( $(this).is('.ui-draggable-dragging') ) {
       return;
@@ -34,16 +36,59 @@ Blacklight.onLoad(function() {
     });
   }
 
-  $(".personal-collection-list li.drop-target").droppable({
+  var clearDropClassOnParent = function(item, level) {
+    if (that.data('level') == '2' ) {
+      setTimeout(function () {
+        that.closest('[data-level="1"]').removeClass('drop-target-hover');
+      }, 1);
+    } else { // level 3
+      setTimeout(function () {
+        that.closest('[data-level="1"]').removeClass('drop-target-hover');
+        that.closest('[data-level="2"]').removeClass('drop-target-hover');
+      }, 1);
+    }
+  }
+
+  var hoverIntent;
+  // Handler when the mouse goes over a droppable.
+  var mouseEnter = function() {
+    // Ensure the parent item doesn't also have drop-target-hover
+    // This is importing if you're hoving over a child collection.
+    that = $(this)
+    if (that.data('level') != '1' ) {
+      clearDropClassOnParent(that, that.data('level'))
+    }
+
+    if (!$(this).hasClass('dd-collapsed')) {
+      return true;
+    }
+
+    // Start a timeout to expand the child items.
+    hoverIntent = setTimeout( function() {
+      that.closest('.dd').data('nestable').expandItem(that)
+    } , 800 );
+
+    return true;
+  }
+
+  // Handler for when the mouse leaves a droppable
+  var mouseLeave = function () {
+    clearTimeout(hoverIntent);
+  }
+
+
+  var opts = {
     greedy: true,
     hoverClass: 'drop-target-hover',
+    over: mouseEnter,
+    out: mouseLeave,
     tolerance: 'pointer',
-    drop: addToPersonalCollection
-  });
-  $(".course-collection-list li.drop-target").droppable({
-    greedy: true,
-    hoverClass: 'drop-target-hover',
-    tolerance: 'pointer',
-    drop: addToCourseCollection
-  });
+  };
+
+  $(".personal-collection-list li.drop-target").droppable(
+    $.extend({drop: addToPersonalCollection}, opts)
+  );
+  $(".course-collection-list li.drop-target").droppable(
+    $.extend({drop: addToCourseCollection}, opts)
+  );
 });
