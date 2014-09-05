@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.4'
+gem 'rails', '4.1.5'
 gem 'sqlite3'
 # gem 'blacklight', '~> 5.7.0'
 gem 'blacklight', github: 'projectblacklight/blacklight', ref: '6896d05cbbd994e93ea27df71fadfb36f44f7008'
