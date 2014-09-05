@@ -22,29 +22,6 @@ GIT
       settingslogic
       titleize
 
-GIT
-  remote: git://github.com/projectblacklight/blacklight-gallery.git
-  revision: 98c8724552f0d444c753c5ca9f7dab2757bc74b3
-  branch: customize_wrapper
-  specs:
-    blacklight-gallery (0.0.1)
-      blacklight (>= 5.0.0.pre4, < 6.0)
-      bootstrap-sass (~> 3.0)
-      rails
-
-GIT
-  remote: git://github.com/projectblacklight/blacklight.git
-  revision: 6896d05cbbd994e93ea27df71fadfb36f44f7008
-  ref: 6896d05cbbd994e93ea27df71fadfb36f44f7008
-  specs:
-    blacklight (5.7.0)
-      bootstrap-sass (~> 3.2)
-      deprecation
-      kaminari (~> 0.13)
-      nokogiri (~> 1.6)
-      rails (>= 3.2.6, < 5)
-      rsolr (~> 1.0.6)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -91,6 +68,17 @@ GEM
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.7)
+    blacklight (5.7.1)
+      bootstrap-sass (~> 3.2)
+      deprecation
+      kaminari (~> 0.13)
+      nokogiri (~> 1.6)
+      rails (>= 3.2.6, < 5)
+      rsolr (~> 1.0.6)
+    blacklight-gallery (0.1.0)
+      blacklight (~> 5.0)
+      bootstrap-sass (~> 3.0)
+      rails
     block_helpers (0.3.3)
       activesupport (>= 2.0)
     bootstrap-sass (3.2.0.2)
@@ -448,8 +436,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  blacklight!
-  blacklight-gallery!
+  blacklight (~> 5.7.1)
+  blacklight-gallery (~> 0.1.0)
   breadcrumbs_on_rails (~> 2.3.0)
   byebug
   capistrano

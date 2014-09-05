@@ -2,8 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.1.5'
 gem 'sqlite3'
-# gem 'blacklight', '~> 5.7.0'
-gem 'blacklight', github: 'projectblacklight/blacklight', ref: '6896d05cbbd994e93ea27df71fadfb36f44f7008'
+gem 'blacklight', '~> 5.7.1'
 gem 'hydra-head', '~> 7.2.1'
 gem 'hydra-editor', '~> 0.4.0'
 
@@ -54,7 +53,7 @@ gem 'tufts_models', github: 'curationexperts/tufts_models'
 
 gem "devise"
 gem "devise-guests", "~> 0.3"
-gem 'blacklight-gallery', github: 'projectblacklight/blacklight-gallery', branch: 'customize_wrapper'
+gem 'blacklight-gallery', '~> 0.1.0'
 gem 'settingslogic' # for settings
 
 gem 'breadcrumbs_on_rails', '~> 2.3.0'
