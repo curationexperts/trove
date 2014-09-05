@@ -1,6 +1,11 @@
 $nav-collections-active-hover-bg: lighten($brand-primary, 40%);
 $nav-collections-active-hover-border-color: $brand-primary;
 
+.no-drag {
+  background-image: url(image-path('no-sign.png'));
+  background-repeat: no-repeat;
+}
+
 .drop-target {
   padding: 0;
   border: 1px solid transparent; //keep it from hoping around when it's hovered

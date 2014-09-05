@@ -15,6 +15,20 @@ Blacklight.onLoad(function() {
     $(this).find('a').click();
   });
 
+  $('[data-behavior="not-draggable"]').draggable({
+    helper: function(event) {
+      return $('<div style="white-space:nowrap; height: 64px; width: 64px" class="no-drag"></div>')
+    },
+    cursorAt: { left: 5, top: 5 },
+  }).click(function() {
+    if ( $(this).is('.ui-draggable-dragging') ) {
+      console.log("dragging");
+      return;
+    }
+
+    $(this).find('a').click();
+  });
+
   function addToPersonalCollection(event, ui) {
     addToCollection(event, ui, 'personal_collections')
   }
@@ -83,6 +97,7 @@ Blacklight.onLoad(function() {
     over: mouseEnter,
     out: mouseLeave,
     tolerance: 'pointer',
+    accept: '[data-behavior="draggable"]'
   };
 
   $(".personal-collection-list li.drop-target").droppable(
