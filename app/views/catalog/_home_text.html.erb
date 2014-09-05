@@ -6,7 +6,7 @@
         <%= link_to path, class: "thumbnail" do %>
           <div class="text-center">
             <% image = (feature.is_a?(CuratedCollection) && feature.members.first) || feature %>
-            <%= thumbnail_tag(image, datastream_id: 'Basic.jpg') %>
+            <%= thumbnail_tag(image, datastream_id: 'Thumbnail.jpg') %>
              <h5 class="index_title">
                <%= feature.title %>
             </h5>
