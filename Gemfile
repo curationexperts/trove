@@ -62,9 +62,16 @@ gem 'breadcrumbs_on_rails', '~> 2.3.0'
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'factory_girl_rails'
+end
+
+group :development do
   gem "jettywrapper"
+  gem "unicorn"
+end
+
+group :test do
   gem 'capybara'
+  gem 'factory_girl_rails'
 end
 
 group :debug do
