@@ -9,7 +9,7 @@ describe 'catalog/_home_text' do
     end
     it "should draw a thumnail for the featured image" do
       render
-      expect(rendered).to have_selector('img[src="/downloads/tufts:777?datastream_id=Basic.jpg"]')
+      expect(rendered).to have_selector('img[src="/downloads/tufts:777?datastream_id=Thumbnail.png"]')
     end
   end
 
@@ -22,7 +22,7 @@ describe 'catalog/_home_text' do
     end
     it "should draw a thumnail for the first member of the collection" do
       render
-      expect(rendered).to have_selector('img[src="/downloads/tufts:888?datastream_id=Basic.jpg"]')
+      expect(rendered).to have_selector('img[src="/downloads/tufts:888?datastream_id=Thumbnail.png"]')
     end
   end
 end
