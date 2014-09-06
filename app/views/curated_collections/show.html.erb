@@ -38,7 +38,7 @@
   <% if @curated_collection.members.size == 0 %>
     <h2>This collection does not have any members</h2>
   <% else %>
-    <h2>Members:</h2>
+    <h2 class="clearfix">Members:</h2>
     <% if can?(:edit, @curated_collection) %>
       <%= bootstrap_form_for @curated_collection, html: {:'data-form-observer' => true}  do |f| %>
         <div id="orderable" class="dd row gallery">
