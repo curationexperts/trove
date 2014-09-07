@@ -46,9 +46,11 @@ class CuratedCollectionsController < ApplicationController
     if not ['personal', 'course'].include?(params[:collection_type])
       raise ActiveModel::ForbiddenAttributes.new
     end
+    new_type = params[:collection_type]
     @curated_collection.clear_relationship(:has_model)
-    @curated_collection.add_relationship(:has_model, class_uri(params[:collection_type]))
+    @curated_collection.add_relationship(:has_model, class_uri(new_type))
     if @curated_collection.save
+      update_collection_parent(new_type)
       redirect_to curated_collection_path(@curated_collection)
     else
       render :show
@@ -132,5 +134,25 @@ protected
     else
       raise ArgumentError.new("Unknown has_model relationship")
     end
+  end
+
+  def update_collection_parent(collection_type)
+    # remove the collection from it's former parent
+    old_parent = @curated_collection.parent
+    old_parent.delete_member_by_id(@curated_collection.id)
+    old_parent.save
+
+    # add it to the root of the new collection type
+    case collection_type
+      when 'personal' # the collection was just downgraded to a PersonalCollection
+        new_parent = User.find_by_user_key(@curated_collection.creator).personal_collection(true)
+
+      when 'course'   # the collection was just upgraded to a CourseCollection
+        new_parent = CourseCollection.root
+    end
+
+    new_parent.member_ids = [@curated_collection.id] + new_parent.member_ids
+    new_parent.save
+
   end
 end

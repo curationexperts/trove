@@ -1,6 +1,15 @@
 module WithNestedMembers
   extend ActiveSupport::Concern
 
+  # given a personal or course collection, remove a the first instance of a member by pid
+  # makes no change to the collection if pid
+  #TODO Move this to CuratedCollection in tufts_models ?
+  def delete_member_by_id(pid)
+    if posn = member_ids.index(pid)
+      delete_member_at(posn)
+    end
+  end
+
   # this sets all the members of a collection (images and collections)
   # any that are not provided are removed.
   def member_attributes=(members)
