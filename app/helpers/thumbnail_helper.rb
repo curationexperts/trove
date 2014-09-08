@@ -7,11 +7,21 @@ module ThumbnailHelper
   def thumbnail_tag(document, image_options={})
     image_options = { datastream_id: 'Thumbnail.png' }.merge(image_options)
     if is_a(document, TuftsImage)
-      image_tag download_path(document.id, datastream_id: image_options[:datastream_id])
+      image_tag thumbnail_url(document, image_options)
     elsif is_a(document, CuratedCollection)
-      image_tag 'folder_thumbnail.png'
+      image_tag thumbnail_url(document, image_options)
     else
       content_tag :span, '', class: 'canonical-image'
+    end
+  end
+
+  def thumbnail_url(document, image_options={})
+    # we use Basic as the default here for the blacklight-gallery slideshow
+    image_options = { datastream_id: 'Basic.jpg' }.merge(image_options)
+    if is_a(document, TuftsImage)
+      download_path(document.id, datastream_id: image_options[:datastream_id])
+    elsif is_a(document, CuratedCollection)
+      'folder_thumbnail.png'
     end
   end
 
