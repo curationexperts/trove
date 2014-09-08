@@ -213,13 +213,23 @@ describe CourseCollectionsController do
     end
 
     describe "PATCH update_type" do
+
+      let(:collection_w_creator) { FactoryGirl.create(:course_collection, creator: [user.user_key]) }
+
       it "updates the collection type" do
-        patch :update_type, id: collection, collection_type: 'personal'
+        patch :update_type, id: collection_w_creator, collection_type: 'personal'
         # reload manually to see if the class changed
-        reloaded = ActiveFedora::Base.find(collection.pid, cast: true)
+        reloaded = ActiveFedora::Base.find(collection_w_creator.pid, cast: true)
         expect(reloaded.type).to eq 'personal'
         expect(response).to redirect_to(personal_collection_path(reloaded))
       end
+
+      it "updates the collection parent" do
+        patch :update_type, id: collection_w_creator, collection_type: 'personal'
+        expect(CourseCollection.root.member_ids).not_to include(collection_w_creator.id)
+        expect(user.personal_collection.member_ids).to include(collection_w_creator.id)
+      end
+
     end
   end  # describe admin user
 

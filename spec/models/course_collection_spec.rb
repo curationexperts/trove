@@ -33,6 +33,16 @@ describe CourseCollection do
         expect(subject.member_ids).to eq [img1.id, img2.id]
       end
 
+      it "deletes members by id" do
+        subject.delete_member_by_id(img2.id)
+        expect(subject.members).to eq [img1]
+      end
+
+      it "ignores delete requests for non-member pids" do
+        subject.delete_member_by_id(img3.id)
+        expect(subject.members).to eq [img1, img2]
+      end
+
       it "adding members persists when saved" do
         subject.save!
         expect(subject.members).to eq [img1, img2]
