@@ -46,10 +46,11 @@
 
 #documents .grid .document .thumbnail {
   a>img {
-    position: relative;
+    position: absolute;
     max-width: none;
-    width: 100%;
-    left: 0;
+    left: 4px;
+    top: 4px;
+    width: 90%;
   }
 }
 
