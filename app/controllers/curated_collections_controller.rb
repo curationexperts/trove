@@ -67,7 +67,7 @@ class CuratedCollectionsController < ApplicationController
         @curated_collection.ancestors_and_self.each do |s|
           add_breadcrumb s, s
         end
-        @members = @curated_collection.members.select { |m| m.displays.include?('tdil') }
+        @members = @curated_collection.members.select { |m| m.displays.include?('tdil') && m.state == 'A' }
       end
       format.pptx do
         send_file(@curated_collection.to_pptx,

@@ -50,10 +50,16 @@ describe CourseCollectionsController do
     describe "GET 'show'" do
       let(:displays_tdil) { create(:tufts_image, displays: ['tdil']) }
       let(:displays_dl) { create(:tufts_image, displays: ['dl']) }
+      let(:deleted_record) { create(:tufts_image, displays: ['tdil']) }
+      let(:soft_deleted_record) { create(:tufts_image, displays: ['tdil']) }
 
       before do
-        collection.members = [displays_tdil, displays_dl]
+        # Fedora won't let you create a deleted record, so create & then update as deleted:
+        soft_deleted_record.state = 'D'
+        soft_deleted_record.save!
+        collection.members = [displays_tdil, displays_dl, deleted_record, soft_deleted_record]
         collection.save!
+        deleted_record.delete
       end
 
       it "returns http success" do

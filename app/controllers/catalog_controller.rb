@@ -6,9 +6,8 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
   include Hydra::Controller::ControllerBehavior
 
-  CatalogController.solr_search_params_logic += [:only_displays_in_tdil]
-  CatalogController.solr_search_params_logic += [:only_images_and_collections]
-  CatalogController.solr_search_params_logic += [:exclude_root_collection]
+  CatalogController.solr_search_params_logic += [:only_displays_in_tdil, :only_images_and_collections,
+    :exclude_root_collection, :exclude_soft_deleted]
 
   configure_blacklight do |config|
     config.default_solr_params = {
@@ -167,6 +166,11 @@ protected
   def only_displays_in_tdil(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] << "displays_ssim:tdil"
+  end
+
+  def exclude_soft_deleted(solr_parameters, user_parameters)
+    solr_parameters[:fq] ||= []
+    solr_parameters[:fq] << "NOT #{ActiveFedora::SolrService.solr_name("object_state", :stored_sortable)}:\"D\""
   end
 
   # Override method from blacklight to check for 'tdil' display
