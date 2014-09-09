@@ -3,7 +3,7 @@ lock '3.2.1'
 
 set :application, 'tdil'
 set :scm, :git
-set :repo_url, 'git@github.com:curationexperts/tufts-image-library.git'
+set :repo_url, 'https://github.com/curationexperts/tufts-image-library.git'
 set :branch, 'master'
 set :deploy_to, '/opt/tdil'
 set :log_level, :debug
