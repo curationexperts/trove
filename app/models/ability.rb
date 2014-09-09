@@ -1,6 +1,5 @@
 class Ability
   include Hydra::Ability
-  
 
   def read_permissions
     if current_user.registered?
@@ -38,7 +37,10 @@ class Ability
   end
 
   def create_permissions
-    can :create, PersonalCollection if current_user.registered?
+    if current_user.registered?
+      can :create, PersonalCollection
+      can :copy, [CourseCollection, PersonalCollection]
+    end
   end
 
   def download_permissions

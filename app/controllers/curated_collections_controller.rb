@@ -10,17 +10,19 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def create
-    @curated_collection.active_user = current_user if @curated_collection.is_a? PersonalCollection
+    build_collection(@curated_collection)
     @curated_collection.attributes = collection_params
-    @curated_collection.read_groups = ['public']
-    @curated_collection.displays = ['tdil']
-    @curated_collection.apply_depositor_metadata(current_user)
-    @curated_collection.creator = [current_user.user_key]
     if @curated_collection.save
       redirect_to (params[:return_url] || root_path)
     else
       render :new
     end
+  end
+
+  def copy
+    @cloned = duplicate(@curated_collection)
+    redirect_to root_path
+
   end
 
   def update
@@ -103,10 +105,47 @@ class CuratedCollectionsController < ApplicationController
     redirect_to @curated_collection
   end
 
-protected
+  protected
+
+
+  def duplicate(source, top_level=true)
+    collection_class.new.tap do |dest|
+      build_collection(dest, top_level)
+      dest.title = source.title
+      dest.description = source.description
+      dest.members = source.members.map do |member|
+        if member.is_a? CourseCollection
+          duplicate(member, false).tap do |collection|
+            collection.save!
+          end
+        else
+          member
+        end
+      end
+      dest.save!
+    end
+  end
+
+  def collection_class
+    if can? :create, CourseCollection
+      @curated_collection.class
+    elsif can? :create, PersonalCollection
+      PersonalCollection
+    end
+  end
+
+  def build_collection(collection, top_level=true)
+    # if active_user is set, the collection gets added to that users top-level collection.
+    collection.active_user = current_user if top_level && collection.is_a?(PersonalCollection)
+    collection.read_groups = ['public']
+    collection.displays = ['tdil']
+    collection.apply_depositor_metadata(current_user)
+    collection.creator = [current_user.user_key]
+  end
+
   def initialize_fields
     %w(description).each do |key|
-      # if value is empty, we create an one element array to loop over for output 
+      # if value is empty, we create an one element array to loop over for output
       @curated_collection[key] = [''] if @curated_collection[key].empty?
     end
   end

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   resources :course_collections, constraints: { id: ALLOW_DOTS } do
     member do
+      post :copy
       patch :append_to
       delete :remove_from
       patch :update_type
@@ -18,6 +19,7 @@ Rails.application.routes.draw do
   end
   resources :personal_collections, constraints: { id: ALLOW_DOTS } do
     member do
+      post :copy
       patch :append_to
       delete :remove_from
       patch :update_type

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe CourseCollectionsController do
-  let(:image) { FactoryGirl.create(:image) }
-  let(:collection) { FactoryGirl.create(:course_collection) }
+  let(:image) { create(:image) }
+  let(:collection) { create(:course_collection) }
 
   describe "for an unauthenticated user" do
     describe "create" do
@@ -28,13 +28,13 @@ describe CourseCollectionsController do
   end
 
   describe "for a non-admin user" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { create(:user) }
     before { sign_in user }
 
     describe "create" do
       it "denies access" do
         expect{
-          post 'create', course_collection: {title: 'foo'}
+          post :create, course_collection: {title: 'foo'}
         }.to raise_error(CanCan::AccessDenied)
       end
     end
@@ -74,9 +74,32 @@ describe CourseCollectionsController do
 
     describe "PATCH 'append_to'" do
       it "denies access" do
-        expect{
+        expect {
           patch :append_to, id: collection, pid: 'pid:1'
         }.to raise_error(CanCan::AccessDenied)
+      end
+    end
+
+    describe "POST 'copy'" do
+      let(:nested_collection) { create(:course_collection) }
+      let(:nested_image) { create(:tufts_image, displays: ['tdil']) }
+
+      before do
+        PersonalCollection.destroy_all
+        nested_collection.members = [ nested_image ]
+        nested_collection.save!
+        collection.members = [ image, nested_collection ]
+        collection.save!
+      end
+
+      it "creates a personal collection" do
+        expect {
+          post :copy, id: collection
+        }.to change { PersonalCollection.count }.by(3)
+        expect(response).to redirect_to root_path
+        expect(assigns[:cloned].members.map(&:class)).to eq [TuftsImage, PersonalCollection]
+        expect(assigns[:cloned].members[1].member_ids).to eq [nested_image.pid]
+        expect(user.personal_collection.member_ids).to eq [assigns[:cloned].pid]
       end
     end
 
@@ -90,14 +113,14 @@ describe CourseCollectionsController do
   end
 
   describe "an admin user" do
-    let(:user) { FactoryGirl.create(:admin) }
+    let(:user) { create(:admin) }
     before { sign_in user }
 
     describe "POST 'create'" do
       it "creates a course collection" do
         expect {
-          post 'create', course_collection: {title: 'foo'}
-        }.to change {CourseCollection.count }.by(1)
+          post :create, course_collection: { title: 'foo' }
+        }.to change { CourseCollection.count }.by(1)
 
         expect(response.status).to eq 302
         expect(assigns[:curated_collection].read_groups).to eq ['public']
@@ -145,7 +168,7 @@ describe CourseCollectionsController do
     end
 
     describe "DELETE 'destroy'" do
-      let!(:collection) { FactoryGirl.create(:course_collection) }
+      let!(:collection) { create(:course_collection) }
       it "deletes the collection" do
         expect{
           delete :destroy, id: collection
@@ -199,9 +222,9 @@ describe CourseCollectionsController do
       end
 
       context 'course collection with images' do
-        let(:image1) { FactoryGirl.create(:image) }
-        let(:image2) { FactoryGirl.create(:image) }
-        let(:image3) { FactoryGirl.create(:image) }
+        let(:image1) { create(:image) }
+        let(:image2) { create(:image) }
+        let(:image3) { create(:image) }
 
         it "reorders the collection" do
           patch :update, id: collection, course_collection: {member_attributes: {"0"=>{"id"=>image1.id, "weight"=>"1"}, "1"=>{"id"=>image1.id, "weight"=>"2"}, "2"=>{"id"=>image1.id, "weight"=>"3"}, "3"=>{"id"=>image2.id, "weight"=>"4"}, "4"=>{"id"=>image3.id, "weight"=>"0"}}}
@@ -214,9 +237,9 @@ describe CourseCollectionsController do
         before { CourseCollection.destroy_all }
 
         let(:root) { CourseCollection.root }
-        let(:collection1) { FactoryGirl.create(:course_collection) }
-        let(:collection2) { FactoryGirl.create(:course_collection) }
-        let(:collection3) { FactoryGirl.create(:course_collection) }
+        let(:collection1) { create(:course_collection) }
+        let(:collection2) { create(:course_collection) }
+        let(:collection3) { create(:course_collection) }
 
         it "sets the children" do
           post :update, id: root, course_collection: {collection_attributes: {"0"=>{"id"=>collection3.id, "weight"=>"1", 'parent_page_id' => collection1.id}, "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => root.id}, "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}}
@@ -229,7 +252,7 @@ describe CourseCollectionsController do
 
     describe "PATCH update_type" do
 
-      let(:collection_w_creator) { FactoryGirl.create(:course_collection, creator: [user.user_key]) }
+      let(:collection_w_creator) { create(:course_collection, creator: [user.user_key]) }
 
       it "updates the collection type" do
         patch :update_type, id: collection_w_creator, collection_type: 'personal'

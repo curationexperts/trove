@@ -1,22 +1,6 @@
-<% collection_class =
-     if can? :create, CourseCollection
-       collection.class
-     elsif can? :create, PersonalCollection
-       PersonalCollection
-     end
-%>
-
-<% if collection_class %>
+<% if can? :copy, collection %>
   <li>
-    <%= form_for collection_class.new do |f| %>
-      <%= f.hidden_field :title, value: collection.title %>
-      <% collection.description.each do |d| %>
-        <%= f.hidden_field :description, value: d, multiple: true %>
-      <% end %>
-      <% collection.member_ids.each do |id| %>
-        <%= f.hidden_field :member_ids, value: id, multiple: true %>
-      <% end %>
-
+    <%= form_tag [:copy, collection] do %>
       <button type='submit' class='btn btn-link' style='padding: 0'>
         copy this collection
         <span class="glyphicon glyphicon-plus"></span>

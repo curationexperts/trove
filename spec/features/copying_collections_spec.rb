@@ -1,13 +1,14 @@
 require 'rails_helper'
 
 feature 'Copying Collections:' do
-  let(:course_collection) { FactoryGirl.create(:course_collection, member_ids: [image.id]) }
-  let(:image) { FactoryGirl.create(:image) }
+  let(:course_collection) { create(:course_collection, member_ids: [image.id]) }
+  let(:image) { create(:image) }
 
   context 'an admin user' do
-    let(:personal_collection) { FactoryGirl.create(:personal_collection) }
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:personal_collection) { create(:personal_collection) }
+    let(:admin) { create(:admin) }
     before do
+      PersonalCollection.destroy_all
       CourseCollection.destroy_all
       sign_in admin
     end
@@ -24,13 +25,13 @@ feature 'Copying Collections:' do
       visit personal_collection_path(personal_collection)
       expect {
         click_button('copy this collection')
-      }.to change { PersonalCollection.count }.by(2)
+      }.to change { PersonalCollection.count }.by(2) #personal root & target collection
     end
   end
 
   context 'a non-admin user' do
-    let(:user) { FactoryGirl.create(:user) }
-    let(:personal_collection) { FactoryGirl.create(:personal_collection, user: user) }
+    let(:user) { create(:user) }
+    let(:personal_collection) { create(:personal_collection, user: user) }
     before { sign_in user }
 
     scenario 'makes a personal copy of a course collection' do

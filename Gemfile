@@ -75,4 +75,5 @@ end
 
 group :debug do
   gem 'byebug', require: false
+  gem 'launchy'
 end
