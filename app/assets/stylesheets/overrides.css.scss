@@ -1,0 +1,55 @@
+/* Copied from line 38, blacklight-gallery-2f9f34251858/app/assets/stylesheets/blacklight_gallery/default.css.scss */
+.document-metadata {
+  dt, dd {
+    float: none;
+    width: auto;
+    clear: none;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+#documents.row.gallery {
+  display: block;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+
+  .document {
+    display: flex;
+    flex: none;
+    .thumbnail {
+      &> a {
+        display: inline-block;
+        height: 120px;
+        width: 100%;
+        text-align: center;
+        img {
+          height: 100%;
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+      .caption {
+        height: 160px;
+        overflow: hidden;
+        dl.document-metadata {
+          margin-bottom: 0;
+        }
+      }
+      width: 100%;
+      padding-bottom: 10px;
+    }
+  }
+}
+
+#documents .grid .document .thumbnail {
+  a>img {
+    position: relative;
+    max-width: none;
+    width: 100%;
+    left: 0;
+  }
+}
+
