@@ -42,18 +42,14 @@
     <% if can?(:edit, @curated_collection) %>
       <%= bootstrap_form_for @curated_collection, html: {:'data-form-observer' => true}  do |f| %>
         <div id="orderable" class="dd row gallery">
-          <ol class="dd-list">
-            <%= render partial: 'member',  collection: @curated_collection.members %>
-          </ol>
+          <%= render 'member_list' %>
         </div>
         <%= f.primary t('.save_order') %>
       <% end %>
     <% else %>
-        <div class="dd row gallery">
-          <ol class="dd-list">
-            <%= render partial: 'member',  collection: @curated_collection.members %>
-          </ol>
-        </div>
+      <div class="dd row gallery">
+        <%= render 'member_list' %>
+      </div>
     <% end %>
   <% end %>
 </div>

@@ -48,11 +48,20 @@ describe CourseCollectionsController do
     end
 
     describe "GET 'show'" do
+      let(:displays_tdil) { create(:tufts_image, displays: ['tdil']) }
+      let(:displays_dl) { create(:tufts_image, displays: ['dl']) }
+
+      before do
+        collection.members = [displays_tdil, displays_dl]
+        collection.save!
+      end
+
       it "returns http success" do
         expect(controller).to receive(:add_breadcrumb).with(collection, collection)
         get :show, id: collection
         expect(response).to be_successful
         expect(assigns[:curated_collection]).to eq collection
+        expect(assigns[:members]).to eq [displays_tdil]
         expect(response).to render_template(:show)
       end
     end

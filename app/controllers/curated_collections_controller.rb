@@ -62,16 +62,18 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def show
-    @curated_collection.ancestors_and_self.each do |s|
-      add_breadcrumb s, s
-    end
     respond_to do |format|
-      format.html
-      format.pptx {
+      format.html do
+        @curated_collection.ancestors_and_self.each do |s|
+          add_breadcrumb s, s
+        end
+        @members = @curated_collection.members.select { |m| m.displays.include?('tdil') }
+      end
+      format.pptx do
         send_file(@curated_collection.to_pptx,
                   filename: @curated_collection.pptx_file_name,
                   type: "application/vnd.openxmlformats-officedocument.presentationml.presentation")
-      }
+      end
     end
   end
 

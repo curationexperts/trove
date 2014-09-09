@@ -9,6 +9,7 @@ describe 'catalog/_show_image_4_ds.html.erb' do
   before do
     allow(view).to receive(:blacklight_config) { CatalogController.new.blacklight_config }
     allow(view).to receive(:current_user) { user }
+    allow(view).to receive(:can?).with(:update, CourseCollection) { true }
   end
 
   describe 'course collections' do
