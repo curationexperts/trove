@@ -14,43 +14,10 @@
  */
 
 @import 'blacklight';
-@import 'blacklight_gallery';
+@import 'blacklight_gallery/default';
 @import 'orderable';
 @import 'droppable';
 @import 'collection';
 @import 'catalog';
 @import 'tufts';
-
-#documents.row.gallery {
-  display: block;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-
-  .document {
-    display: flex;
-    flex: none;
-    .thumbnail {
-      &> a {
-        display: inline-block;
-        height: 120px;
-        width: 100%;
-        text-align: center;
-        img {
-          height: 100%;
-          display: inline-block;
-          vertical-align: middle;
-        }
-      }
-      .caption {
-        height: 160px;
-        overflow: hidden;
-        dl.document-metadata {
-          margin-bottom: 0;
-        }
-      }
-      width: 100%;
-      padding-bottom: 10px;
-    }
-  }
-}
+@import 'overrides';
