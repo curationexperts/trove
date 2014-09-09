@@ -1,6 +1,6 @@
 <% # container for a single doc -%>
 <% # course collections are not draggable. curationexperts/tufts-image-library#4 %>
-<div class="document" data-document-id="<%= course_collection.id %>" itemscope itemtype="<%= course_collection.itemtype %>">
+<div class="document" data-behavior="not-draggable" data-document-id="<%= course_collection.id %>" itemscope itemtype="<%= course_collection.itemtype %>">
   <%= render_document_partials course_collection, blacklight_config.view_config(document_index_view_type).partials, document_counter: course_collection_counter %>
 </div>
 
