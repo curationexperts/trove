@@ -128,8 +128,8 @@
 
             var distanceMet = function(e) {
               return (Math.max(
-                  Math.abs(list._startEvent.pageX - event.pageX),
-                  Math.abs(list._startEvent.pageY - event.pageY)
+                  Math.abs(list._startEvent.pageX - e.pageX),
+                  Math.abs(list._startEvent.pageY - e.pageY)
                 ) >= list.options.distance
               );
             };
