@@ -43,14 +43,14 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def update_type
-    params.require(:collection_type)
-    # can't figure out how to require specific values using strong_parameters
-    if not ['personal', 'course'].include?(params[:collection_type])
-      raise ActiveModel::ForbiddenAttributes.new
+    new_type = case @curated_collection
+    when CourseCollection
+      PersonalCollection.to_class_uri
+    when PersonalCollection
+      CourseCollection.to_class_uri
     end
-    new_type = params[:collection_type]
     @curated_collection.clear_relationship(:has_model)
-    @curated_collection.add_relationship(:has_model, class_uri(new_type))
+    @curated_collection.add_relationship(:has_model, new_type)
     if @curated_collection.save
       update_collection_parent(new_type)
       redirect_to curated_collection_path(@curated_collection)
@@ -155,17 +155,6 @@ class CuratedCollectionsController < ApplicationController
     params[controller_name.singularize]
   end
 
-  def class_uri(collection_type)
-    case collection_type
-    when 'course'
-      CourseCollection.to_class_uri
-    when 'personal'
-      PersonalCollection.to_class_uri
-    else
-      raise ArgumentError.new("Unknown collection type")
-    end
-  end
-
   def curated_collection_path(collection)
     case collection.relationships(:has_model).first
     when CourseCollection.to_class_uri
@@ -184,11 +173,11 @@ class CuratedCollectionsController < ApplicationController
     old_parent.save
 
     # add it to the root of the new collection type
-    case collection_type
-      when 'personal' # the collection was just downgraded to a PersonalCollection
+    case @curated_collection
+      when CourseCollection # the collection was just downgraded to a PersonalCollection
         new_parent = User.find_by_user_key(@curated_collection.creator).personal_collection(true)
 
-      when 'course'   # the collection was just upgraded to a CourseCollection
+      when PersonalCollection   # the collection was just upgraded to a CourseCollection
         new_parent = CourseCollection.root
     end
 

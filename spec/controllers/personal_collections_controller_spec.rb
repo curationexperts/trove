@@ -224,19 +224,18 @@ describe PersonalCollectionsController do
     describe "PATCH update" do
       context 'my own collection' do
 
-        # let(:collection_w_creator) { FactoryGirl.create(:personal_collection, creator: [user.user_key]) }
         let(:collection_w_creator) { FactoryGirl.create(:personal_collection, user: user) }
 
         it "updates the collection type" do
-          patch :update_type, id: collection_w_creator, collection_type: 'course'
+          patch :update_type, id: collection_w_creator
           # reload manually to see if the class changed
-          reloaded = ActiveFedora::Base.find(collection_w_creator.pid, cast: true)
+          reloaded = ActiveFedora::Base.find(collection_w_creator.pid)
           expect(reloaded.type).to eq 'course'
           expect(response).to redirect_to(course_collection_path(reloaded))
         end
 
         it "updates the collection parent" do
-          patch :update_type, id: collection_w_creator, collection_type: 'course'
+          patch :update_type, id: collection_w_creator
           expect(user.personal_collection.member_ids).not_to include(collection_w_creator.id)
           expect(CourseCollection.root.member_ids).to include(collection_w_creator.id)
         end

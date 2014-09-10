@@ -1,10 +1,7 @@
 <% if can? :copy, collection %>
   <li>
-    <%= form_tag [:copy, collection] do %>
-      <button type='submit' class='btn btn-link' style='padding: 0'>
-        copy this collection
-        <span class="glyphicon glyphicon-plus"></span>
-      </button>
+    <%= link_to [:copy, collection], method: :post do %>
+        <%= icon 'plus' %> copy this collection
     <% end %>
   </li>
 <% end %>
