@@ -11,8 +11,8 @@ describe 'Course Collections' do
   end
 
   it 'routes to edit' do
-    expect(get: 'course_collections/1/edit').to route_to(
-      controller: 'course_collections', action: 'edit', id: '1')
+    expect(get: 'course_collections/tufts.uc:test.000.01/edit').to route_to(
+      controller: 'course_collections', action: 'edit', id: 'tufts.uc:test.000.01')
   end
 
   it 'routes to update' do
@@ -51,8 +51,8 @@ end
 describe 'Personal Collections' do
 
   it 'routes to show' do
-    expect(get: 'personal_collections/tufts.uc:1').to route_to(
-      controller: 'personal_collections', action: 'show', id: 'tufts.uc:1')
+    expect(get: 'personal_collections/tufts.uc:test.000.01').to route_to(
+      controller: 'personal_collections', action: 'show', id: 'tufts.uc:test.000.01')
   end
 
   it 'routes to new' do
