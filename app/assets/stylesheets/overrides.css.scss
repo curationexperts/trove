@@ -45,12 +45,22 @@
 }
 
 #documents .grid .document .thumbnail {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    margin: 10px;
+    position: relative;
+    min-height: 0;
+    min-width: 0;
   a>img {
-    position: absolute;
-    max-width: none;
-    left: 4px;
-    top: 4px;
-    width: 90%;
+    position:absolute;
+    left: -100%;
+    right: -100%;
+    top: -100%;
+    bottom: -100%;
+    margin: auto;
+    min-height: 100%;
+    min-width: 100%;
   }
 }
 
