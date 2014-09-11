@@ -22,10 +22,22 @@ import org.apache.poi.xslf.usermodel.XSLFTextShape;
 // For reference:
 // http://poi.apache.org/slideshow/xslf-cookbook.html
 // http://poi.apache.org/apidocs/index.html
- 
+
 // For developer debugging statements, you can use:
 // System.err.println(message);
 // (since we're using System.out for the data stream)
+
+// This reads a series of lines from STDIN
+// the first line has the number of image records to follow.
+// Each image record has the following format
+// Metadata 1
+// Metadata 2
+// Metadata 3
+// Image path
+// image x
+// image y
+// image cx
+// image cy
 
 
 public class Powerpoint {
@@ -48,16 +60,10 @@ public class Powerpoint {
 
     int numberOfImageSlides = Integer.parseInt(scan.nextLine());
     for(int i=0; i<numberOfImageSlides; i++) {
-      String imagePath = scan.nextLine();
-
-      // x and y offsets, width, & height for the image
-      int x = Integer.parseInt(scan.nextLine());
-      int y = Integer.parseInt(scan.nextLine());
-      int cx = Integer.parseInt(scan.nextLine());
-      int cy = Integer.parseInt(scan.nextLine());
+      ImageData img = ImageData.read(scan);
 
       try {
-        addImageSlide(ppt, imagePath, x, y ,cx, cy);
+        addImageSlide(ppt, img);
       } catch(FileNotFoundException ex) {
         System.out.println(ERROR + ex.getMessage());
         return;
@@ -68,6 +74,31 @@ public class Powerpoint {
     }
 
     System.out.println(writePptFile(ppt, outputFileName));
+  }
+
+  static class ImageData {
+    public int x;
+    public int y;
+    public int cx;
+    public int cy;
+    public String imagePath;
+    public String metadata1;
+    public String metadata2;
+    public String metadata3;
+
+    public static ImageData read(Scanner scan) {
+      ImageData img = new ImageData();
+      img.metadata1 = scan.nextLine();
+      img.metadata2 = scan.nextLine();
+      img.metadata3 = scan.nextLine();
+      img.imagePath = scan.nextLine();
+      img.x = Integer.parseInt(scan.nextLine());
+      img.y = Integer.parseInt(scan.nextLine());
+      img.cx = Integer.parseInt(scan.nextLine());
+      img.cy = Integer.parseInt(scan.nextLine());
+
+      return img;
+    }
   }
 
 
@@ -109,12 +140,12 @@ public class Powerpoint {
     }
   }
 
-  private static void addImageSlide(XMLSlideShow ppt, String imagePath, int x, int y, int cx, int cy) throws FileNotFoundException, IOException {
+  private static void addImageSlide(XMLSlideShow ppt, ImageData image) throws FileNotFoundException, IOException {
     XSLFSlide slide = ppt.createSlide();
-    byte[] pictureData = IOUtils.toByteArray(new FileInputStream(imagePath));
+    byte[] pictureData = IOUtils.toByteArray(new FileInputStream(image.imagePath));
     int idx = ppt.addPicture(pictureData, XSLFPictureData.PICTURE_TYPE_PNG);
     XSLFPictureShape pic = slide.createPicture(idx);
-    pic.setAnchor(new java.awt.Rectangle(x, y, cx, cy));
+    pic.setAnchor(new java.awt.Rectangle(image.x, image.y, image.cx, image.cy));
   }
 
   private static String writePptFile(XMLSlideShow ppt, String outputFileName) {

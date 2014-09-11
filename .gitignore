@@ -11,6 +11,7 @@ config/java.yml
 
 */.DS_Store
 *.class
+*.jar
 
 # Ignore bundler config
 /.bundle
