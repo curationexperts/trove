@@ -1,0 +1,46 @@
+============================
+
+The ruby code calls a java class to generate the powerpoint file using the Apache POI library.
+These 2 classes send and receive messages from each other, so they are highly coupled.
+
+* app/models/concerns/power_point.rb
+* java/src/Powerpoint.java
+
+============================
+Developer setup for running the Java powerpoint generator.
+
+Download and install a Java JDK
+(I'm using version "1.8.0_20")
+
+Download and install ant:
+http://ant.apache.org/bindownload.cgi
+
+Compile the java source:
+
+cd java
+ant
+
+To make a powerpoint file:
+Browse to the show page for a collection and click the link to download a powerpoint.
+
+============================
+TODO:
+
+* When the code is finalized, get rid of this file, and put all the relevant info into the project README.
+
+* Get these steps into the deploy script
+
+============================
+Links:
+
+The original commit using the powerpoint gem:
+https://github.com/curationexperts/tufts-image-library/commit/fe4a5db5bc263b777b4197f46cdef0ede792692c
+
+POI example code:
+http://poi.apache.org/slideshow/xslf-cookbook.html
+
+Info about pptx format:
+http://technet.microsoft.com/en-us/library/gg278335.aspx
+
+============================
+

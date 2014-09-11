@@ -252,10 +252,11 @@ describe CourseCollection do
     it 'generates the file and returns the file path' do
       subject.title = "Student Research in the 1960's"
       subject.save!
-      export_file_path = File.join(export_dir, 'student_research_in_the_1960_s.pptx')
+      export_file_path = subject.to_pptx
 
-      expect(subject.to_pptx).to eq export_file_path
+      expect(export_file_path.match(/student_research_in_the_1960_s.*.pptx/)).to_not be_nil
       expect(File.exist?(export_file_path)).to eq true
+
       FileUtils.rm_rf(export_dir, :secure => true)
     end
   end

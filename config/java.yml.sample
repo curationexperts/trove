@@ -1,0 +1,8 @@
+development: &dev
+  lib_dir: "<%= File.join(Rails.root, 'java', 'lib') %>"
+  class_files_dir: "<%= File.join(Rails.root, 'java', 'build') %>"
+
+test:
+  <<: *dev
+
+production:
