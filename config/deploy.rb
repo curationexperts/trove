@@ -10,7 +10,7 @@ set :log_level, :debug
 set :keep_releases, 5
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/application.yml config/database.yml config/feature_data.yml config/fedora.yml config/secrets.yml config/solr.yml config/initializers/devise.rb config/initializers/blacklight_initializer.rb}
+set :linked_files, %w{config/application.yml config/database.yml config/feature_data.yml config/java.yml config/fedora.yml config/secrets.yml config/solr.yml}
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{bin tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
