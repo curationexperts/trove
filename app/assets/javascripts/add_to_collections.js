@@ -6,7 +6,9 @@ Blacklight.onLoad(function() {
     },
     cursorAt: { left: 5, top: 5 },
     // enable dropping onto child items that are collapsed (display: none) when dragging starts.
-    refreshPositions: true
+    refreshPositions: true ,
+    // append the image to the document body so it isn't clipped by the sidebar overflow settings
+    appendTo: 'body'
   }).click(function() {
     if ( $(this).is('.ui-draggable-dragging') ) {
       return;
