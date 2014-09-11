@@ -7,8 +7,10 @@
 
 config/secrets.yml
 config/feature_data.yml
+config/java.yml
 
 */.DS_Store
+*.class
 
 # Ignore bundler config
 /.bundle
