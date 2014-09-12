@@ -4,12 +4,14 @@ require 'blacklight/catalog'
 class CatalogController < ApplicationController
 
   include Blacklight::Catalog
+
   include Hydra::Controller::ControllerBehavior
 
   CatalogController.solr_search_params_logic += [:only_displays_in_tdil, :only_images_and_collections,
     :exclude_root_collection, :exclude_soft_deleted]
 
   configure_blacklight do |config|
+    config.view.delete(:slideshow)
     config.default_solr_params = {
       :qt => 'search',
       :rows => 10,
