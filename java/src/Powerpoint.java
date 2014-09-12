@@ -63,6 +63,7 @@ public class Powerpoint {
       ImageData img = ImageData.read(scan);
 
       try {
+        addTitleSlide(ppt, img.imageTitle, img.metadata);
         addImageSlide(ppt, img);
       } catch(FileNotFoundException ex) {
         System.out.println(ERROR + ex.getMessage());
@@ -82,20 +83,31 @@ public class Powerpoint {
     public int cx;
     public int cy;
     public String imagePath;
-    public String metadata1;
-    public String metadata2;
-    public String metadata3;
+    public String imageTitle;
+    public String[] metadata;
+
+    public ImageData() {
+      this.metadata = new String[3];
+    }
 
     public static ImageData read(Scanner scan) {
       ImageData img = new ImageData();
-      img.metadata1 = scan.nextLine();
-      img.metadata2 = scan.nextLine();
-      img.metadata3 = scan.nextLine();
+      img.imageTitle = scan.nextLine();
+      img.metadata[0] = scan.nextLine();
+      img.metadata[1] = scan.nextLine();
+      img.metadata[2] = scan.nextLine();
       img.imagePath = scan.nextLine();
-      img.x = Integer.parseInt(scan.nextLine());
-      img.y = Integer.parseInt(scan.nextLine());
-      img.cx = Integer.parseInt(scan.nextLine());
-      img.cy = Integer.parseInt(scan.nextLine());
+      if (img.imagePath.length() == 0) {
+        scan.nextLine();
+        scan.nextLine();
+        scan.nextLine();
+        scan.nextLine();
+      } else {
+        img.x = Integer.parseInt(scan.nextLine());
+        img.y = Integer.parseInt(scan.nextLine());
+        img.cx = Integer.parseInt(scan.nextLine());
+        img.cy = Integer.parseInt(scan.nextLine());
+      }
 
       return img;
     }
@@ -120,18 +132,21 @@ public class Powerpoint {
     XSLFTextShape[] placeholders = titleSlide.getPlaceholders();
     placeholders[0].setText(title);
 
-    XSLFTextBox textBox = titleSlide.createTextBox();
-    XSLFTextParagraph para = textBox.addNewTextParagraph();
-    para.setBullet(true);
-
     placeholders[1].clearText();
-    XSLFTextRun r1 = placeholders[1].addNewTextParagraph().addNewTextRun();
+    XSLFTextParagraph para = placeholders[1].addNewTextParagraph();
+    para.setLevel(0);
+    para.setBullet(true);
+    XSLFTextRun r1 = para.addNewTextRun();
     r1.setFontSize(24);
 
     // Add '\r' to the Strings so they'll be separate bullet points
     StringBuilder desc = new StringBuilder();
     for(int j=0; j<descriptions.length; j++) {
-      desc.append(descriptions[j]).append('\r');
+      desc.append(descriptions[j]);
+      if (descriptions[j].length() > 0 && j < descriptions.length) {
+        // don't apppend to the last one.
+        desc.append('\r');
+      }
     }
     r1.setText(desc.toString());
 
@@ -142,10 +157,12 @@ public class Powerpoint {
 
   private static void addImageSlide(XMLSlideShow ppt, ImageData image) throws FileNotFoundException, IOException {
     XSLFSlide slide = ppt.createSlide();
-    byte[] pictureData = IOUtils.toByteArray(new FileInputStream(image.imagePath));
-    int idx = ppt.addPicture(pictureData, XSLFPictureData.PICTURE_TYPE_PNG);
-    XSLFPictureShape pic = slide.createPicture(idx);
-    pic.setAnchor(new java.awt.Rectangle(image.x, image.y, image.cx, image.cy));
+    if (image.imagePath.length() > 0) {
+      byte[] pictureData = IOUtils.toByteArray(new FileInputStream(image.imagePath));
+      int idx = ppt.addPicture(pictureData, XSLFPictureData.PICTURE_TYPE_PNG);
+      XSLFPictureShape pic = slide.createPicture(idx);
+      pic.setAnchor(new java.awt.Rectangle(image.x, image.y, image.cx, image.cy));
+    }
   }
 
   private static String writePptFile(XMLSlideShow ppt, String outputFileName) {

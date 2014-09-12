@@ -18,7 +18,7 @@
   </target>
 
   <target name="run" depends="retrieve">
-    <java classname="Powerpoint">
+    <java classname="Test">
       <classpath>
         <path refid="build.path"/>
         <path location="${build}"/>
