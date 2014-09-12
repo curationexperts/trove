@@ -59,7 +59,7 @@ class PptExportWriter
     end
 
     def images_with_paths
-      collection.members.map { |member|
+      collection.flatten.map { |member|
         next unless member.respond_to?(:local_path_for)
         path = member.local_path_for(TuftsImage.default_content_ds)
         File.exists?(path) ? [member, path] : [member, nil]
