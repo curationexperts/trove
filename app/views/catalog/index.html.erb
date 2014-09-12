@@ -1,14 +1,19 @@
-<div id="sidebar" class="col-md-3 col-sm-4">
-  <%= render 'search_sidebar' %>
-  <%= render 'curated_collection_list' %>
-  
+<div id='sidebar-outer' class="col-md-3 col-sm-4">
+  <%- # split bootstrap columns into outer container so we keep formatting when floating-sidebar.js changes position of inner div %>
+  <div id="sidebar">
+    <%= render 'search_sidebar' %>
+    <%= render 'curated_collection_list' %>
+  </div>
 </div>
 
-<div id="content" class="col-md-9 col-sm-8">
-  <% unless has_search_parameters? %>
-    <%# if there are no input/search related params, display the "home" partial -%>
-    <%= render 'home' %>
-  <% else %>
-    <%= render 'search_results' %>
-  <% end %>
+<div id="content-outer" class="col-md-9 col-sm-8">
+  <%- # split bootstrap columns into outer container so we keep formatting when floating-sidebar.js changes position of inner div %>
+  <div id="content">
+    <% unless has_search_parameters? %>
+      <%# if there are no input/search related params, display the "home" partial -%>
+      <%= render 'home' %>
+    <% else %>
+      <%= render 'search_results' %>
+    <% end %>
+  </div>
 </div>
