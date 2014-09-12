@@ -16,7 +16,7 @@ feature 'Copying Collections:' do
     scenario 'copies a course collection' do
       visit course_collection_path(course_collection)
       expect {
-        click_button('copy this collection')
+        click_link('copy this collection')
       }.to change { CourseCollection.count }.by(1)
       expect(CourseCollection.root.members.map(&:members)).to eq [[image], [image]]
     end
@@ -24,7 +24,7 @@ feature 'Copying Collections:' do
     scenario 'copies a personal collection' do
       visit personal_collection_path(personal_collection)
       expect {
-        click_button('copy this collection')
+        click_link('copy this collection')
       }.to change { PersonalCollection.count }.by(2) #personal root & target collection
     end
   end
@@ -37,14 +37,14 @@ feature 'Copying Collections:' do
     scenario 'makes a personal copy of a course collection' do
       visit course_collection_path(course_collection)
       expect {
-        click_button('copy this collection')
+        click_link('copy this collection')
       }.to change { PersonalCollection.count }.by(2)
     end
 
     scenario 'makes a personal copy of a personal collection' do
       visit personal_collection_path(personal_collection)
       expect {
-        click_button('copy this collection')
+        click_link('copy this collection')
       }.to change { PersonalCollection.count }.by(1)
     end
   end
