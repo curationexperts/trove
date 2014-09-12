@@ -20,6 +20,16 @@ set :linked_dirs, %w{bin tmp/pids tmp/cache tmp/sockets vendor/bundle public/sys
 
 namespace :deploy do
 
+before :publishing, :java
+
+  desc 'Compile Java'
+  task :java do
+    on roles(:app), in: :sequence, wait: 5 do
+      # Your restart mechanism here, for example:
+    execute "cd #{release_path}/java && ant"
+    end
+  end
+
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
