@@ -33,7 +33,6 @@ module PowerPoint
   # TODO: Move this into tufts_models gem on the TuftsImage
   # class.  It doesn't really belong here.
   # Something like:  image.dimensions
-  # TODO this is slow, do some caching
   def get_image_dimensions(image_path)
     `identify -format %wx%h "#{image_path}"`.split('x').map(&:to_i)
   end
@@ -89,40 +88,7 @@ poi-3.10.1.jar stax-api-1.0.1.jar commons-io-2.4.jar xmlbeans-2.6.0.jar	poi-ooxm
       # Send the name of the file we want to create
       stdin.puts export_file_name
 
-      # Send the title and list of descriptions for the main title slide
-      stdin.puts title
-      desc = Array(description)
-      stdin.puts desc.count
-      desc.each { |d| stdin.puts d }
-
-      images_with_paths = members.zip(members.map { |image| image.local_path_for(image.original_file_datastreams.first) })
-      images_with_paths.map! { |img, path| File.exists?(path) ? [img, path] : [img, nil] }
-
-      # Tell the Java ppt generator how many image slides we want to make
-      stdin.puts images_with_paths.count.to_s
-
-      # Send the data for each image slide
-      images_with_paths.each do |image, path|
-        stdin.puts image.title
-        metadata = []
-        metadata << "Creator: #{image.creator.join("\r")}" if image.creator.present?
-        metadata << "Description: #{image.description.join("\r")}" if image.description.present?
-        metadata << "Date: #{image.date_created.join("\r")}" if image.date_created.present?
-        0.upto(2) do |n|
-          stdin.puts metadata[n]
-        end
-        if path.nil?
-          5.times { stdin.puts }
-        else
-          stdin.puts path
-          coords = coordinates(path)
-          stdin.puts coords[:x]
-          stdin.puts coords[:y]
-          stdin.puts coords[:cx]
-          stdin.puts coords[:cy]
-        end
-      end
-
+      PptExportWriter.new(self, stdin).write
       # Read back the name of the output file from the Java ppt generator
       output_file = stdout.read
 
