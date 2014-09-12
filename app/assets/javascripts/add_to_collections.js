@@ -4,6 +4,9 @@ Blacklight.onLoad(function() {
       return $('<span style="white-space:nowrap;"/>')
             .html($(this).find('img').clone().css('opacity', '0.6'));
     },
+    // prevent cropping when moved outside original container by attaching to a larger container
+    appendTo: '.scroll-inside',
+    // position the clone in the same relative position to the cursor regardless of where the user clicked
     cursorAt: { left: 5, top: 5 },
     // enable dropping onto child items that are collapsed (display: none) when dragging starts.
     refreshPositions: true
@@ -19,7 +22,7 @@ Blacklight.onLoad(function() {
     helper: function(event) {
       return $('<div style="white-space:nowrap; height: 64px; width: 64px" class="no-drag"></div>')
     },
-    cursorAt: { left: 5, top: 5 },
+    cursorAt: { left: 5, top: 5 }
   }).click(function() {
     if ( $(this).is('.ui-draggable-dragging') ) {
       console.log("dragging");

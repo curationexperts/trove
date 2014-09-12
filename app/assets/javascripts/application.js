@@ -18,5 +18,4 @@
 //= require jquery.nestable
 //
 //= require blacklight
-//= require floating-sidebar
 //= require_tree .
