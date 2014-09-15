@@ -10,6 +10,9 @@
   }
 }
 
+// #on the collection pages
+.row.gallery .document .thumbnail .caption { padding: 1px; }
+
 #documents.row.gallery {
   display: block;
   display: -moz-box;
@@ -38,7 +41,6 @@
         dl.document-metadata {
           margin-bottom: 0;
         }
-        padding: 1px;
       }
       width: 100%;
       padding-bottom: 10px;
