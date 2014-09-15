@@ -10,6 +10,6 @@
          <%= t('blacklight.search.documents.counter', :counter => counter) if counter %>
          </span>
          <% label = render_document_index_label document, {counter: counter, label: document_show_link_field(document) } %>
-         <%= link_to label.truncate(45, separator: ' ', escape: false), url_for_document(document), document_link_params(document, counter: counter) %>
+         <%= link_to truncate(label, length: 45, separator: ' ', escape: false), url_for_document(document), document_link_params(document, counter: counter) %>
         </h5>
       </div>
