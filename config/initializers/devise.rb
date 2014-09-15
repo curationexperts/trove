@@ -1,3 +1,5 @@
+load 'lib/custom_failure.rb'
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -223,6 +225,9 @@ Devise.setup do |config|
   # The "*/*" below is required to match Internet Explorer requests.
   # config.navigational_formats = ['*/*', :html]
 
+  # pptx is needed to redirect to sign_in_path for anonymous users
+  config.navigational_formats = ['*/*', :html, :pptx]
+
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :get
 
@@ -239,6 +244,9 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
+  config.warden do |manager|
+    manager.failure_app = CustomFailure
+  end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine

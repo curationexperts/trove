@@ -20,6 +20,11 @@ describe PersonalCollectionsController do
         get :show, id: 'collection:1'
         expect(response).to redirect_to new_user_session_path
       end
+
+      it "as .pptx redirects to sign in" do
+        get :show, id: 'collection:1', format: 'pptx'
+        expect(response).to redirect_to new_user_session_path
+      end
     end
 
     describe "PATCH 'append_to'" do
