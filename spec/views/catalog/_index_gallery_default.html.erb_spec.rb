@@ -13,6 +13,6 @@ describe 'catalog/_index_gallery_default' do
 
   it "should truncate the description" do
     render
-    expect(rendered).to have_text 'A wonderful serenity has taken possession of my entire soul, like these sweet mornings...'
+    expect(rendered).to have_text 'A wonderful serenity has taken possession of my entire soul, like these sweet...'
   end
 end

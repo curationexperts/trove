@@ -1,5 +1,5 @@
 <dl class="document-metadata dl-horizontal dl-invert">
   <% if document.description.present? %>
-    <dd class="blacklight-description_tesim"><%= document.description.join(', ').truncate(90, separator: ' ') %></dd>
+    <dd class="blacklight-description_tesim"><%= truncate(document.description.join(', '), length: 85, separator: ' ') %></dd>
   <% end %>
 </dl>
