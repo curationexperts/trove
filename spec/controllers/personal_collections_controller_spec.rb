@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe PersonalCollectionsController do
+  before { PersonalCollection.destroy_all }
+
   let(:image) { FactoryGirl.create(:image) }
   let(:collection) { FactoryGirl.create(:personal_collection, user: user) }
   let(:not_my_collection) { FactoryGirl.create(:personal_collection) }
@@ -40,6 +42,44 @@ describe PersonalCollectionsController do
         expect(response).to render_template(:show)
         expect(assigns[:curated_collection]).to eq collection
         expect(response).to be_successful
+      end
+    end
+
+    describe "GET 'show' with a PPTX" do
+      let(:file) { Tempfile.new('mock_download') }
+
+      before do
+        file.write 'mock pptx'
+        file.rewind
+      end
+
+      it "returns http success" do
+        expect_any_instance_of(PersonalCollection).to receive(:to_pptx).and_return(file)
+        expect_any_instance_of(PersonalCollection).to receive(:pptx_file_name).and_return('title_9.pptx')
+        get :show, id: collection, format: 'pptx'
+        expect(response).to be_successful
+        expect(response.body).to eq 'mock pptx'
+        expect(response.content_type).to eq 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        expect(response.headers["Content-Disposition"]).to eq "attachment; filename=\"title_9.pptx\""
+      end
+    end
+
+    describe "GET 'show' with a PDF" do
+      let(:file) { Tempfile.new('mock_download') }
+
+      before do
+        file.write 'mock pdf'
+        file.rewind
+      end
+
+      it "returns http success" do
+        expect_any_instance_of(PersonalCollection).to receive(:to_pdf).and_return(file)
+        expect_any_instance_of(PersonalCollection).to receive(:pdf_file_name).and_return('title_9.pdf')
+        get :show, id: collection, format: 'pdf'
+        expect(response).to be_successful
+        expect(response.body).to eq 'mock pdf'
+        expect(response.content_type).to eq 'application/pdf'
+        expect(response.headers["Content-Disposition"]).to eq "attachment; filename=\"title_9.pdf\""
       end
     end
 

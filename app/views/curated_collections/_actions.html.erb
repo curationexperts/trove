@@ -11,6 +11,12 @@
         <% end %>
       </li>
 
+      <li>
+        <%= link_to polymorphic_path(@curated_collection, format: 'pdf') do %>
+         <%= icon 'download' %> download PDF
+        <% end %>
+      </li>
+
       <% if can? :edit, @curated_collection %>
         <li>
           <%= link_to [:edit, @curated_collection] do %>

@@ -13,12 +13,12 @@ module PowerPoint
     dir
   end
 
-  def pptx_base_file_name
+  def export_base_file_name
     Array(title).first.underscore.gsub(' ', '_').gsub("'", '_')
   end
 
   def pptx_file_name
-    pptx_base_file_name + '.pptx'
+    export_base_file_name + '.pptx'
   end
 
   # TODO: Can/should this be moved to an initializer so that
@@ -30,30 +30,16 @@ module PowerPoint
     Psych.load(config_erb)[Rails.env]
   end
 
-  def classpath
-    poi_files = %w{commons-codec-1.5.jar dom4j-1.6.1.jar poi-ooxml-schemas-3.10.1.jar
-poi-3.10.1.jar stax-api-1.0.1.jar commons-io-2.4.jar xmlbeans-2.6.0.jar	poi-ooxml-3.10.1.jar }
-
-    config = parse_java_config
-    jars = poi_files.map {|jar| File.join(config['lib_dir'], jar) }
-
-    cp = jars.join(':')
-    ".:#{config['class_files_dir']}:" + cp
-  end
-
-
   # TODO: Handle the case where there is no data for a field
   def to_pptx
-    export_file_name = Tempfile.new([pptx_base_file_name, '.pptx'], export_dir).path
-
-    process = "java -cp #{classpath} -Djava.awt.headless=true Powerpoint"
+    export_file_name = Tempfile.new([export_base_file_name, '.pptx'], export_dir).path
 
     # Open a bi-directional connection to a Java process that
     # will generate the powerpoint file.  Send data to the Java
     # process and receive back either the name of the file that
     # was created or an error message.
     #
-    Open3.popen2(process) do |stdin, stdout, wait_thr|
+    Open3.popen2(java_command) do |stdin, stdout, wait_thr|
       # Send the name of the file we want to create
       stdin.puts export_file_name
 
@@ -73,4 +59,20 @@ poi-3.10.1.jar stax-api-1.0.1.jar commons-io-2.4.jar xmlbeans-2.6.0.jar	poi-ooxm
     export_file_name
   end
 
+  private
+
+    def java_command
+      "java -cp #{classpath} -Djava.awt.headless=true Powerpoint"
+    end
+
+    def classpath
+      poi_files = %w{commons-codec-1.5.jar dom4j-1.6.1.jar poi-ooxml-schemas-3.10.1.jar
+  poi-3.10.1.jar stax-api-1.0.1.jar commons-io-2.4.jar xmlbeans-2.6.0.jar	poi-ooxml-3.10.1.jar }
+
+      config = parse_java_config
+      jars = poi_files.map {|jar| File.join(config['lib_dir'], jar) }
+
+      cp = jars.join(':')
+      ".:#{config['class_files_dir']}:" + cp
+    end
 end

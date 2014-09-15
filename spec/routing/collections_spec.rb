@@ -6,8 +6,12 @@ describe 'Course Collections' do
     expect(get: 'course_collections/tufts.uc:1').to route_to(controller: 'course_collections', action: 'show', id: 'tufts.uc:1')
   end
 
-  it 'routes to show' do
+  it 'routes to show PPTX' do
     expect(get: 'course_collections/tufts.uc:1.pptx').to route_to(controller: 'course_collections', action: 'show', id: 'tufts.uc:1', format: 'pptx')
+  end
+
+  it 'routes to show PDF' do
+    expect(get: 'course_collections/tufts.uc:1.pdf').to route_to(controller: 'course_collections', action: 'show', id: 'tufts.uc:1', format: 'pdf')
   end
 
   it 'routes to new' do

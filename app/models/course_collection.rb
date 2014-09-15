@@ -1,6 +1,7 @@
 class CourseCollection < CuratedCollection
   include WithNestedMembers
   include PowerPoint
+  include Pdf
 
   def parent
     ActiveFedora::Base.where(member_ids_ssim: self.id).first

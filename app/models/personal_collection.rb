@@ -1,6 +1,7 @@
 class PersonalCollection < CuratedCollection
   include WithNestedMembers
   include PowerPoint
+  include Pdf
 
   after_create :add_to_root_collection
 

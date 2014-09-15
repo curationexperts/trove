@@ -1,4 +1,4 @@
-ALLOW_DOTS ||= /[^\/]+(?=\.(html|json|pptx)\z)|[^\/]+/
+ALLOW_DOTS ||= /[^\/]+(?=\.(html|json|pptx|pdf)\z)|[^\/]+/
 
 Rails.application.routes.draw do
 

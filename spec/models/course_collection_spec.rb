@@ -260,4 +260,25 @@ describe CourseCollection do
       FileUtils.rm_rf(export_dir, :secure => true)
     end
   end
+
+  describe "PDF" do
+    it 'has a name for the export file' do
+      subject.title = "Student Research in the 1960's"
+      expect(subject.pdf_file_name).to eq 'student_research_in_the_1960_s.pdf'
+    end
+
+    context "when generating the file" do
+      # let(:timestamp) { '2012_12_25_051545' }
+      # let(:export_dir) { File.join(PowerPoint::PPTX_DIR, timestamp) }
+      before { subject.update(title: "Student Research in the 1960's") }
+      #after { FileUtils.rm_rf(export_dir, secure: true) }
+
+      it 'generates the file and returns the file path' do
+        export_file_path = subject.to_pdf
+
+        expect(export_file_path.match(/student_research_in_the_1960_s.*.pdf/)).to_not be_nil
+        expect(File.exist?(export_file_path)).to eq true
+      end
+    end
+  end
 end

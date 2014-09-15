@@ -76,6 +76,11 @@ class CuratedCollectionsController < ApplicationController
                   filename: @curated_collection.pptx_file_name,
                   type: "application/vnd.openxmlformats-officedocument.presentationml.presentation")
       end
+      format.pdf do
+        send_file(@curated_collection.to_pdf,
+                  filename: @curated_collection.pdf_file_name,
+                  type: "application/pdf")
+      end
     end
   end
 

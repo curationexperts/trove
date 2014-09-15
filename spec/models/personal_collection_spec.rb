@@ -8,7 +8,7 @@ describe PersonalCollection do
     before { PersonalCollection.destroy_all }
     let(:user) { FactoryGirl.create(:user) }
     let(:root) { user.personal_collection }
-    let!(:existing_collection) { PersonalCollection.create! title: 'some title', active_user: user } 
+    let!(:existing_collection) { PersonalCollection.create! title: 'some title', active_user: user }
 
     before do
       subject.active_user = user
@@ -99,6 +99,14 @@ describe PersonalCollection do
 
     it 'can generate powerpoint format' do
       expect(subject.respond_to?(:to_pptx)).to eq true
+    end
+  end
+
+  describe "pdf" do
+    # More testing for pdf is done in spec/models/course_collection_spec.rb
+
+    it 'can generate pdf format' do
+      expect(subject.respond_to?(:to_pdf)).to eq true
     end
   end
 end
