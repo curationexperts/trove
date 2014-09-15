@@ -27,3 +27,5 @@ en:
   curated_collections:
     show:
       save_order: "Save the order"
+    actions:
+      copyright_acknowledgement: "It is the patron’s obligation to determine and satisfy materials’ copyright status when exporting and distributing materials found in the Tufts Digital Image Library. Learn more about copyright, fair use, and open access guidelines at http://sites.tufts.edu/dca/research-help/copyright-and-citations/."

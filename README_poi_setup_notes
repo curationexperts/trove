@@ -17,8 +17,17 @@ http://ant.apache.org/bindownload.cgi
 
 Compile the java source:
 
+```bash
 cd java
 ant
+cd ..
+```
+
+Make your java.yml file
+```bash
+cp config/java.yml.sample config/java.yml
+# you'll need to restart after this
+```
 
 To make a powerpoint file:
 Browse to the show page for a collection and click the link to download a powerpoint.

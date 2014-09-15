@@ -6,7 +6,7 @@
       <%= render 'link_to_copy_collection', collection: @curated_collection %>
 
       <li>
-        <%= link_to polymorphic_path(@curated_collection, format: 'pptx') do %>
+        <%= link_to polymorphic_path(@curated_collection, format: 'pptx'), data: {confirm: t('.copyright_acknowledgement')} do %>
          <%= icon 'download' %> download powerpoint
         <% end %>
       </li>
