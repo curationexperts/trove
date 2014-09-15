@@ -1,14 +1,16 @@
-<div id="sidebar" class="col-md-3 col-sm-4">
-  <%= render 'search_sidebar' %>
-  <%= render 'curated_collection_list' %>
-  
-</div>
+<div <%= has_search_parameters? ? 'class=scroll-inside' : '' %> >
 
-<div id="content" class="col-md-9 col-sm-8">
-  <% unless has_search_parameters? %>
-    <%# if there are no input/search related params, display the "home" partial -%>
-    <%= render 'home' %>
-  <% else %>
-    <%= render 'search_results' %>
-  <% end %>
+  <div id="sidebar" class="col-md-3 col-sm-4">
+    <%= render 'search_sidebar' %>
+    <%= render 'curated_collection_list' %>
+  </div>
+
+  <div id="content" class="col-md-9 col-sm-8">
+    <% if has_search_parameters? %>
+      <%= render 'search_results' %>
+    <% else %>
+      <%= render 'home' %>
+    <% end %>
+  </div>
+
 </div>
