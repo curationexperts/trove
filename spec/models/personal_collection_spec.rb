@@ -5,7 +5,7 @@ describe PersonalCollection do
   subject { PersonalCollection.new title: 'some title' }
 
   describe "create" do
-    before { PersonalCollection.destroy_all }
+    before { PersonalCollection.delete_all }
     let(:user) { FactoryGirl.create(:user) }
     let(:root) { user.personal_collection }
     let!(:existing_collection) { PersonalCollection.create! title: 'some title', active_user: user }
@@ -66,6 +66,22 @@ describe PersonalCollection do
         subject.save!
         subject.reload
         expect(subject.members(true)).to eq [img1, img2, img3]
+      end
+    end
+
+    context "when it has a child collection" do
+      let(:child_collection) { create(:personal_collection) }
+
+      before do
+        subject.members << child_collection
+        subject.save!
+      end
+
+      describe "#delete" do
+        it "should destroy the child collection too" do
+          expect { subject.destroy }.to change { PersonalCollection.count }.by(-2)
+          expect(PersonalCollection).to_not exist(child_collection.pid)
+        end
       end
     end
   end

@@ -5,6 +5,7 @@ gem 'sqlite3'
 gem 'blacklight', '~> 5.7.1'
 gem 'hydra-head', '~> 7.2.1'
 gem 'hydra-editor', '~> 0.4.0'
+gem 'active-fedora', github: 'projecthydra/active_fedora'
 
 # production and deployment gems
 gem 'mysql2'

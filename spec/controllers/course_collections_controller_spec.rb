@@ -98,7 +98,7 @@ describe CourseCollectionsController do
       let(:nested_image) { create(:tufts_image, displays: ['tdil']) }
 
       before do
-        PersonalCollection.destroy_all
+        PersonalCollection.delete_all
         nested_collection.members = [ nested_image ]
         nested_collection.save!
         collection.members = [ image, nested_collection ]
@@ -247,7 +247,7 @@ describe CourseCollectionsController do
       end
 
       context "with nested collections" do
-        before { CourseCollection.destroy_all }
+        before { CourseCollection.delete_all }
 
         let(:root) { CourseCollection.root }
         let(:collection1) { create(:course_collection) }

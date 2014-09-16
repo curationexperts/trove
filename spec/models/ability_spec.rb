@@ -3,7 +3,7 @@ require "cancan/matchers"
 
 describe Ability do
   before :all do
-    PersonalCollection.destroy_all
+    PersonalCollection.delete_all
     User.delete_all
   end
   let(:course_collection) { FactoryGirl.create(:course_collection) }

@@ -8,8 +8,8 @@ feature 'Copying Collections:' do
     let(:personal_collection) { create(:personal_collection) }
     let(:admin) { create(:admin) }
     before do
-      PersonalCollection.destroy_all
-      CourseCollection.destroy_all
+      PersonalCollection.delete_all
+      CourseCollection.delete_all
       sign_in admin
     end
 

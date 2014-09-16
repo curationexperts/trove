@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe PersonalCollectionsController do
-  before { PersonalCollection.destroy_all }
+  before { PersonalCollection.delete_all }
 
   let(:image) { FactoryGirl.create(:image) }
   let(:collection) { FactoryGirl.create(:personal_collection, user: user) }
