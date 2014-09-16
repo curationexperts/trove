@@ -22,6 +22,7 @@ Blacklight.onLoad(function() {
     helper: function(event) {
       return $('<div style="white-space:nowrap; height: 64px; width: 64px" class="no-drag"></div>')
     },
+    appendTo: 'body',
     cursorAt: { left: 5, top: 5 }
   }).click(function() {
     if ( $(this).is('.ui-draggable-dragging') ) {
