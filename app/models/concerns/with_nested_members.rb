@@ -1,6 +1,10 @@
 module WithNestedMembers
   extend ActiveSupport::Concern
 
+  included do
+    before_destroy :destroy_child_collections
+  end
+
   # given a personal or course collection, remove a the first instance of a member by pid
   # makes no change to the collection if pid
   #TODO Move this to CuratedCollection in tufts_models ?
@@ -79,4 +83,13 @@ module WithNestedMembers
         end
       end
     end
+
+    def destroy_child_collections
+      child_collections.each(&:destroy)
+    end
+
+    def child_collections
+      members.select {|m| m.kind_of? CuratedCollection }
+    end
+
 end

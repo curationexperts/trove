@@ -3,7 +3,7 @@ require 'rails_helper'
 describe CourseCollectionSolrProxy do
 
   context "for a CourseCollection" do
-    before { CourseCollection.destroy_all }
+    before { CourseCollection.delete_all }
 
     let!(:collection) { FactoryGirl.create(:course_collection) }
 

@@ -25,8 +25,8 @@ describe CatalogController do
 
     describe "GET index" do
       before do
-        PersonalCollection.destroy_all
-        CourseCollection.destroy_all
+        PersonalCollection.delete_all
+        CourseCollection.delete_all
       end
 
       describe "the sidebar" do

@@ -63,9 +63,9 @@ describe CourseCollection do
   end
 
   describe "create" do
-    before { CourseCollection.destroy_all }
+    before { CourseCollection.delete_all }
     let(:root) { CourseCollection.root }
-    let!(:existing_collection) { CourseCollection.create! title: 'some title' } 
+    let!(:existing_collection) { CourseCollection.create! title: 'some title' }
 
     it "should get added to the root collection in the first position" do
       subject.save!
@@ -74,7 +74,7 @@ describe CourseCollection do
   end
 
   describe "setting collection_attributes" do
-    before { CourseCollection.destroy_all }
+    before { CourseCollection.delete_all }
     let(:root) { CourseCollection.root }
     let(:collection1) { FactoryGirl.create(:course_collection) }
     let(:collection2) { FactoryGirl.create(:course_collection) }

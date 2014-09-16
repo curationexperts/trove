@@ -27,5 +27,4 @@ class PersonalCollection < CuratedCollection
   def creator
     super.first
   end
-
 end
