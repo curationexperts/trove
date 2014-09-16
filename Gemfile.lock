@@ -1,13 +1,7 @@
 GIT
-  remote: git://github.com/curationexperts/powerpoint.git
-  revision: c63861ef14de149d8057b370852fd2617dc4260d
-  specs:
-    powerpoint (1.4)
-      rubyzip (~> 1.0.0)
-
-GIT
   remote: git://github.com/curationexperts/tufts_models.git
   revision: 7660e24d36d892fe4d0cbb72cc6b3092d413e996
+  tag: v1.0.0.rc1
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -355,7 +349,6 @@ GEM
       mime-types
       nokogiri
       rest-client
-    rubyzip (1.0.0)
     sass (3.2.19)
     sass-rails (4.0.3)
       railties (>= 4.0.0, < 5.0)
@@ -458,7 +451,6 @@ DEPENDENCIES
   jquery-rails
   launchy
   mysql2
-  powerpoint!
   rails (= 4.1.5)
   rspec-rails
   sass-rails (~> 4.0.3)

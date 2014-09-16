@@ -13,9 +13,6 @@ gem 'capistrano'
 gem 'capistrano-rails'
 gem 'capistrano-bundler'
 
-#gem 'powerpoint', path: '../powerpoint'
-gem 'powerpoint', github: 'curationexperts/powerpoint'
-
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
@@ -49,7 +46,7 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'tufts_models', github: 'curationexperts/tufts_models'
+gem 'tufts_models', github: 'curationexperts/tufts_models', :tag => 'v1.0.0.rc1'
 
 gem "devise"
 gem "devise-guests", "~> 0.3"

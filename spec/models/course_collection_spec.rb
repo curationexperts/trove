@@ -232,9 +232,6 @@ describe CourseCollection do
     before do
       xmas = Time.local(2012, 12, 25, 5, 15, 45)
       allow(Time).to receive(:now) { xmas }
-
-      # https://github.com/travisjeffery/timecop/issues/25
-      allow(Zip::DOSTime).to receive(:now) { Zip::DOSTime.new(xmas.to_s) }
     end
 
     it 'makes the export dir if it doesnt exist' do
