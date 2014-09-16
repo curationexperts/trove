@@ -75,6 +75,14 @@ describe CourseCollectionsController do
         expect(assigns[:members]).to eq [displays_tdil]
         expect(response).to render_template(:show)
       end
+
+      context "when the collection is a personal collection" do
+        let(:collection) { create(:personal_collection) }
+        it "redirects to the person collection controller" do
+          get :show, id: collection
+          expect(response).to redirect_to collection
+        end
+      end
     end
 
     describe "PATCH 'append_to'" do

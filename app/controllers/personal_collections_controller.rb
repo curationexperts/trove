@@ -1,4 +1,8 @@
 class PersonalCollectionsController < CuratedCollectionsController
+  rescue_from Tufts::ModelNotAsserted do
+    redirect_to course_collection_path(params[:id])
+  end
+
   def index
     authorize! :index, PersonalCollection
     @solr_response = build_solr_response

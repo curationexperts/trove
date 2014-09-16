@@ -109,4 +109,11 @@ describe PersonalCollection do
       expect(subject.respond_to?(:to_pdf)).to eq true
     end
   end
+
+  describe "#find" do
+    let!(:course_collection) { create(:course_collection) }
+    it "should raise an error when finding a course_collection" do
+      expect { PersonalCollection.find(course_collection.pid) }.to raise_error Tufts::ModelNotAsserted
+    end
+  end
 end

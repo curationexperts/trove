@@ -48,6 +48,14 @@ describe PersonalCollectionsController do
         expect(assigns[:curated_collection]).to eq collection
         expect(response).to be_successful
       end
+
+      context "when the collection is a course collection" do
+        let(:collection) { create(:course_collection) }
+        it "redirects to the course collection controller" do
+          get :show, id: collection
+          expect(response).to redirect_to collection
+        end
+      end
     end
 
     describe "GET 'show' with a PPTX" do
