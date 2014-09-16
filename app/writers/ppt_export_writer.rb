@@ -39,9 +39,9 @@ class PptExportWriter
     def transmit_slide(image, path)
       out.puts image.title
       metadata = []
-      metadata << "Creator: #{image.creator.join("\r")}" if image.creator.present?
-      metadata << "Description: #{image.description.join("\r")}" if image.description.present?
-      metadata << "Date: #{image.date_created.join("\r")}" if image.date_created.present?
+      metadata << "Creator: #{image.creator.join("\\r")}" if image.creator.present?
+      metadata << "Description: #{image.description.join("\\r")}" if image.description.present?
+      metadata << "Date: #{image.date_created.join("\\r")}" if image.date_created.present?
       # fill out any remaining metadata slots
       0.upto(2) do |n|
         out.puts metadata[n]

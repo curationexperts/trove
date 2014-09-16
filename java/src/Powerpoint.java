@@ -28,16 +28,36 @@ import org.apache.poi.xslf.usermodel.XSLFTextShape;
 // (since we're using System.out for the data stream)
 
 // This reads a series of lines from STDIN
-// the first line has the number of image records to follow.
-// Each image record has the following format
-// Metadata 1
-// Metadata 2
-// Metadata 3
-// Image path
-// image x
-// image y
-// image cx
-// image cy
+/*
+[outputFileName]
+[title]
+[numberOfDescriptions]
+[description_lines...]
+[numberOfImageSlides]
+[image_slide_lines...]
+*/
+
+// [description_lines...] are descriptions separated by newlines
+/*
+[description1]
+[description2]
+[description3]
+...
+[descriptionN]
+*/
+
+// [image_slide_lines...] have this format
+/*
+[img.imageTitle]
+[img.metadata[0]]
+[img.metadata[1]]
+[img.metadata[2]]
+[img.imagePath]
+[img.x]
+[img.y]
+[img.cx]
+[img.cy]
+*/
 
 
 public class Powerpoint {
@@ -93,9 +113,9 @@ public class Powerpoint {
     public static ImageData read(Scanner scan) {
       ImageData img = new ImageData();
       img.imageTitle = scan.nextLine();
-      img.metadata[0] = scan.nextLine();
-      img.metadata[1] = scan.nextLine();
-      img.metadata[2] = scan.nextLine();
+      img.metadata[0] = scan.nextLine().replaceAll("\\\\r", "\r");
+      img.metadata[1] = scan.nextLine().replaceAll("\\\\r", "\r");
+      img.metadata[2] = scan.nextLine().replaceAll("\\\\r", "\r");
       img.imagePath = scan.nextLine();
       if (img.imagePath.length() == 0) {
         scan.nextLine();
