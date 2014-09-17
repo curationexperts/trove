@@ -16,9 +16,9 @@ describe CourseCollection do
     end
 
     context "when it's not empty" do
-      let(:img1) { FactoryGirl.create('tufts_image') }
-      let(:img2) { FactoryGirl.create('tufts_image') }
-      let(:img3) { FactoryGirl.create('tufts_image') }
+      let(:img1) { create('tufts_image') }
+      let(:img2) { create('tufts_image') }
+      let(:img3) { create('tufts_image') }
 
       before do
         subject.members << img1
@@ -76,10 +76,10 @@ describe CourseCollection do
   describe "setting collection_attributes" do
     before { CourseCollection.delete_all }
     let(:root) { CourseCollection.root }
-    let(:collection1) { FactoryGirl.create(:course_collection) }
-    let(:collection2) { FactoryGirl.create(:course_collection) }
-    let(:collection3) { FactoryGirl.create(:course_collection) }
-    let(:image) { FactoryGirl.create(:image) }
+    let(:collection1) { create(:course_collection) }
+    let(:collection2) { create(:course_collection) }
+    let(:collection3) { create(:course_collection) }
+    let(:image) { create(:image) }
 
     it "assigns multiple members at the root" do
       root.collection_attributes = {
@@ -265,10 +265,15 @@ describe CourseCollection do
     end
 
     context "when generating the file" do
-      # let(:timestamp) { '2012_12_25_051545' }
-      # let(:export_dir) { File.join(PowerPoint::PPTX_DIR, timestamp) }
+      let(:timestamp) { '2012_12_25_051545' }
+      let(:export_dir) { File.join(PowerPoint::PPTX_DIR, timestamp) }
       before { subject.update(title: "Student Research in the 1960's") }
-      #after { FileUtils.rm_rf(export_dir, secure: true) }
+      after { FileUtils.rm_rf(export_dir, secure: true) }
+
+      before do
+        xmas = Time.local(2012, 12, 25, 5, 15, 45)
+        allow(Time).to receive(:now) { xmas }
+      end
 
       it 'generates the file and returns the file path' do
         export_file_path = subject.to_pdf
@@ -277,5 +282,10 @@ describe CourseCollection do
         expect(File.exist?(export_file_path)).to eq true
       end
     end
+  end
+
+  describe "#createdby" do
+    subject { CourseCollection.new.createdby }
+    it { should eq 'tdil' }
   end
 end

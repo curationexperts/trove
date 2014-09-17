@@ -2,6 +2,7 @@ class PersonalCollection < CuratedCollection
   include WithNestedMembers
   include PowerPoint
   include Pdf
+  include CreatedByTdil
 
   after_create :add_to_root_collection
 

@@ -132,4 +132,9 @@ describe PersonalCollection do
       expect { PersonalCollection.find(course_collection.pid) }.to raise_error Tufts::ModelNotAsserted
     end
   end
+
+  describe "#createdby" do
+    subject { CourseCollection.new.createdby }
+    it { should eq 'tdil' }
+  end
 end
