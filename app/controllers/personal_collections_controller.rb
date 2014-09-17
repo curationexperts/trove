@@ -20,7 +20,7 @@ class PersonalCollectionsController < CuratedCollectionsController
   end
 
   def solr_parameters
-    @params ||= {q: 'is_root_bsi:true', rows: 10}.tap do |solr_parameters|
+    @params ||= {q: 'is_root_bsi:true', rows: 10, sort: 'title_si asc'}.tap do |solr_parameters|
       solr_parameters[:start] = solr_parameters[:rows] * (params[:page].to_i - 1) if params[:page].to_i > 0
       solr_parameters[:fq] = "has_model_ssim:\"#{PersonalCollection.to_class_uri}\""
     end
