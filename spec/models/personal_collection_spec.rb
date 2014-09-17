@@ -32,9 +32,9 @@ describe PersonalCollection do
     end
 
     context "when it's not empty" do
-      let(:img1) { FactoryGirl.create('tufts_image') }
-      let(:img2) { FactoryGirl.create('tufts_image') }
-      let(:img3) { FactoryGirl.create('tufts_image') }
+      let(:img1) { create('tufts_image') }
+      let(:img2) { create('tufts_image') }
+      let(:img3) { create('tufts_image') }
 
       before do
         subject.members << img1
@@ -81,6 +81,38 @@ describe PersonalCollection do
         it "should destroy the child collection too" do
           expect { subject.destroy }.to change { PersonalCollection.count }.by(-2)
           expect(PersonalCollection).to_not exist(child_collection.pid)
+        end
+      end
+
+      describe "representative_image" do
+        context "when there is a child images" do
+          let(:image) { create('tufts_image') }
+          before do
+            subject.members << image
+            subject.save!
+          end
+
+          it "should find the first nested image" do
+            expect(subject.representative_image).to eq image
+          end
+        end
+
+        context "when there are grandchild images" do
+          let(:image) { create('tufts_image') }
+          before do
+            child_collection.members << image
+            child_collection.save!
+          end
+
+          it "should find the first nested image" do
+            expect(subject.representative_image).to eq image
+          end
+        end
+
+        context "when there are no child images" do
+          it "should return nil" do
+            expect(subject.representative_image).to be_nil
+          end
         end
       end
     end

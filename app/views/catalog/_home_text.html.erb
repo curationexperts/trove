@@ -5,7 +5,7 @@
         <% path = feature.kind_of?(TuftsImage) ? catalog_path(feature) : feature %>
         <%= link_to path, class: "thumbnail" do %>
           <div class="text-center">
-            <% image = (feature.is_a?(CuratedCollection) && feature.members.first) || feature %>
+            <% image = (feature.is_a?(CuratedCollection) && feature.representative_image || feature) || feature %>
             <%= thumbnail_tag(image) %>
              <h5 class="index_title">
                <%= feature.title %>

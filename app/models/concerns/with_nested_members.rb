@@ -46,6 +46,16 @@ module WithNestedMembers
     end
   end
 
+  def representative_image
+    return child_images.first unless child_images.empty?
+    child_collections.each do |c|
+      img = c.representative_image
+      return img unless img.nil?
+    end
+    nil
+  end
+
+
   protected
 
     def proxy
@@ -90,6 +100,10 @@ module WithNestedMembers
 
     def child_collections
       members.select {|m| m.kind_of? CuratedCollection }
+    end
+
+    def child_images
+      @child_images ||= members.select {|m| m.kind_of? TuftsImage }
     end
 
 end
