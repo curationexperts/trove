@@ -5,6 +5,10 @@
   <% unless @curated_collection.new_record? %>
     <%= f.text_field :create_date, readonly: true, disabled: true %>
     <%= f.text_field :creator, readonly: true, disabled: true %>
+
+    <div id="orderable" class="dd row gallery">
+      <%= render partial: 'member_list', locals: {form: f} %>
+    </div>
   <% end %>
 
   <%= f.submit class: 'btn btn-primary' %>

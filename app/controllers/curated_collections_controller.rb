@@ -26,10 +26,14 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def update
-    # TODO consolidate
-    if members = collection_params[:member_attributes]
+    if collection_params[:member_attributes].present?
+      # updating from the edit page
+      members = collection_params[:member_attributes].reject do |orig_position, member|
+        member["remove"] == "remove"
+      end
       @curated_collection.member_attributes = members
     elsif collections = collection_params[:collection_attributes]
+      # reordering from the search results page
       @curated_collection.collection_attributes = collections
     end
     @curated_collection.attributes = collection_params.except(:member_attributes, :collection_attributes, :type)
@@ -61,6 +65,7 @@ class CuratedCollectionsController < ApplicationController
 
   def edit
     initialize_fields
+    @members = @curated_collection.members.select { |m| m.displays.include?('tdil') && m.state == 'A' }
   end
 
   def show
@@ -102,12 +107,6 @@ class CuratedCollectionsController < ApplicationController
       status = @curated_collection.save ? 'success' : 'error'
       render json: { status: status }
     end
-  end
-
-  def remove_from
-    @curated_collection.delete_member_at(params[:position].to_i)
-    @curated_collection.save!
-    redirect_to @curated_collection
   end
 
   protected

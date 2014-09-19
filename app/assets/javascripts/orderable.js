@@ -1,8 +1,15 @@
 Blacklight.onLoad(function(){
   $('#orderable').nestable({maxDepth: 1, horizontalList: true});
-  $('#orderable li').bind('click', function(e) {
+  // visit the member's page when clicking anywhere on it
+  $('.gallery li').bind('click', function(e) {
     anchor = $(this).find('a:not(.removeButton)')
     window.location.href = $(anchor).attr('href');
+  });
+  // prevent clicking on the remove checkbox from changing the page
+  $('#orderable li .removeButton').bind('click', function(e){
+    opacity = ($(this).find('input:checkbox').is(':checked') ? 0.5 : 1);
+    $(this).closest('li').css('opacity', opacity);
+    e.stopPropagation();
   });
   updateWeights($('#orderable'));
 });

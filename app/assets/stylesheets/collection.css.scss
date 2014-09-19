@@ -4,9 +4,17 @@
 
 .removeButton {
   color: darkgray;
-  float: right;
+  text-align: right;
 
   &:hover {
     color: darkred;
   }
 }
+
+.gallery li .thumbnail {
+  cursor: pointer;
+}
+form .gallery li .thumbnail {
+  cursor: move;
+}
+

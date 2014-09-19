@@ -35,10 +35,16 @@ $handle-height: 270px;
 
   li.collection-member .dd-handle {
     height: $handle-height;
+    .editor & {
+      height: $handle-height + 25; // makes spece for the remove button
+    }
     border-radius: 3px;
 
     .thumbnail {
       height: $handle-height - 20;
+      .editor & {
+        height: $handle-height - 20 + 25; // makes spece for the remove button
+      }
     }
   }
 

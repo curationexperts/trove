@@ -97,10 +97,14 @@ describe PersonalCollectionsController do
     end
 
     describe "GET 'edit'" do
+      let(:image1) { create(:image, displays: ['tdil']) }
+      let(:collection) { create(:personal_collection, user: user, members: [image1]) }
+
       it "returns http success" do
         get :edit, id: collection
         expect(response).to render_template(:edit)
         expect(assigns[:curated_collection]).to eq collection
+        expect(assigns[:members]).to eq [image1]
         expect(response).to be_successful
       end
     end
@@ -186,28 +190,6 @@ describe PersonalCollectionsController do
       end
     end
 
-    describe "DELETE remove_from" do
-      context 'my own collection' do
-        before do
-          collection.members = [image]
-          collection.save!
-        end
-        it "returns http success" do
-          delete 'remove_from', id: collection, position: '0'
-          expect(response).to redirect_to collection
-          expect(collection.reload.members).to eq []
-        end
-      end
-
-      context 'someone elses collection' do
-        it "denies access" do
-          expect{
-            delete 'remove_from', id: not_my_collection, position: '1'
-          }.to raise_error(CanCan::AccessDenied)
-        end
-      end
-    end
-
     describe "PATCH update" do
       context 'my own collection with images' do
         let(:image1) { FactoryGirl.create(:image) }
@@ -238,6 +220,16 @@ describe PersonalCollectionsController do
           reloaded = ActiveFedora::Base.find(collection.pid, cast: true)
           expect(reloaded.type).to eq 'personal'
           expect(response).to redirect_to(personal_collection_path(reloaded))
+        end
+
+        context "when the collection has members" do
+          let(:collection) { create(:personal_collection, user: user, members: [image1, image2]) }
+
+          it "removes members of the collection" do
+            patch :update, id: collection, personal_collection: {member_attributes: {"0"=>{"id"=>image1.id, "weight"=>"1", "remove"=>"remove"}, "1"=>{"id"=>image2.id, "weight"=>"2"}}}
+            expect(response).to redirect_to collection
+            expect(collection.reload.member_ids).to eq [image2.id]
+          end
         end
       end
 

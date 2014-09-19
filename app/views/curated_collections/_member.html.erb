@@ -1,12 +1,14 @@
+          <% member_prefix = "#{ActiveModel::Naming.singular(@curated_collection)}[member_attributes][#{member_counter}]" %>
           <li class="dd-item collection-member" data-id="<%= member_counter %>">
-          <%= hidden_field_tag "#{ActiveModel::Naming.singular(@curated_collection)}[member_attributes][#{member_counter}][id]", member.id, id: "#{ActiveModel::Naming.singular(@curated_collection)}_member_attributes_#{member_counter}_id" %>
-          <%= hidden_field_tag "#{ActiveModel::Naming.singular(@curated_collection)}[member_attributes][#{member_counter}][weight]", member_counter, id: "#{ActiveModel::Naming.singular(@curated_collection)}_member_attributes_#{member_counter}_weight", data: { property: 'weight' } %>
+          <%= hidden_field_tag "#{member_prefix}[id]", member.id %>
+          <%= hidden_field_tag "#{member_prefix}[weight]", member_counter, data: { property: 'weight' } %>
             <div class="dd-handle">
               <div class="thumbnail">
-                <% if can? :update, @curated_collection %>
-                  <%= link_to [:remove_from, @curated_collection, { position: member_counter}], method: :delete, class: "removeButton dd-nodrag" do %>
-                    <span class="glyphicon glyphicon-remove-circle"></span>
-                  <% end %>
+                <% if can?(:update, @curated_collection) && form.present? %>
+                  <div class="removeButton">
+                    <%= label_tag "#{member_prefix}[remove]", :remove %>
+                    <%= check_box_tag "#{member_prefix}[remove]", :remove %>
+                  </div>
                 <% end %>
                 <div class="text-center">
                   <%= thumbnail_tag(member) %>

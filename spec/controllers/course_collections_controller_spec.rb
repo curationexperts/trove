@@ -115,14 +115,6 @@ describe CourseCollectionsController do
         expect(user.personal_collection.member_ids).to eq [assigns[:cloned].pid]
       end
     end
-
-    describe "DELETE 'remove_from'" do
-      it "denies access" do
-        expect{
-          delete :remove_from, id: collection, position: '1'
-        }.to raise_error(CanCan::AccessDenied)
-      end
-    end
   end
 
   describe "an admin user" do
@@ -172,10 +164,14 @@ describe CourseCollectionsController do
     end
 
     describe "GET 'edit'" do
+      let(:image1) { create(:image, displays: ['tdil']) }
+      let(:collection) { create(:course_collection, members: [image1]) }
+
       it "returns http success" do
         get :edit, id: collection
         expect(response).to render_template(:edit)
         expect(assigns[:curated_collection]).to eq collection
+        expect(assigns[:members]).to eq [image1]
         expect(response).to be_successful
       end
     end
@@ -214,18 +210,6 @@ describe CourseCollectionsController do
       end
     end
 
-    describe "DELETE 'remove_from'" do
-      before do
-        collection.members = [image]
-        collection.save!
-      end
-      it "removes the collection member" do
-        delete :remove_from, id: collection, position: '0'
-        expect(response).to redirect_to collection
-        expect(collection.reload.members).to eq []
-      end
-    end
-
     describe "PATCH update" do
       it "updates collection attributes" do
         patch :update, id: collection, course_collection: {title: 'new title', description: ['new description']}
@@ -243,6 +227,16 @@ describe CourseCollectionsController do
           patch :update, id: collection, course_collection: {member_attributes: {"0"=>{"id"=>image1.id, "weight"=>"1"}, "1"=>{"id"=>image1.id, "weight"=>"2"}, "2"=>{"id"=>image1.id, "weight"=>"3"}, "3"=>{"id"=>image2.id, "weight"=>"4"}, "4"=>{"id"=>image3.id, "weight"=>"0"}}}
           expect(response).to redirect_to collection
           expect(collection.reload.member_ids).to eq [image3.id, image1.id, image1.id, image1.id, image2.id]
+        end
+
+        context "when the collection has members" do
+          let(:collection) { create(:course_collection, members: [image1, image2]) }
+
+          it "removes members of the collection" do
+            patch :update, id: collection, course_collection: {member_attributes: {"0"=>{"id"=>image1.id, "weight"=>"1", "remove"=>"remove"}, "1"=>{"id"=>image2.id, "weight"=>"2"}}}
+            expect(response).to redirect_to collection
+            expect(collection.reload.member_ids).to eq [image2.id]
+          end
         end
       end
 

@@ -47,13 +47,6 @@ describe 'Course Collections' do
       controller: 'course_collections', action: 'append_to', id: '1'
     )
   end
-
-  it 'routes to remove_from' do
-    expect(delete: 'course_collections/1/remove_from').to route_to(
-      controller: 'course_collections', action: 'remove_from', id: '1'
-    )
-  end
-
 end
 
 describe 'Personal Collections' do
@@ -95,12 +88,6 @@ describe 'Personal Collections' do
   it 'routes to append_to' do
     expect(patch: 'personal_collections/1/append_to').to route_to(
       controller: 'personal_collections', action: 'append_to', id: '1' )
-  end
-
-  it 'routes to remove_from' do
-    expect(delete: 'personal_collections/1/remove_from').to route_to(
-      controller: 'personal_collections', action: 'remove_from', id: '1'
-    )
   end
 end
 
