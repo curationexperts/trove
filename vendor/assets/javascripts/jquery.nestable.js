@@ -62,7 +62,16 @@
       // You can set the next option to true to create a copy of the node  that is dragged.
       cloneNodeOnDrag   : false,
       // When the node is dragged and released outside its list delete it.
-      dragOutsideToDelete : false
+      dragOutsideToDelete : false,
+    scroll              : false,
+    scrollSensitivity   : 8,
+    scrollSpeed         : 10,
+    scrollTriggers      : {
+               top: 40,
+               left: 40,
+               right: -40,
+               bottom: -40
+    }
 	};
 
     function Plugin(element, options)
@@ -499,6 +508,41 @@
                 mouse.dirAx  = newAx;
                 this.moving = true;
                 return;
+            }
+
+                        //Do scrolling
+            if (opt.scroll) {
+                var scrolled = false;
+                var scrollParent = this.el.scrollParent()[0];
+                if(scrollParent != document && scrollParent.tagName != 'HTML') {
+                    if((opt.scrollTriggers.bottom + scrollParent.offsetHeight) - e.pageY < opt.scrollSensitivity)
+                        scrollParent.scrollTop = scrolled = scrollParent.scrollTop + opt.scrollSpeed;
+                    else if(e.pageY - opt.scrollTriggers.top < opt.scrollSensitivity)
+                        scrollParent.scrollTop = scrolled = scrollParent.scrollTop - opt.scrollSpeed;
+
+                    if((opt.scrollTriggers.right + scrollParent.offsetWidth) - e.pageX < opt.scrollSensitivity)
+                        scrollParent.scrollLeft = scrolled = scrollParent.scrollLeft + opt.scrollSpeed;
+                    else if(e.pageX - opt.scrollTriggers.left < opt.scrollSensitivity)
+                        scrollParent.scrollLeft = scrolled = scrollParent.scrollLeft - opt.scrollSpeed;
+                } else {
+                    if(e.pageY - $(document).scrollTop() < opt.scrollSensitivity)
+                        scrolled = $(document).scrollTop($(document).scrollTop() - opt.scrollSpeed);
+                    else if($(window).height() - (e.pageY - $(document).scrollTop()) < opt.scrollSensitivity)
+                        scrolled = $(document).scrollTop($(document).scrollTop() + opt.scrollSpeed);
+
+                    if(e.pageX - $(document).scrollLeft() < opt.scrollSensitivity)
+                        scrolled = $(document).scrollLeft($(document).scrollLeft() - opt.scrollSpeed);
+                    else if($(window).width() - (e.pageX - $(document).scrollLeft()) < opt.scrollSensitivity)
+                        scrolled = $(document).scrollLeft($(document).scrollLeft() + opt.scrollSpeed);
+                }
+            }
+
+            if (this.scrollTimer)
+                clearTimeout(this.scrollTimer);
+            if (opt.scroll && scrolled) {
+                this.scrollTimer = setTimeout(function() {
+                    $(window).trigger(e);
+                }, 10);
             }
 
             // calc distance moved on this axis (and direction)

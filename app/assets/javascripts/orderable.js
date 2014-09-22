@@ -1,5 +1,5 @@
 Blacklight.onLoad(function(){
-  $('#orderable').nestable({maxDepth: 1, horizontalList: true});
+  $('#orderable').nestable({maxDepth: 1, horizontalList: true, scroll: true});
   // visit the member's page when clicking anywhere on it
   $('.gallery li').bind('click', function(e) {
     anchor = $(this).find('a:not(.removeButton)')
