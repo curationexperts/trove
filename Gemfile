@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.5'
+gem 'rails', '4.1.6'
 gem 'sqlite3'
-gem 'blacklight', '~> 5.7.1'
 gem 'hydra-head', '~> 7.2.1'
-gem 'hydra-editor', '~> 0.4.0'
-gem 'active-fedora', github: 'projecthydra/active_fedora'
+gem 'blacklight', '~> 5.7.1'
+gem 'active-fedora', '~> 7.1.1'
+gem 'hydra-editor', '~> 0.5.0'
 
 # production and deployment gems
 gem 'mysql2'

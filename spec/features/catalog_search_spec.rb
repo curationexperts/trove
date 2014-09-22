@@ -21,15 +21,19 @@ feature 'Catalog Search:' do
     end
   end
 
-  scenario 'returns only objects with "tdil" display' do
-    tdil_obj = FactoryGirl.create(:image, displays: ['dl', 'tdil'])
-    non_tdil_obj = FactoryGirl.create(:image, displays: ['dl'])
+  context "when displays are set" do
+    let!(:tdil_obj) { create(:image, displays: ['dl', 'tdil']) }
+    let!(:non_tdil_obj) { create(:image, displays: ['dl']) }
 
-    visit root_path
-    click_button('Search')
-    within('#documents') do
-      expect(page).to     have_content(tdil_obj.title)
-      expect(page).to_not have_content(non_tdil_obj.title)
+    scenario 'returns only objects with "tdil" display' do
+      puts "tdil_obj #{tdil_obj.pid}"
+      puts "non_tdil_obj #{non_tdil_obj.pid}"
+      visit root_path
+      click_button('Search')
+      within('#documents') do
+        expect(page).to     have_content(tdil_obj.title)
+        expect(page).to_not have_content(non_tdil_obj.title)
+      end
     end
   end
 
