@@ -29,3 +29,4 @@ en:
       save_order: "Save the order"
     actions:
       copyright_acknowledgement: "This material is for teaching purposes or your personal research use. Any other uses require you to determine the copyright status of the material you are using. Learn more about copyright, fair use, and open access at http://sites.tufts.edu/scholarlycommunication/"
+      confirm_destroy: "Are you sure you want to delete the collection?"

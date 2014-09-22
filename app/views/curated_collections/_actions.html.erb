@@ -26,7 +26,7 @@
       <% end %>
       <% if can? :destroy, @curated_collection %>
         <li>
-          <%= link_to @curated_collection, method: :delete do %>
+          <%= link_to @curated_collection, method: :delete, data: { confirm: t('.confirm_destroy') } do %>
             <%= icon 'trash' %> delete collection
           <% end %>
         </li>
