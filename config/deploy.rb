@@ -13,7 +13,7 @@ set :keep_releases, 5
 set :linked_files, %w{config/application.yml config/database.yml config/feature_data.yml config/java.yml config/fedora.yml config/secrets.yml config/solr.yml}
 
 # Default value for linked_dirs is []
-set :linked_dirs, %w{bin tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs, %w{bin tmp/pids tmp/sockets vendor/bundle public/system}
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
