@@ -20,6 +20,12 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  helpers:
+    submit:
+      personal_collection:
+        update: "Save changes to this collection"
+      course_collection:
+        update: "Save changes to this collection"
   catalog:
     curated_collection_list:
       save_order: "Save the order"

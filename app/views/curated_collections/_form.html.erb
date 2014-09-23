@@ -1,4 +1,6 @@
 <%= bootstrap_form_for @curated_collection, html: {class: 'editor'} do |f| %>
+  <%= f.submit class: 'btn btn-primary pull-right' %>
+  <div class="clearfix"></div>
   <%= f.text_field :title %>
   <%= render "records/edit_field", {f: f, render_req: true, key: :description } %>
 
