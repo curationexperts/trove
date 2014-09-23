@@ -18,7 +18,7 @@ module WithNestedMembers
   # any that are not provided are removed.
   def member_attributes=(members)
     members = members.sort_by { |i, _| i.to_i }.map { |_, attributes| attributes } if members.is_a? Hash
-    self.member_ids = members.sort_by { |e| e['weight'] }.map { |e| e['id'] }
+    self.member_ids = members.sort_by { |e| e['weight'].to_i }.map { |e| e['id'] }
   end
 
   # this sets just the collection members of a collection.
@@ -31,7 +31,7 @@ module WithNestedMembers
   # update the nested collections with attributes arranged in a tree structure.
   # @see make_tree
   def assign_tree(tree)
-    nodes = tree.sort_by { |e| e['weight'] }
+    nodes = tree.sort_by { |e| e['weight'].to_i }
     new_collection_ids = nodes.map { |e| e['id'] }
     if ordered_subset?(new_collection_ids)
       removed_collection_ids = collection_member_ids - new_collection_ids

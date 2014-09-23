@@ -26,8 +26,6 @@ feature 'Catalog Search:' do
     let!(:non_tdil_obj) { create(:image, displays: ['dl']) }
 
     scenario 'returns only objects with "tdil" display' do
-      puts "tdil_obj #{tdil_obj.pid}"
-      puts "non_tdil_obj #{non_tdil_obj.pid}"
       visit root_path
       click_button('Search')
       within('#documents') do

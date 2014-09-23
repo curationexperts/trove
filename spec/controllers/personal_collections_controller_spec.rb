@@ -202,9 +202,9 @@ describe PersonalCollectionsController do
         end
 
         it "reorders the collection" do
-          patch :update, id: collection, personal_collection: {member_attributes: {"0"=>{"id"=>image1.id, "weight"=>"1"}, "1"=>{"id"=>image1.id, "weight"=>"2"}, "2"=>{"id"=>image1.id, "weight"=>"3"}, "3"=>{"id"=>image2.id, "weight"=>"4"}, "4"=>{"id"=>image3.id, "weight"=>"0"}}}
+          patch :update, id: collection, personal_collection: {member_attributes: {"0"=>{"id"=>image1.id, "weight"=>"1"}, "1"=>{"id"=>image1.id, "weight"=>"2"}, "2"=>{"id"=>image1.id, "weight"=>"13"}, "3"=>{"id"=>image2.id, "weight"=>"4"}, "4"=>{"id"=>image3.id, "weight"=>"0"}}}
           expect(response).to redirect_to collection
-          expect(collection.reload.member_ids).to eq [image3.id, image1.id, image1.id, image1.id, image2.id]
+          expect(collection.reload.member_ids).to eq [image3.id, image1.id, image1.id, image2.id, image1.id]
         end
 
         it "updates collection attributes" do

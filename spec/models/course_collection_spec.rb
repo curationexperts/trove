@@ -79,14 +79,16 @@ describe CourseCollection do
     let(:collection1) { create(:course_collection) }
     let(:collection2) { create(:course_collection) }
     let(:collection3) { create(:course_collection) }
+    let(:collection4) { create(:course_collection) }
     let(:image) { create(:image) }
 
     it "assigns multiple members at the root" do
       root.collection_attributes = {
         "0"=>{"id"=>collection3.id, "weight"=>"1", 'parent_page_id' => collection1.id},
         "1"=>{"id"=>collection1.id, "weight"=>"3", 'parent_page_id' => root.id},
-        "2"=>{"id"=>collection2.id, "weight"=>"2", 'parent_page_id' => root.id}}
-      expect(root.member_ids).to eq [collection2.id, collection1.id]
+        "2"=>{"id"=>collection2.id, "weight"=>"12", 'parent_page_id' => root.id},
+        "3"=>{"id"=>collection4.id, "weight"=>"2", 'parent_page_id' => root.id}}
+      expect(root.member_ids).to eq [collection4.id, collection1.id, collection2.id]
       expect(collection1.reload.member_ids).to eq [collection3.id]
     end
 
