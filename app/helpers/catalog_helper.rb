@@ -2,7 +2,9 @@ module CatalogHelper
   include Blacklight::CatalogHelperBehavior
 
   def featured_records
-    pids = FeatureDataSettings['featured_pids']
+    pids = (FeatureDataSettings['featured_pids'] || []).select do |pid|
+      TuftsBase.valid_pid?(pid) && ActiveFedora::Base.exists?(pid)
+    end
     if pids.present?
       ActiveFedora::Base.find(pids)
     else
