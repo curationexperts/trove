@@ -1,4 +1,6 @@
 <ol class="dd-list">
-  <%= render partial: 'member',  collection: @members, locals: {form: form} %>
+  <% @members.zip(@positions, 0..(@members.count)).each do |member, collection_position, member_counter| %>
+    <%= render partial: 'member', locals: {member: member, collection_position: collection_position, member_counter: member_counter, form: form} %>
+  <% end %>
 </ol>
 

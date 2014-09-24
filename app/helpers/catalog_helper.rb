@@ -1,6 +1,17 @@
 module CatalogHelper
   include Blacklight::CatalogHelperBehavior
 
+  def curated_collection_member_path(collection, position)
+    case collection.relationships(:has_model).first
+    when CourseCollection.to_class_uri
+      course_collection_member_path(collection, position)
+    when PersonalCollection.to_class_uri
+      personal_collection_member_path(collection, position)
+    else
+      raise ArgumentError.new("Unknown has_model relationship")
+    end
+  end
+
   def featured_records
     pids = (FeatureDataSettings['featured_pids'] || []).select do |pid|
       TuftsBase.valid_pid?(pid) && ActiveFedora::Base.exists?(pid)

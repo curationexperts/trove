@@ -2,7 +2,7 @@
       <% # header bar for doc items in index view -%>
       <div class="documentHeader row">
          <h5 class="index_title col-sm-9 col-lg-10">
-         <% path = document.kind_of?(TuftsImage) ? catalog_path(document) : document %>
+         <% path = document.kind_of?(TuftsImage) ? curated_collection_member_path(@curated_collection, collection_position + 1) : document %>
          <%= link_to truncate(document.title, length: 41, separator: ' '), path, class: 'dd-nodrag' %>
         </h5>
       </div>

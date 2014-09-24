@@ -1,5 +1,6 @@
 class CuratedCollectionsController < ApplicationController
   include Blacklight::Catalog::SearchContext
+  include CuratedCollectionHelper
   load_and_authorize_resource instance_name: :curated_collection
 
   ##
@@ -57,7 +58,7 @@ class CuratedCollectionsController < ApplicationController
 
   def edit
     initialize_fields
-    @members = @curated_collection.members.select { |m| m.displays.include?('tdil') && m.state == 'A' }
+    @members, @positions = members_with_positions(@curated_collection)
   end
 
   def show
@@ -66,7 +67,7 @@ class CuratedCollectionsController < ApplicationController
         @curated_collection.ancestors_and_self.each do |s|
           add_breadcrumb s, s
         end
-        @members = @curated_collection.members.select { |m| m.displays.include?('tdil') && m.state == 'A' }
+        @members, @positions = members_with_positions(@curated_collection)
       end
       format.pptx do
         exporter = PowerPointCollectionExporter.new(@curated_collection)
@@ -103,6 +104,15 @@ class CuratedCollectionsController < ApplicationController
 
   protected
 
+  def members_with_positions(curated_collection)
+    [curated_collection.members, curated_collection.positions_of_members].
+      # transpose so we can drop non-tdil members with their positions
+      transpose.
+      # only show members visible to tdil
+      select { |(member,position)| member.displays.include?('tdil') && member.state == 'A' }.
+      # transpose back so we get something like this: [members, positions]
+      transpose
+  end
 
   def duplicate(source, top_level=true)
     collection_class.new.tap do |dest|
@@ -149,16 +159,5 @@ class CuratedCollectionsController < ApplicationController
   def collection_params
     params.require(controller_name.singularize).permit(:title, {description: []}, :members, :member_ids)
     params[controller_name.singularize]
-  end
-
-  def curated_collection_path(collection)
-    case collection.relationships(:has_model).first
-    when CourseCollection.to_class_uri
-      course_collection_path(collection)
-    when PersonalCollection.to_class_uri
-      personal_collection_path(collection)
-    else
-      raise ArgumentError.new("Unknown has_model relationship")
-    end
   end
 end

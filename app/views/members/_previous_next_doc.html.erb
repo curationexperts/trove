@@ -1,0 +1,10 @@
+<% #Using the Bootstrap Pagination class  -%>
+<div id="previousNextDocument">
+  <div class="page_links">
+    <%= link_to t('views.pagination.previous').html_safe, personal_collection_member_path(@collection, @prev_position), class: 'previous' if @prev_position %> |
+
+    <%= link_to @collection.title, personal_collection_path(@collection) %> |
+
+    <%= link_to t('views.pagination.next').html_safe, personal_collection_member_path(@collection, @next_position), class: 'next' if @next_position %>
+  </div>
+</div>
