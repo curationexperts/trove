@@ -1,11 +1,10 @@
-<%# TODO this partial has a bad name because it's used to draw PersonalCollections too %>
 <li class="<% if can?(:append_to, collection_member) %>drop-target <% end %>dd-item collection" data-level="<%= level %>" data-id="<%= collection_member.id %>">
     <%= weight_and_parent collection_member, counter, parent_id %>
     <div class="dd-handle"><%= link_to collection_member.title, collection_member, class: 'dd-nodrag' %></div>
     <% counter.increment! %>
     <% unless collection_member.collection_members.empty? %>
       <ol class="<%= collection_member.class.model_name.route_key.dasherize.singularize %>-list dd-list">
-        <%= render partial: 'course_collection', collection: collection_member.collection_members,
+        <%= render partial: 'curated_collection', collection: collection_member.collection_members,
                     as: :collection_member,
                     locals: { counter: counter, parent_id: collection_member.id, level: level + 1} %>
       </ol>

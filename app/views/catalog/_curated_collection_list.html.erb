@@ -10,7 +10,7 @@
       <%= bootstrap_form_for @root_collection do |f| %>
         <ol class="panel-body course-collection-list dd-list">
           <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
-          <%= render partial: 'course_collection', collection: @root_collection.collection_members,
+          <%= render partial: 'curated_collection', collection: @root_collection.collection_members,
             as: :collection_member,
             locals: { counter: counter, parent_id: @root_collection.id, level: 1} %>
         </ol>
@@ -19,7 +19,7 @@
     <% else %>
       <ol class="panel-body course-collection-list dd-list">
         <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
-        <%= render partial: 'course_collection', collection: @root_collection.collection_members,
+        <%= render partial: 'curated_collection', collection: @root_collection.collection_members,
           as: :collection_member,
           locals: { counter: counter, parent_id: @root_collection.id, level: 1} %>
       </ol>
@@ -37,7 +37,7 @@
     <%= bootstrap_form_for @my_collection do |f| %>
       <ol class="panel-body personal-collection-list dd-list">
         <% counter = Counter.new # an object allows us to enumerate the tree nodes uniquely %>
-        <%= render partial: 'course_collection', collection: @my_collection.collection_members,
+        <%= render partial: 'curated_collection', collection: @my_collection.collection_members,
           as: :collection_member,
           locals: { counter: counter, parent_id: @my_collection.id, level: 1} %>
       </ol>
