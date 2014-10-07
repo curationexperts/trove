@@ -47,7 +47,8 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'tufts_models', github: 'curationexperts/tufts_models', tag: 'v1.0.0.rc5'
+#gem 'tufts_models', github: 'curationexperts/tufts_models', tag: 'v1.0.0.rc5'
+gem 'tufts_models', github: 'curationexperts/tufts_models', ref: '37ea847'
 
 gem "devise"
 gem "devise-guests", "~> 0.3"

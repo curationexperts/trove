@@ -69,14 +69,14 @@ class CuratedCollectionsController < ApplicationController
         @members = @curated_collection.members.select { |m| m.displays.include?('tdil') && m.state == 'A' }
       end
       format.pptx do
-        send_file(@curated_collection.to_pptx,
-                  filename: @curated_collection.pptx_file_name,
+        exporter = PowerPointCollectionExporter.new(@curated_collection)
+        send_file(exporter.export,
+                  filename: exporter.pptx_file_name,
                   type: "application/vnd.openxmlformats-officedocument.presentationml.presentation")
       end
       format.pdf do
-        send_file(@curated_collection.to_pdf,
-                  filename: @curated_collection.pdf_file_name,
-                  type: "application/pdf")
+        exporter = PdfCollectionExporter.new(@curated_collection)
+        send_file(exporter.export, filename: exporter.pdf_file_name, type: "application/pdf")
       end
     end
   end

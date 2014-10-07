@@ -1,8 +1,7 @@
 require 'tempfile'
 require 'open3'
 
-module PowerPoint
-  extend ActiveSupport::Concern
+class PowerPointCollectionExporter < CollectionExporter
 
   PPTX_DIR = File.join(Rails.root, 'tmp', 'exports')
 
@@ -11,10 +10,6 @@ module PowerPoint
     dir = File.join(PPTX_DIR, timestamp)
     FileUtils.mkdir_p(dir)
     dir
-  end
-
-  def export_base_file_name
-    Array(title).first.underscore.gsub(' ', '_').gsub("'", '_')
   end
 
   def pptx_file_name
@@ -31,7 +26,7 @@ module PowerPoint
   end
 
   # TODO: Handle the case where there is no data for a field
-  def to_pptx
+  def export
     export_file_name = Tempfile.new([export_base_file_name, '.pptx'], export_dir).path
 
     # Open a bi-directional connection to a Java process that
@@ -43,7 +38,7 @@ module PowerPoint
       # Send the name of the file we want to create
       stdin.puts export_file_name
 
-      PptExportWriter.new(self, stdin).write
+      PptExportWriter.new(@collection, stdin).write
       # Read back the name of the output file from the Java ppt generator
       output_file = stdout.read
 

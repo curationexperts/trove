@@ -67,8 +67,8 @@ describe PersonalCollectionsController do
       end
 
       it "returns http success" do
-        expect_any_instance_of(PersonalCollection).to receive(:to_pptx).and_return(file)
-        expect_any_instance_of(PersonalCollection).to receive(:pptx_file_name).and_return('title_9.pptx')
+        expect_any_instance_of(PowerPointCollectionExporter).to receive(:export).and_return(file)
+        expect_any_instance_of(PowerPointCollectionExporter).to receive(:pptx_file_name).and_return('title_9.pptx')
         get :show, id: collection, format: 'pptx'
         expect(response).to be_successful
         expect(response.body).to eq 'mock pptx'
@@ -86,8 +86,8 @@ describe PersonalCollectionsController do
       end
 
       it "returns http success" do
-        expect_any_instance_of(PersonalCollection).to receive(:to_pdf).and_return(file)
-        expect_any_instance_of(PersonalCollection).to receive(:pdf_file_name).and_return('title_9.pdf')
+        expect_any_instance_of(PdfCollectionExporter).to receive(:export).and_return(file)
+        expect_any_instance_of(PdfCollectionExporter).to receive(:pdf_file_name).and_return('title_9.pdf')
         get :show, id: collection, format: 'pdf'
         expect(response).to be_successful
         expect(response.body).to eq 'mock pdf'
