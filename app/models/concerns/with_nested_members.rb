@@ -55,6 +55,11 @@ module WithNestedMembers
     nil
   end
 
+  # Return the children of this collection that are collections themselves
+  def child_collections
+    members.select {|m| m.kind_of? CuratedCollection }
+  end
+
 
   protected
 
@@ -98,12 +103,7 @@ module WithNestedMembers
       child_collections.each(&:destroy)
     end
 
-    def child_collections
-      members.select {|m| m.kind_of? CuratedCollection }
-    end
-
     def child_images
       @child_images ||= members.select {|m| m.kind_of? TuftsImage }
     end
-
 end

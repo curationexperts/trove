@@ -275,6 +275,22 @@ describe CourseCollectionsController do
         expect(user.personal_collection.member_ids).to include(collection_w_creator.id)
       end
 
+      describe "when the collection has child collections" do
+        let(:parent) { build(:course_collection, creator: [user.user_key]) }
+        let(:child) { create(:course_collection, creator: [user.user_key]) }
+
+        before do
+          parent.members << child
+          parent.save!
+        end
+
+        it "updates the type of the children that are collections" do
+          patch :update_type, id: parent
+          reloaded_child = ActiveFedora::Base.find(child.pid)
+          expect(reloaded_child).to be_instance_of PersonalCollection
+        end
+      end
+
     end
   end  # describe admin user
 

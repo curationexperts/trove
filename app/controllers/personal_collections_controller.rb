@@ -8,6 +8,12 @@ class PersonalCollectionsController < CuratedCollectionsController
     @solr_response = build_solr_response
   end
 
+  protected
+
+  def switch_type_actor
+    SwitchToCourseCollectionActor.new(@curated_collection)
+  end
+
   private
 
   def build_solr_response

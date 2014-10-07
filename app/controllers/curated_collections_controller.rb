@@ -47,21 +47,13 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def update_type
-    new_type = case @curated_collection
-    when CourseCollection
-      PersonalCollection.to_class_uri
-    when PersonalCollection
-      CourseCollection.to_class_uri
-    end
-    @curated_collection.clear_relationship(:has_model)
-    @curated_collection.add_relationship(:has_model, new_type)
-    if @curated_collection.save
-      update_collection_parent(new_type)
+    if switch_type_actor.switch
       redirect_to curated_collection_path(@curated_collection)
     else
       render :show
     end
   end
+
 
   def edit
     initialize_fields
@@ -168,25 +160,5 @@ class CuratedCollectionsController < ApplicationController
     else
       raise ArgumentError.new("Unknown has_model relationship")
     end
-  end
-
-  def update_collection_parent(collection_type)
-    # remove the collection from it's former parent
-    old_parent = @curated_collection.parent
-    old_parent.delete_member_by_id(@curated_collection.id)
-    old_parent.save
-
-    # add it to the root of the new collection type
-    case @curated_collection
-      when CourseCollection # the collection was just downgraded to a PersonalCollection
-        new_parent = User.find_by_user_key(@curated_collection.creator).personal_collection(true)
-
-      when PersonalCollection   # the collection was just upgraded to a CourseCollection
-        new_parent = CourseCollection.root
-    end
-
-    new_parent.member_ids = [@curated_collection.id] + new_parent.member_ids
-    new_parent.save
-
   end
 end
