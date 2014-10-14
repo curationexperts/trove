@@ -14,7 +14,7 @@
                   <%= thumbnail_tag(member) %>
                 </div>
                 <div class="caption">
-                  <%= render 'curated_collections/index_header_default', document: member%>
+                  <%= render 'curated_collections/index_header_default', document: member, collection_position: collection_position %>
                   <%= render 'catalog/index_gallery_default', document: member %>
                 </div>
                 <div style="clear: left"/>

@@ -15,13 +15,16 @@ Rails.application.routes.draw do
       patch :append_to
       patch :update_type
     end
+    resources :members, only: :show, constraints: { id: /[1-9][0-9]*/ }
   end
+
   resources :personal_collections, constraints: { id: ALLOW_DOTS } do
     member do
       post :copy
       patch :append_to
       patch :update_type
     end
+    resources :members, only: :show, constraints: { id: /[1-9][0-9]*/ }
   end
 
   root to: "catalog#index"

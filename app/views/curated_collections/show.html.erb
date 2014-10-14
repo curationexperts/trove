@@ -8,7 +8,7 @@
   <h1><%=@curated_collection.title %> <small><%=@curated_collection.type.capitalize %> Collection</small></h1>
   <p class="lead"><%= @curated_collection.description.first %></p>
 
-  <% if @curated_collection.members.size == 0 %>
+  <% if @members.blank? %>
     <h2>This collection does not have any members</h2>
   <% else %>
     <h2 class="clearfix">Members:</h2>

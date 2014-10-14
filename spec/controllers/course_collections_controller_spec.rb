@@ -62,7 +62,8 @@ describe CourseCollectionsController do
         # Fedora won't let you create a deleted record, so create & then update as deleted:
         soft_deleted_record.state = 'D'
         soft_deleted_record.save!
-        collection.members = [displays_tdil, displays_dl, deleted_record, soft_deleted_record]
+        # we put the visible member last so we can ensure the correct position is calculated
+        collection.members = [displays_dl, deleted_record, soft_deleted_record, displays_tdil]
         collection.save!
         deleted_record.delete
       end
@@ -73,6 +74,11 @@ describe CourseCollectionsController do
         expect(response).to be_successful
         expect(assigns[:curated_collection]).to eq collection
         expect(assigns[:members]).to eq [displays_tdil]
+
+        # positions are taken from the model
+        # see the note in MembersController#show for more info
+        expect(assigns[:positions]).to eq [2]
+
         expect(response).to render_template(:show)
       end
 
@@ -164,14 +170,20 @@ describe CourseCollectionsController do
     end
 
     describe "GET 'edit'" do
-      let(:image1) { create(:image, displays: ['tdil']) }
-      let(:collection) { create(:course_collection, members: [image1]) }
+      let(:image1) { create(:image, displays: ['dl']) }
+      let(:image2) { create(:image, displays: ['tdil']) }
+      let(:collection) { create(:course_collection, members: [image1, image2]) }
 
       it "returns http success" do
         get :edit, id: collection
         expect(response).to render_template(:edit)
         expect(assigns[:curated_collection]).to eq collection
-        expect(assigns[:members]).to eq [image1]
+        expect(assigns[:members]).to eq [image2]
+
+        # positions are taken from the model
+        # see the note in MembersController#show for more info
+        expect(assigns[:positions]).to eq [1]
+
         expect(response).to be_successful
       end
     end
