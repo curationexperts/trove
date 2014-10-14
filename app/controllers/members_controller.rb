@@ -14,22 +14,7 @@ class MembersController < ApplicationController
     doc = get_solr_response_for_doc_id(member_ids[position]).second
     @document = doc if doc['displays_ssim'].include?('tdil') && doc['object_state_ssi'] == 'A'
 
-    if position > 1
-      _, @prev_position = member_ids[0..(position - 1)].
-        # add positions
-        each_with_index.
-        # reverse so we search backwards
-        to_a.reverse.
-        # find the closest visible neighbor
-        find { |(pid, pos)| visible_by_tdil?(pid) }
-    end
-    _, @next_position = member_ids.
-      # add positions
-      each_with_index.
-      # start looking after the current member
-      drop(position + 1).
-      # find the closest visible neighbor
-      find { |(pid, pos)| visible_by_tdil?(pid) }
+    @prev_position, @next_position = prev_and_next_positions(member_ids, position)
 
     if @document
       render 'catalog/show'
@@ -39,6 +24,28 @@ class MembersController < ApplicationController
   end
 
   protected
+
+    def prev_and_next_positions(member_ids, current_position)
+      if current_position > 1
+        _, prev_position = member_ids[0..(current_position - 1)].
+          # add positions
+          each_with_index.
+          # reverse so we search backwards
+          to_a.reverse.
+          # find the closest visible neighbor
+          find { |(pid, _)| visible_by_tdil?(pid) }
+      end
+
+      _, next_position = member_ids.
+        # add positions
+        each_with_index.
+        # start looking after the current member
+        drop(current_position + 1).
+        # find the closest visible neighbor
+        find { |(pid, _)| visible_by_tdil?(pid) }
+
+      [prev_position, next_position]
+    end
 
     def visible_by_tdil?(pid)
       doc = get_solr_response_for_doc_id(pid).second
