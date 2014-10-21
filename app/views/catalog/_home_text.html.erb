@@ -1,5 +1,5 @@
 <% cache do %>
-  <div class="row">
+  <div class="row features">
     <% featured_records.each do |feature| %>
       <div class="col-md-4">
         <% path = feature.kind_of?(TuftsImage) ? catalog_path(feature) : feature %>
