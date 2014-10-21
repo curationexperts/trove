@@ -1,7 +1,7 @@
 <%# based on blacklight-5.4.0/app/views/catalog/_index_header_default.html.erb -%>
       <% # header bar for doc items in index view -%>
       <div class="documentHeader row">
-         <h5 class="index_title col-sm-9 col-lg-10">
+         <h5 class="index_title ">
          <% path = document.kind_of?(TuftsImage) ? curated_collection_member_path(@curated_collection, collection_position + 1) : document %>
          <%= link_to truncate(document.title, length: 41, separator: ' '), path, class: 'dd-nodrag' %>
         </h5>
