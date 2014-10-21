@@ -1,3 +1,8 @@
+.navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
+  margin-left: 0;
+  font-size: 180%;
+}
+
 /* Copied from line 38, blacklight-gallery-2f9f34251858/app/assets/stylesheets/blacklight_gallery/default.css.scss */
 .document-metadata {
   dt, dd {
