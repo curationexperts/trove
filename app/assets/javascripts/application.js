@@ -13,9 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require blacklight
 //= require hydra-editor/hydra-editor
 //= require turbolinks
 //= require jquery.nestable
 //
-//= require blacklight
 //= require_tree .
