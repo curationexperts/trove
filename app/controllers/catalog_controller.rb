@@ -148,13 +148,15 @@ class CatalogController < ApplicationController
 
   def add_to_collection
     get_solr_response_for_doc_id(params[:id])
-    collection = ActiveFedora::Base.find(params[:collection_id], cast: true)
-    authorize! :update, collection
-    collection.member_ids << @document.id
-    if collection.save
+    if ActiveFedora::Base.exists?(params[:collection_id])
+      collection = ActiveFedora::Base.find(params[:collection_id])
+      authorize! :update, collection
+      collection.member_ids << @document.id
+    end
+    if collection.present? && collection.save
       redirect_to catalog_path(@document.id)
     else
-      flash[:error] = "We were unable to add this to the collection"
+      flash.now[:error] = "We were unable to add this to the collection"
       render :show
     end
   end

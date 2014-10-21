@@ -110,4 +110,16 @@ Blacklight.onLoad(function() {
   $(".course-collection-list li.drop-target").droppable(
     $.extend({drop: addToCourseCollection}, opts)
   );
+
+  function setAddButtonState(container){
+    disabled = $(':selected', container).attr('disabled') || null
+    $('input[type=submit]', container).attr('disabled', disabled);
+  }
+
+  $('.add-to-collection').each(function(i, addToCollection){
+    $('select', addToCollection).on('change', function(){
+      setAddButtonState(addToCollection);
+    });
+    setAddButtonState(addToCollection);
+  });
 });

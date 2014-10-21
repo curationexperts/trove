@@ -127,6 +127,12 @@ describe CatalogController do
         patch :add_to_collection, id: image.id, collection_id: collection.id
         expect(collection.reload.members).to_not include(image)
       end
+
+      it "shows an error for non-existent collection" do
+        patch :add_to_collection, id: image.id, collection_id: nil
+        expect(response).to render_template(:show)
+        expect(flash.now[:error]).to match /unable to add this to the collection/
+      end
     end
   end
 
