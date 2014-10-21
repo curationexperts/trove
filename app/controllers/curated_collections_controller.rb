@@ -116,13 +116,14 @@ class CuratedCollectionsController < ApplicationController
   end
 
   def members_with_positions(curated_collection)
-    [curated_collection.members, curated_collection.positions_of_members].
+    members, positions = [curated_collection.members, curated_collection.positions_of_members].
       # transpose so we can drop non-tdil members with their positions
       transpose.
       # only show members visible to tdil
       select { |(member,_)| member.displays.include?('tdil') && member.state == 'A' }.
       # transpose back so we get something like this: [members, positions]
       transpose
+    [(members || []), (positions || [])]
   end
 
   def duplicate(source, top_level=true)

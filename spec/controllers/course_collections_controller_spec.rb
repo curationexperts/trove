@@ -199,6 +199,16 @@ describe CourseCollectionsController do
 
         expect(response).to be_successful
       end
+
+      context "with an empty collection" do
+        let(:collection) { create(:course_collection) }
+        it "creates arrays for @members and @positions" do
+          get :edit, id: collection
+          expect(assigns[:members]).to eq []
+          expect(assigns[:positions]).to eq []
+        end
+      end
+
     end
 
     describe "DELETE 'destroy'" do
