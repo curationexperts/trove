@@ -12,6 +12,7 @@
     <h2>This collection does not have any members</h2>
   <% else %>
     <h2 class="clearfix">Members:</h2>
+    <%= link_to "View as slideshow", curated_collection_member_path(@curated_collection, @position_of_first_flattened_member + 1) %>
     <div class="dd row gallery">
       <%= render partial: 'member_list', locals: {form: nil} %>
     </div>

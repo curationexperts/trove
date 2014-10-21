@@ -78,6 +78,7 @@ describe CourseCollectionsController do
         # positions are taken from the model
         # see the note in MembersController#show for more info
         expect(assigns[:positions]).to eq [2]
+        expect(assigns[:position_of_first_flattened_member]).to eq 2
 
         expect(response).to render_template(:show)
       end
@@ -87,6 +88,18 @@ describe CourseCollectionsController do
         it "redirects to the person collection controller" do
           get :show, id: collection
           expect(response).to redirect_to collection
+        end
+      end
+
+      context "when the first member is another collection" do
+        let(:sub_collection) { create(:course_collection, members: [displays_dl, displays_tdil]) }
+        before do
+          collection.members = [sub_collection]
+          collection.save!
+        end
+        it "links to the first member to start the slideshow" do
+          get :show, id: collection
+          expect(assigns[:position_of_first_flattened_member]).to eq 1
         end
       end
     end

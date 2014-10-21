@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/curationexperts/tufts_models.git
-  revision: 64f5f4da0d34f6b2d0ad3bbea2a2de6ad1be84e7
+  revision: 8bb0b0f078917ad1fbaa0d057d687106ecaed940
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -139,11 +139,11 @@ GEM
     equivalent-xml (0.5.1)
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
-    execjs (2.2.1)
-    factory_girl (4.4.0)
+    execjs (2.2.2)
+    factory_girl (4.5.0)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.4.1)
-      factory_girl (~> 4.4.0)
+    factory_girl_rails (4.5.0)
+      factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
     fastercsv (1.5.5)
     ffi (1.9.6)
@@ -181,7 +181,7 @@ GEM
       bootstrap_form
       cancancan
     i18n (0.6.11)
-    jbuilder (2.2.2)
+    jbuilder (2.2.3)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jettywrapper (1.8.2)
@@ -222,7 +222,7 @@ GEM
     logger (1.2.8)
     mail (2.6.1)
       mime-types (>= 1.16, < 3)
-    mime-types (2.4.1)
+    mime-types (2.4.2)
     mini_portile (0.6.0)
     minitest (5.4.2)
     mono_logger (1.1.0)
@@ -232,7 +232,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
-    netrc (0.7.7)
+    netrc (0.8.0)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     nom-xml (0.5.1)

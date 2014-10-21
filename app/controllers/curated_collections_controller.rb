@@ -68,6 +68,7 @@ class CuratedCollectionsController < ApplicationController
           add_breadcrumb s, s
         end
         @members, @positions = members_with_positions(@curated_collection)
+        @position_of_first_flattened_member = position_of_first_visible_flattened_member(@curated_collection)
       end
       format.pptx do
         exporter = PowerPointCollectionExporter.new(@curated_collection)
@@ -104,12 +105,22 @@ class CuratedCollectionsController < ApplicationController
 
   protected
 
+  # this is the position we use for the first slide of the slideshow view
+  def position_of_first_visible_flattened_member(curated_collection)
+    _, position = curated_collection.flattened_member_ids.
+      # add positions
+      with_index.
+      # get the first member visible to tdil
+      find { |(pid,_)| visible_by_tdil?(pid) }
+    position
+  end
+
   def members_with_positions(curated_collection)
     [curated_collection.members, curated_collection.positions_of_members].
       # transpose so we can drop non-tdil members with their positions
       transpose.
       # only show members visible to tdil
-      select { |(member,position)| member.displays.include?('tdil') && member.state == 'A' }.
+      select { |(member,_)| member.displays.include?('tdil') && member.state == 'A' }.
       # transpose back so we get something like this: [members, positions]
       transpose
   end

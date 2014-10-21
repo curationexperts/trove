@@ -1,5 +1,4 @@
 class MembersController < ApplicationController
-  include Blacklight::SolrHelper
   include CuratedCollectionHelper
 
   before_filter :load_collection
@@ -33,7 +32,7 @@ class MembersController < ApplicationController
           # reverse so we search backwards
           to_a.reverse.
           # find the closest visible neighbor
-          find { |(pid, _)| visible_by_tdil?(pid) }
+          find { |(pid, _)| pid.present? && visible_by_tdil?(pid) }
       end
 
       _, next_position = member_ids.
@@ -42,14 +41,9 @@ class MembersController < ApplicationController
         # start looking after the current member
         drop(current_position + 1).
         # find the closest visible neighbor
-        find { |(pid, _)| visible_by_tdil?(pid) }
+        find { |(pid, _)| pid.present? && visible_by_tdil?(pid) }
 
       [prev_position, next_position]
-    end
-
-    def visible_by_tdil?(pid)
-      doc = get_solr_response_for_doc_id(pid).second
-      doc['displays_ssim'].include?('tdil') && doc['object_state_ssi'] == 'A'
     end
 
     def load_collection
