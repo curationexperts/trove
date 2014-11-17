@@ -36,9 +36,8 @@ class PowerPointCollectionExporter < CollectionExporter
     #
     Open3.popen2(java_command) do |stdin, stdout, wait_thr|
       # Send the name of the file we want to create
-      stdin.puts export_file_name
 
-      PptExportWriter.new(@collection, stdin).write
+      PptExportWriter.new(@collection, stdin, export_file_name).write
       # Read back the name of the output file from the Java ppt generator
       output_file = stdout.read
 
@@ -61,8 +60,8 @@ class PowerPointCollectionExporter < CollectionExporter
     end
 
     def classpath
-      poi_files = %w{commons-codec-1.5.jar dom4j-1.6.1.jar poi-ooxml-schemas-3.10.1.jar
-  poi-3.10.1.jar stax-api-1.0.1.jar commons-io-2.4.jar xmlbeans-2.6.0.jar	poi-ooxml-3.10.1.jar }
+      poi_files = %w{commons-codec-1.5.jar dom4j-1.6.1.jar gson-2.3.jar poi-ooxml-schemas-3.10.1.jar
+                      poi-3.10.1.jar stax-api-1.0.1.jar commons-io-2.4.jar xmlbeans-2.6.0.jar poi-ooxml-3.10.1.jar }
 
       config = parse_java_config
       jars = poi_files.map {|jar| File.join(config['lib_dir'], jar) }

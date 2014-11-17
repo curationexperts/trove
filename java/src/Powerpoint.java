@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.Scanner;
 import org.apache.commons.io.IOUtils;
 
+import com.google.gson.Gson;
+
 import org.apache.poi.xslf.usermodel.SlideLayout;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFPictureData;
@@ -21,45 +23,37 @@ import org.apache.poi.xslf.usermodel.TextAlign;
 
 
 // For reference:
+// POI - Apache OpenOffice API
 // http://poi.apache.org/slideshow/xslf-cookbook.html
 // http://poi.apache.org/apidocs/index.html
+// GSON - Google JSON
+// https://sites.google.com/site/gson/gson-user-guide#TOC-Using-Gson
+// http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/index.html
 
 // For developer debugging statements, you can use:
 // System.err.println(message);
 // (since we're using System.out for the data stream)
 
-// This reads a series of lines from STDIN
+// This reads a series of JSON objects from STDIN
 /*
-[outputFileName]
-[title]
-[numberOfDescriptions]
-[description_lines...]
-[numberOfImageSlides]
-[image_slide_lines...]
-*/
+  CollectionData object example (one per export)
+  {
+    "collectionName":"The Collection Title",
+    "description":["First description element","Another Description","And so on..."],
+    "imageCount":no_of_slide_images
+    "pptExportFile":"/local/server/path/to/ouput.pptx"
+  }
 
-// [description_lines...] are descriptions separated by newlines
-/*
-[description1]
-[description2]
-[description3]
-...
-[descriptionN]
+  ImageData object example (one per each image in exported collection)
+  {
+    "title":"Image title from image metadata",
+    "creator":["Photographer/Painter/Artists/Architect name","Can be multiple... or empty"],
+    "date":["Creation_date from metadata","Could be multiple... or empty"],
+    "description":["First description element","Another Description","Could be multiple... or empty"],
+    "imagePath":"/local/server/path/to/image",
+    "x":left-offset, y":top-offest, "width": image-width, "height": image-height} // use to center image on a 720 x 540 slide
+  }
 */
-
-// [image_slide_lines...] have this format
-/*
-[img.imageTitle]
-[img.metadata[0]]
-[img.metadata[1]]
-[img.metadata[2]]
-[img.imagePath]
-[img.x]
-[img.y]
-[img.cx]
-[img.cy]
-*/
-
 
 public class Powerpoint {
 
@@ -67,24 +61,58 @@ public class Powerpoint {
   // so that the ruby code knows it's an error.
   private static final String ERROR = "ERROR: ";
 
+    static class CollectionData {
+  	  public String collectionTitle;
+  	  public String collectionType;
+  	  public String creator;
+  	  public String uri;
+  	  public String[] description;
+
+  	  public int imageCount;
+      public String pptExportFile;
+
+  	  public CollectionData() {
+  	    // no-args constructor
+  	  }
+  	}
+
+    static class ImageData {
+  	  public String   title;
+  	  public String[] creator;
+  	  public String[] description;
+  	  public String[] date;
+
+      public String imagePath;
+      public int x;
+      public int y;
+      public int height;
+      public int width;
+
+      public ImageData() {
+        // no-args constructor
+      }
+    }
+
   public static void main(String[] args) {
     XMLSlideShow ppt = new XMLSlideShow();
 
     // Collect data from the ruby process and use
     // it to generate the powerpoint file.
     Scanner scan = new Scanner(System.in);
-    String outputFileName = scan.nextLine();
 
-    String title = scan.nextLine();
-    String[] descriptions = collectDescriptions(scan);
-    addTitleSlide(ppt, title, descriptions);
+    String collection_json = scan.nextLine();
+    Gson gson = new Gson();
+    CollectionData collection = gson.fromJson(collection_json, CollectionData.class);
 
-    int numberOfImageSlides = Integer.parseInt(scan.nextLine());
+    addTitleSlide(ppt, collection);
+
+    int numberOfImageSlides = collection.imageCount;
     for(int i=0; i<numberOfImageSlides; i++) {
-      ImageData img = ImageData.read(scan);
+      String image_json = scan.nextLine();
+      ImageData img = gson.fromJson(image_json, ImageData.class);
 
       try {
-        addTitleSlide(ppt, img.imageTitle, img.metadata);
+        // addMetadataSlide(ppt, img); TODO: create method to display refactored json metadata slides
         addImageSlide(ppt, img);
       } catch(FileNotFoundException ex) {
         System.out.println(ERROR + ex.getMessage());
@@ -95,56 +123,11 @@ public class Powerpoint {
       }
     }
 
+    String outputFileName = collection.pptExportFile;
     System.out.println(writePptFile(ppt, outputFileName));
   }
 
-  static class ImageData {
-    public int x;
-    public int y;
-    public int cx;
-    public int cy;
-    public String imagePath;
-    public String imageTitle;
-    public String[] metadata;
-
-    public ImageData() {
-      this.metadata = new String[3];
-    }
-
-    public static ImageData read(Scanner scan) {
-      ImageData img = new ImageData();
-      img.imageTitle = scan.nextLine();
-      img.metadata[0] = scan.nextLine().replaceAll("\\\\r", "\r");
-      img.metadata[1] = scan.nextLine().replaceAll("\\\\r", "\r");
-      img.metadata[2] = scan.nextLine().replaceAll("\\\\r", "\r");
-      img.imagePath = scan.nextLine();
-      if (img.imagePath.length() == 0) {
-        scan.nextLine();
-        scan.nextLine();
-        scan.nextLine();
-        scan.nextLine();
-      } else {
-        img.x = Integer.parseInt(scan.nextLine());
-        img.y = Integer.parseInt(scan.nextLine());
-        img.cx = Integer.parseInt(scan.nextLine());
-        img.cy = Integer.parseInt(scan.nextLine());
-      }
-
-      return img;
-    }
-  }
-
-
-  private static String[] collectDescriptions(Scanner scan) {
-    int numberOfDescriptions = Integer.parseInt(scan.nextLine());
-    String[] descriptions = new String[numberOfDescriptions];
-    for(int k=0; k<numberOfDescriptions; k++) {
-      descriptions[k] = scan.nextLine();
-    }
-    return descriptions;
-  }
-
-  private static void addTitleSlide(XMLSlideShow ppt, String title, String[] descriptions) {
+  private static void addTitleSlide(XMLSlideShow ppt, CollectionData collection) {
     XSLFSlideMaster defaultMaster = ppt.getSlideMasters()[0];
     XSLFSlideLayout titleBodyLayout = defaultMaster.getLayout(SlideLayout.TITLE_AND_CONTENT);
     XSLFSlide titleSlide = ppt.createSlide(titleBodyLayout);
@@ -157,9 +140,9 @@ public class Powerpoint {
     header.setBullet(false);
 	header.setTextAlign(TextAlign.LEFT);
 	XSLFTextRun t1 = header.addNewTextRun();	
-	t1.setText(maxText(title, 100));
+	t1.setText(maxText(collection.collectionTitle, 100));
 	t1.setBold(true);
-	t1.setFontSize(titleFontSize(title));
+	t1.setFontSize(titleFontSize(collection.collectionTitle));
 
     placeholders[1].clearText();
     XSLFTextParagraph para = placeholders[1].addNewTextParagraph();
@@ -168,9 +151,9 @@ public class Powerpoint {
 
     // Add '\r' to the Strings so they'll be separate bullet points
     StringBuilder desc = new StringBuilder();
-    for(int j=0; j<descriptions.length; j++) {
-      desc.append(descriptions[j]);
-      if (descriptions[j].length() > 0 && j < descriptions.length) {
+    for(int j=0; j<collection.description.length; j++) {
+      desc.append(collection.description[j]);
+      if (collection.description[j].length() > 0 && j < collection.description.length) {
         // don't apppend to the last one.
         desc.append('\r');
       }
@@ -191,7 +174,7 @@ public class Powerpoint {
       byte[] pictureData = IOUtils.toByteArray(new FileInputStream(image.imagePath));
       int idx = ppt.addPicture(pictureData, XSLFPictureData.PICTURE_TYPE_PNG);
       XSLFPictureShape pic = slide.createPicture(idx);
-      pic.setAnchor(new java.awt.Rectangle(image.x, image.y, image.cx, image.cy));
+      pic.setAnchor(new java.awt.Rectangle(image.x, image.y, image.width, image.height));
     }
   }
 
