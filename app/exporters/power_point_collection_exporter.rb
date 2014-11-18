@@ -56,7 +56,7 @@ class PowerPointCollectionExporter < CollectionExporter
   private
 
     def java_command
-      "java -cp #{classpath} -Djava.awt.headless=true Powerpoint"
+      "java -cp #{classpath} -Dfile.encoding=UTF-8 -Djava.awt.headless=true Powerpoint"
     end
 
     def classpath
