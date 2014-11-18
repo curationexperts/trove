@@ -4,7 +4,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import java.util.Scanner;
+import java.util.List;
 import org.apache.commons.io.IOUtils;
+
+import java.awt.Color;
+
+import com.google.gson.Gson;
 
 import org.apache.poi.xslf.usermodel.SlideLayout;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
@@ -18,48 +23,41 @@ import org.apache.poi.xslf.usermodel.XSLFTextParagraph;
 import org.apache.poi.xslf.usermodel.XSLFTextRun;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
 import org.apache.poi.xslf.usermodel.TextAlign;
+import org.apache.poi.xslf.usermodel.TextAutofit;
 
 
 // For reference:
+// POI - Apache OpenOffice API
 // http://poi.apache.org/slideshow/xslf-cookbook.html
 // http://poi.apache.org/apidocs/index.html
+// GSON - Google JSON
+// https://sites.google.com/site/gson/gson-user-guide#TOC-Using-Gson
+// http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/index.html
 
 // For developer debugging statements, you can use:
 // System.err.println(message);
 // (since we're using System.out for the data stream)
 
-// This reads a series of lines from STDIN
+// This reads a series of JSON objects from STDIN
 /*
-[outputFileName]
-[title]
-[numberOfDescriptions]
-[description_lines...]
-[numberOfImageSlides]
-[image_slide_lines...]
-*/
+  CollectionData object example (one per export)
+  {
+    "collectionName":"The Collection Title",
+    "description":["First description element","Another Description","And so on..."],
+    "imageCount":no_of_slide_images
+    "pptExportFile":"/local/server/path/to/ouput.pptx"
+  }
 
-// [description_lines...] are descriptions separated by newlines
-/*
-[description1]
-[description2]
-[description3]
-...
-[descriptionN]
+  ImageData object example (one per each image in exported collection)
+  {
+    "title":"Image title from image metadata",
+    "creator":["Photographer/Painter/Artists/Architect name","Can be multiple... or empty"],
+    "date":["Creation_date from metadata","Could be multiple... or empty"],
+    "description":["First description element","Another Description","Could be multiple... or empty"],
+    "imagePath":"/local/server/path/to/image",
+    "x":left-offset, y":top-offest, "width": image-width, "height": image-height} // use to center image on a 720 x 540 slide
+  }
 */
-
-// [image_slide_lines...] have this format
-/*
-[img.imageTitle]
-[img.metadata[0]]
-[img.metadata[1]]
-[img.metadata[2]]
-[img.imagePath]
-[img.x]
-[img.y]
-[img.cx]
-[img.cy]
-*/
-
 
 public class Powerpoint {
 
@@ -67,24 +65,58 @@ public class Powerpoint {
   // so that the ruby code knows it's an error.
   private static final String ERROR = "ERROR: ";
 
+    static class CollectionData {
+  	  public String collectionTitle;
+  	  public String collectionType;
+  	  public String creator;
+  	  public String uri;
+  	  public String[] description;
+
+  	  public int imageCount;
+      public String pptExportFile;
+
+  	  public CollectionData() {
+  	    // no-args constructor
+  	  }
+  	}
+
+    static class ImageData {
+  	  public String   title;
+  	  public String[] creator;
+  	  public String[] description;
+  	  public String[] date;
+
+      public String imagePath;
+      public int x;
+      public int y;
+      public int height;
+      public int width;
+
+      public ImageData() {
+        // no-args constructor
+      }
+    }
+
   public static void main(String[] args) {
     XMLSlideShow ppt = new XMLSlideShow();
 
     // Collect data from the ruby process and use
     // it to generate the powerpoint file.
     Scanner scan = new Scanner(System.in);
-    String outputFileName = scan.nextLine();
 
-    String title = scan.nextLine();
-    String[] descriptions = collectDescriptions(scan);
-    addTitleSlide(ppt, title, descriptions);
+    String collection_json = scan.nextLine();
+    Gson gson = new Gson();
+    CollectionData collection = gson.fromJson(collection_json, CollectionData.class);
 
-    int numberOfImageSlides = Integer.parseInt(scan.nextLine());
+    addTitleSlide(ppt, collection);
+
+    int numberOfImageSlides = collection.imageCount;
     for(int i=0; i<numberOfImageSlides; i++) {
-      ImageData img = ImageData.read(scan);
+      String image_json = scan.nextLine();
+      ImageData img = gson.fromJson(image_json, ImageData.class);
 
       try {
-        addTitleSlide(ppt, img.imageTitle, img.metadata);
+        addMetadataSlide(ppt, img);
         addImageSlide(ppt, img);
       } catch(FileNotFoundException ex) {
         System.out.println(ERROR + ex.getMessage());
@@ -95,94 +127,84 @@ public class Powerpoint {
       }
     }
 
+    String outputFileName = collection.pptExportFile;
     System.out.println(writePptFile(ppt, outputFileName));
   }
 
-  static class ImageData {
-    public int x;
-    public int y;
-    public int cx;
-    public int cy;
-    public String imagePath;
-    public String imageTitle;
-    public String[] metadata;
+  private static void addTitleSlide(XMLSlideShow ppt, CollectionData collection) {
 
-    public ImageData() {
-      this.metadata = new String[3];
-    }
-
-    public static ImageData read(Scanner scan) {
-      ImageData img = new ImageData();
-      img.imageTitle = scan.nextLine();
-      img.metadata[0] = scan.nextLine().replaceAll("\\\\r", "\r");
-      img.metadata[1] = scan.nextLine().replaceAll("\\\\r", "\r");
-      img.metadata[2] = scan.nextLine().replaceAll("\\\\r", "\r");
-      img.imagePath = scan.nextLine();
-      if (img.imagePath.length() == 0) {
-        scan.nextLine();
-        scan.nextLine();
-        scan.nextLine();
-        scan.nextLine();
-      } else {
-        img.x = Integer.parseInt(scan.nextLine());
-        img.y = Integer.parseInt(scan.nextLine());
-        img.cx = Integer.parseInt(scan.nextLine());
-        img.cy = Integer.parseInt(scan.nextLine());
-      }
-
-      return img;
-    }
-  }
-
-
-  private static String[] collectDescriptions(Scanner scan) {
-    int numberOfDescriptions = Integer.parseInt(scan.nextLine());
-    String[] descriptions = new String[numberOfDescriptions];
-    for(int k=0; k<numberOfDescriptions; k++) {
-      descriptions[k] = scan.nextLine();
-    }
-    return descriptions;
-  }
-
-  private static void addTitleSlide(XMLSlideShow ppt, String title, String[] descriptions) {
     XSLFSlideMaster defaultMaster = ppt.getSlideMasters()[0];
     XSLFSlideLayout titleBodyLayout = defaultMaster.getLayout(SlideLayout.TITLE_AND_CONTENT);
-    XSLFSlide titleSlide = ppt.createSlide(titleBodyLayout);
+    XSLFSlide slide = ppt.createSlide(titleBodyLayout);
+    XSLFTextShape[] placeholders = slide.getPlaceholders();
 
-    // Replace placeholder text with our data
-    XSLFTextShape[] placeholders = titleSlide.getPlaceholders();
-    placeholders[0].clearText();
-	XSLFTextParagraph header = placeholders[0].addNewTextParagraph();
-    header.setLevel(0);
-    header.setBullet(false);
-	header.setTextAlign(TextAlign.LEFT);
-	XSLFTextRun t1 = header.addNewTextRun();	
-	t1.setText(maxText(title, 100));
-	t1.setBold(true);
-	t1.setFontSize(titleFontSize(title));
+    XSLFTextShape titleBlock = placeholders[0];
+    addTitle(titleBlock, collection.collectionTitle);
 
-    placeholders[1].clearText();
-    XSLFTextParagraph para = placeholders[1].addNewTextParagraph();
-    para.setLevel(0);
-    para.setBullet(true);
+    // Replace main body placeholder with our description data
+    XSLFTextShape descriptionBlock = placeholders[1];
+    descriptionBlock.clearText();
+    descriptionBlock.setTextAutofit(TextAutofit.NORMAL);
 
-    // Add '\r' to the Strings so they'll be separate bullet points
-    StringBuilder desc = new StringBuilder();
-    for(int j=0; j<descriptions.length; j++) {
-      desc.append(descriptions[j]);
-      if (descriptions[j].length() > 0 && j < descriptions.length) {
-        // don't apppend to the last one.
-        desc.append('\r');
+    XSLFTextParagraph para;
+    XSLFTextRun r1;
+    for(int j=0; j<collection.description.length; j++) {
+      para = descriptionBlock.addNewTextParagraph();
+      para.setLevel(0);
+      para.setBullet(true);
+      para.setBulletFontColor(Color.BLACK);
+
+      r1 = para.addNewTextRun();
+      r1.setText(collection.description[j]);
+      r1.setFontSize(30);
+    }
+
+    resizeBlock(descriptionBlock);
+  }
+
+  private static void addMetadataSlide(XMLSlideShow ppt, ImageData image) {
+
+    XSLFSlideMaster defaultMaster = ppt.getSlideMasters()[0];
+    XSLFSlideLayout titleBodyLayout = defaultMaster.getLayout(SlideLayout.TITLE_AND_CONTENT);
+    XSLFSlide slide = ppt.createSlide(titleBodyLayout);
+    XSLFTextShape[] placeholders = slide.getPlaceholders();
+
+    XSLFTextShape titleBlock = placeholders[0];
+    addTitle(titleBlock, image.title);
+
+    // Replace main content box text with supplied metadata
+    XSLFTextShape descriptionBlock = placeholders[1];
+    descriptionBlock.clearText();
+    descriptionBlock.setTextAutofit(TextAutofit.NORMAL);
+
+    // add creators
+    if (image.creator.length > 0) {
+      for(int j=0; j<image.creator.length; j++) {
+        addMetadata(descriptionBlock, image.creator[j], "Creator: ");
       }
     }
-	
-    XSLFTextRun r1 = para.addNewTextRun();
-	r1.setText(maxText( desc.toString(), 900 ));
-	r1.setFontSize(bodyFontSize( desc.toString() ));
 
-    for(int j=2; j<placeholders.length; j++) {
-      placeholders[j].clearText();
+    // add dates
+    if (image.date.length > 0) {
+      for(int j=0; j<image.date.length; j++) {
+        addMetadata(descriptionBlock, image.date[j], "Date: ");
+      }
     }
+
+    // add descriptions
+    if (image.description.length > 0) {
+      for(int j=0; j<image.description.length; j++) {
+        addMetadata(descriptionBlock, image.description[j], "Description: ");
+      }
+    }
+
+    // add some text if there's no metadata present - prevents default "click here to add text" message in Office
+    int totalLength = image.creator.length + image.date.length + image.description.length;
+    if (totalLength == 0) {
+      addMetadata(descriptionBlock, "", "No metadata supplied with image.");
+    }
+
+    resizeBlock(descriptionBlock);
   }
 
   private static void addImageSlide(XMLSlideShow ppt, ImageData image) throws FileNotFoundException, IOException {
@@ -191,9 +213,11 @@ public class Powerpoint {
       byte[] pictureData = IOUtils.toByteArray(new FileInputStream(image.imagePath));
       int idx = ppt.addPicture(pictureData, XSLFPictureData.PICTURE_TYPE_PNG);
       XSLFPictureShape pic = slide.createPicture(idx);
-      pic.setAnchor(new java.awt.Rectangle(image.x, image.y, image.cx, image.cy));
+      pic.setAnchor(new java.awt.Rectangle(image.x, image.y, image.width, image.height));
     }
   }
+
+
 
   private static String writePptFile(XMLSlideShow ppt, String outputFileName) {
     FileOutputStream out = null;
@@ -214,31 +238,77 @@ public class Powerpoint {
     }
     return outputFileName;
   }
-  
-  private static int bodyFontSize(String s) {
-    int size = s.length();
-	if      (size < 300) { return 28; }
-    else if (size < 500) { return 24; }
-    else                 { return 20; } // up to 900 characters in length works nicely
+
+  // Add title text to an existing slide
+  private static void addTitle(XSLFTextShape block, String text ) {
+    block.clearText();
+    block.setTextAutofit(TextAutofit.NORMAL);
+    XSLFTextParagraph header = block.addNewTextParagraph();
+    header.setLevel(0);
+    header.setBullet(false);
+    header.setTextAlign(TextAlign.LEFT);
+    XSLFTextRun t1 = header.addNewTextRun();
+    t1.setText(maxText(text, 100));
+    t1.setBold(true);
+    t1.setFontSize(40);
+    double titleHeight = block.getTextHeight();
+    if (titleHeight>100) t1.setFontSize(28);   // reduce the font size if there end up being over two lines of text
   }
 
-  private static int titleFontSize(String s) {
-    int size = s.length();
-	if      (size < 45)  { return 40; }
-    else if (size < 75)  { return 32; }
-    else                 { return 28; } // up to 100 characters in length works nicely
+  // Add metadata text to a given block with the specified label
+  private static void addMetadata( XSLFTextShape descriptionBlock, String text, String label ) {
+    XSLFTextParagraph para = descriptionBlock.addNewTextParagraph();
+    XSLFTextRun r0 = para.addNewTextRun();
+    XSLFTextRun r1;
+
+    para.setLevel(0);
+    para.setBullet(false);                // 2014-11-06 turn off bullets for now
+    para.setBulletFontColor(Color.BLACK); // in case we want bullets back in a future version
+    para.addTabStop(108.0);
+
+    r0.setText(label);
+    r0.setFontSize(30);
+    r0.setItalic(true);
+    r0.setFontColor(Color.LIGHT_GRAY);
+
+    r1 = para.addNewTextRun();
+    r1.setText(text.trim());
+    r1.setFontSize(30);
   }
 
+  // Truncate a string exceeding max_length with elipses
   private static String maxText(String s, int max_length) {
-	  int size = s.length();
-	  int best_space = s.substring(0, Math.min(size,max_length)).lastIndexOf(' ');
-	  
-	  // just return the string if it's short enough
-	  if (size < max_length) { return s; }  
-	  // otherwise, try to break on a space if there's one within the last 15 characters
-	  else if (best_space > max_length-15) { return s.substring(0, best_space) + "..."; } 
-	  // or just chomp it if there's no space near the end to break on
-	  else { return s.substring(0, max_length) + "..."; } 
+    int size = s.length();
+    int best_space = s.substring(0, Math.min(size,max_length)).lastIndexOf(' ');
+
+    // just return the string if it's short enough
+    if (size < max_length) { return s; }
+    // otherwise, try to break on a space if there's one within the last 15 characters
+    else if (best_space > max_length-15) { return s.substring(0, best_space) + "..."; }
+    // or just chomp it if there's no space near the end to break on
+    else { return s.substring(0, max_length) + "..."; }
+  }
+
+  // Calculate description block size and resize text as necessary to ensure all text fits within default block height - very kludgy
+  private static void resizeBlock( XSLFTextShape block ) {
+    double blockHeight = block.getTextHeight();
+
+    double newHeight;
+    if      (blockHeight <  340.0) newHeight = 30;
+    else if (blockHeight <  550.0) newHeight = 26;
+    else if (blockHeight <  900.0) newHeight = 22;
+    else if (blockHeight < 1350.0) newHeight = 18;
+    else if (blockHeight < 1700.0) newHeight = 14;
+    else                           newHeight = 12;
+
+    // (re)set the font size on all text runs to make overall text block fit
+    List<XSLFTextParagraph> paragraphs = block.getTextParagraphs();
+    for (XSLFTextParagraph p : paragraphs) {
+      List<XSLFTextRun> texts = p.getTextRuns();
+      for (XSLFTextRun r: texts) {
+        r.setFontSize(newHeight);
+      }
+    }
   }
 
 }
