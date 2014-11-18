@@ -13,6 +13,7 @@ gem 'therubyracer',  platforms: :ruby
 gem 'capistrano'
 gem 'capistrano-rails'
 gem 'capistrano-bundler'
+gem 'nprogress-rails'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'

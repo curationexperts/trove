@@ -16,6 +16,9 @@
 //= require blacklight
 //= require hydra-editor/hydra-editor
 //= require turbolinks
+//= require nprogress
+//= require nprogress-turbolinks
+//= require nprogress-ajax
 //= require jquery.nestable
 //
 //= require_tree .
