@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe '#coordinates' do
-  subject { PptExportWriter.new(double, $stdout) }
+  subject { PptExportWriter.new(double, $stdout, 'tmp/test.pptx') }
   let(:coords) { subject.send :coordinates, double }
 
   context 'when source image is the same size as the slide' do
@@ -12,8 +12,8 @@ describe '#coordinates' do
     it 'returns the max page width, height and zero offset' do
       expect(coords[:x]).to eq 0
       expect(coords[:y]).to eq 0
-      expect(coords[:cx]).to eq width
-      expect(coords[:cy]).to eq height
+      expect(coords[:w]).to eq width
+      expect(coords[:h]).to eq height
     end
   end
 
@@ -28,8 +28,8 @@ describe '#coordinates' do
     it 'returns max width, scales the height, and chooses y position to center the image' do
       expect(coords[:x]).to eq 0
       expect(coords[:y]).to eq PptExportWriter::SLIDE_HEIGHT/2 - expected_height/2
-      expect(coords[:cx]).to eq expected_width
-      expect(coords[:cy]).to eq expected_height
+      expect(coords[:w]).to eq expected_width
+      expect(coords[:h]).to eq expected_height
     end
   end
 
@@ -43,8 +43,8 @@ describe '#coordinates' do
     it 'returns max height, scales the width, and chooses x position to center the image' do
       expect(coords[:x]).to eq PptExportWriter::SLIDE_WIDTH/2 - expected_width/2
       expect(coords[:y]).to eq 0
-      expect(coords[:cx]).to eq expected_width
-      expect(coords[:cy]).to eq expected_height
+      expect(coords[:w]).to eq expected_width
+      expect(coords[:h]).to eq expected_height
     end
   end
 end
