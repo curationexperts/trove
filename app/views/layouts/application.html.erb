@@ -29,6 +29,7 @@
   </head>
   <body class="<%= render_body_class %>">
   <%= render :partial => 'shared/header_navbar' %>
+  <%= raw '<script> $("#search-navbar").hide(); </script>' if controller_name.in?(['sessions']) %>
 
   <%= render partial: 'shared/ajax_modal' %>
 
