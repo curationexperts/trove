@@ -97,7 +97,7 @@ describe PersonalCollectionsController do
     end
 
     describe "GET 'edit'" do
-      let(:image1) { create(:image, displays: ['tdil']) }
+      let(:image1) { create(:image, displays: ['trove']) }
       let(:collection) { create(:personal_collection, user: user, members: [image1]) }
 
       it "returns http success" do
@@ -138,7 +138,7 @@ describe PersonalCollectionsController do
         expect(response.status).to eq 302
         expect(assigns[:curated_collection].read_groups).to eq ['public']
         expect(assigns[:curated_collection].edit_users).to eq [user.user_key]
-        expect(assigns[:curated_collection].displays).to eq ['tdil']
+        expect(assigns[:curated_collection].displays).to eq ['trove']
       end
 
       context 'with a bad title' do

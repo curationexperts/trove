@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe CatalogHelper do
-  let(:image) { TuftsImage.create(pid: 'tufts:777', title: 'foo', displays: ['tdil']) }
+  let(:image) { TuftsImage.create(pid: 'tufts:777', title: 'foo', displays: ['trove']) }
 
   describe "#featured_records" do
     it "shouldn't crash with missing or malformed pids" do

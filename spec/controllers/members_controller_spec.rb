@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe MembersController do
-  let(:image) { create(:image, displays: ['tdil']) }
+  let(:image) { create(:image, displays: ['trove']) }
   let(:collection) { create(:course_collection) }
 
   describe "for an unauthenticated user" do
@@ -18,12 +18,12 @@ describe MembersController do
     before { sign_in user }
 
     describe "GET 'show'" do
-      let(:image1) { create(:tufts_image, displays: ['tdil']) }
-      let(:image2) { create(:tufts_image, displays: ['tdil']) }
-      let(:image3) { create(:tufts_image, displays: ['tdil']) }
+      let(:image1) { create(:tufts_image, displays: ['trove']) }
+      let(:image2) { create(:tufts_image, displays: ['trove']) }
+      let(:image3) { create(:tufts_image, displays: ['trove']) }
       let(:displays_dl) { create(:tufts_image, displays: ['dl']) }
-      let(:deleted_record) { create(:tufts_image, displays: ['tdil']) }
-      let(:soft_deleted_record) { create(:tufts_image, displays: ['tdil']) }
+      let(:deleted_record) { create(:tufts_image, displays: ['trove']) }
+      let(:soft_deleted_record) { create(:tufts_image, displays: ['trove']) }
 
       context "with some members" do
         before do
@@ -59,7 +59,7 @@ describe MembersController do
           expect(assigns[:next_position]).to eq nil
         end
 
-        it "redirects when viewing members that don't display in tdil" do
+        it "redirects when viewing members that don't display in trove" do
           get :show, course_collection_id: collection, id: 3
           expect(response).to redirect_to course_collection_path(collection)
         end
