@@ -110,17 +110,17 @@ class CuratedCollectionsController < ApplicationController
     _, position = curated_collection.flattened_member_ids.
       # add positions
       with_index.
-      # get the first member visible to tdil
-      find { |(pid,_)| visible_by_tdil?(pid) }
+      # get the first member visible to trove 
+      find { |(pid,_)| visible_by_trove?(pid) }
     position
   end
 
   def members_with_positions(curated_collection)
     members, positions = [curated_collection.members, curated_collection.positions_of_members].
-      # transpose so we can drop non-tdil members with their positions
+      # transpose so we can drop non-trove members with their positions
       transpose.
-      # only show members visible to tdil
-      select { |(member,_)| member.displays.include?('tdil') && member.state == 'A' }.
+      # only show members visible to trove
+      select { |(member,_)| member.displays.include?('trove') && member.state == 'A' }.
       # transpose back so we get something like this: [members, positions]
       transpose
     [(members || []), (positions || [])]
@@ -156,7 +156,7 @@ class CuratedCollectionsController < ApplicationController
     # if active_user is set, the collection gets added to that users top-level collection.
     collection.active_user = current_user if top_level && collection.is_a?(PersonalCollection)
     collection.read_groups = ['public']
-    collection.displays = ['tdil']
+    collection.displays = ['trove']
     collection.apply_depositor_metadata(current_user)
     collection.creator = [current_user.user_key]
   end

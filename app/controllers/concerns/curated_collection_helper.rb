@@ -16,8 +16,8 @@ module CuratedCollectionHelper
     end
   end
 
-  def visible_by_tdil?(pid)
+  def visible_by_trove?(pid)
     doc = get_solr_response_for_doc_id(pid).second
-    doc['displays_ssim'].include?('tdil') && doc['object_state_ssi'] == 'A'
+    doc['displays_ssim'].include?('trove') && doc['object_state_ssi'] == 'A'
   end
 end

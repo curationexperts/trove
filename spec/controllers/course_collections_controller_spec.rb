@@ -53,17 +53,17 @@ describe CourseCollectionsController do
     end
 
     describe "GET 'show'" do
-      let(:displays_tdil) { create(:tufts_image, displays: ['tdil']) }
+      let(:displays_trove) { create(:tufts_image, displays: ['trove']) }
       let(:displays_dl) { create(:tufts_image, displays: ['dl']) }
-      let(:deleted_record) { create(:tufts_image, displays: ['tdil']) }
-      let(:soft_deleted_record) { create(:tufts_image, displays: ['tdil']) }
+      let(:deleted_record) { create(:tufts_image, displays: ['trove']) }
+      let(:soft_deleted_record) { create(:tufts_image, displays: ['trove']) }
 
       before do
         # Fedora won't let you create a deleted record, so create & then update as deleted:
         soft_deleted_record.state = 'D'
         soft_deleted_record.save!
         # we put the visible member last so we can ensure the correct position is calculated
-        collection.members = [displays_dl, deleted_record, soft_deleted_record, displays_tdil]
+        collection.members = [displays_dl, deleted_record, soft_deleted_record, displays_trove]
         collection.save!
         deleted_record.delete
       end
@@ -73,7 +73,7 @@ describe CourseCollectionsController do
         get :show, id: collection
         expect(response).to be_successful
         expect(assigns[:curated_collection]).to eq collection
-        expect(assigns[:members]).to eq [displays_tdil]
+        expect(assigns[:members]).to eq [displays_trove]
 
         # positions are taken from the model
         # see the note in MembersController#show for more info
@@ -92,7 +92,7 @@ describe CourseCollectionsController do
       end
 
       context "when the first member is another collection" do
-        let(:sub_collection) { create(:course_collection, members: [displays_dl, displays_tdil]) }
+        let(:sub_collection) { create(:course_collection, members: [displays_dl, displays_trove]) }
         before do
           collection.members = [sub_collection]
           collection.save!
@@ -114,7 +114,7 @@ describe CourseCollectionsController do
 
     describe "POST 'copy'" do
       let(:nested_collection) { create(:course_collection) }
-      let(:nested_image) { create(:tufts_image, displays: ['tdil']) }
+      let(:nested_image) { create(:tufts_image, displays: ['trove']) }
 
       before do
         PersonalCollection.delete_all
@@ -149,7 +149,7 @@ describe CourseCollectionsController do
         expect(response.status).to eq 302
         expect(assigns[:curated_collection].read_groups).to eq ['public']
         expect(assigns[:curated_collection].edit_users).to eq [user.user_key]
-        expect(assigns[:curated_collection].displays).to eq ['tdil']
+        expect(assigns[:curated_collection].displays).to eq ['trove']
         expect(CourseCollection.root.member_ids.first).to eq assigns[:curated_collection].id
       end
 
@@ -184,7 +184,7 @@ describe CourseCollectionsController do
 
     describe "GET 'edit'" do
       let(:image1) { create(:image, displays: ['dl']) }
-      let(:image2) { create(:image, displays: ['tdil']) }
+      let(:image2) { create(:image, displays: ['trove']) }
       let(:collection) { create(:course_collection, members: [image1, image2]) }
 
       it "returns http success" do

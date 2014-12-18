@@ -5,13 +5,13 @@ class MembersController < ApplicationController
 
   def show
     # Positions are retrieved from tufts_models, so they won't change if a
-    # member is no longer displayed in tdil.
+    # member is no longer displayed in trove.
     # This makes it so we don't have to load every descendant member to see if it's
-    # visible in tdil when determining positions, we can just count pids.
+    # visible in trove when determining positions, we can just count pids.
     position = params[:id].to_i
     member_ids = [nil] + @collection.flattened_member_ids.force
     doc = get_solr_response_for_doc_id(member_ids[position]).second
-    @document = doc if doc['displays_ssim'].include?('tdil') && doc['object_state_ssi'] == 'A'
+    @document = doc if doc['displays_ssim'].include?('trove') && doc['object_state_ssi'] == 'A'
 
     @prev_position, @next_position = prev_and_next_positions(member_ids, position)
 
@@ -32,7 +32,7 @@ class MembersController < ApplicationController
           # reverse so we search backwards
           to_a.reverse.
           # find the closest visible neighbor
-          find { |(pid, _)| pid.present? && visible_by_tdil?(pid) }
+          find { |(pid, _)| pid.present? && visible_by_trove?(pid) }
       end
 
       _, next_position = member_ids.
@@ -41,7 +41,7 @@ class MembersController < ApplicationController
         # start looking after the current member
         drop(current_position + 1).
         # find the closest visible neighbor
-        find { |(pid, _)| pid.present? && visible_by_tdil?(pid) }
+        find { |(pid, _)| pid.present? && visible_by_trove?(pid) }
 
       [prev_position, next_position]
     end

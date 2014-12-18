@@ -13,14 +13,14 @@ describe PowerPointCollectionExporter do
   subject { PowerPointCollectionExporter.new(collection) }
 
 
-  it 'makes the export dir if it doesnt exist' do
+  it 'makes the export dir if it doesnt exist', :exporter=>'true' do
     FileUtils.rm_rf(export_dir, secure: true)
     subject.export_dir
     expect(File).to exist(export_dir)
     FileUtils.rm_rf(export_dir, secure: true)
   end
 
-  it 'has a name for the export file' do
+  it 'has a name for the export file', :exporter=>'true' do
     collection.title = "Student Research in the 1960's"
     expect(subject.pptx_file_name).to eq 'student_research_in_the_1960_s.pptx'
   end
@@ -31,7 +31,7 @@ describe PowerPointCollectionExporter do
       collection.save!
     end
 
-    it 'generates the file and returns the file path' do
+    it 'generates the file and returns the file path', :exporter=>'true' do
       export_file_path = subject.export
 
       expect(export_file_path.match(/student_research_in_the_1960_s.*.pptx/)).to_not be_nil

@@ -22,15 +22,15 @@ feature 'Catalog Search:' do
   end
 
   context "when displays are set" do
-    let!(:tdil_obj) { create(:image, displays: ['dl', 'tdil']) }
-    let!(:non_tdil_obj) { create(:image, displays: ['dl']) }
+    let!(:trove_obj) { create(:image, displays: ['dl', 'trove']) }
+    let!(:non_trove_obj) { create(:image, displays: ['dl']) }
 
-    scenario 'returns only objects with "tdil" display' do
+    scenario 'returns only objects with "trove" display' do
       visit root_path
       click_button('Search')
       within('#documents') do
-        expect(page).to     have_content(tdil_obj.title)
-        expect(page).to_not have_content(non_tdil_obj.title)
+        expect(page).to     have_content(trove_obj.title)
+        expect(page).to_not have_content(non_trove_obj.title)
       end
     end
   end

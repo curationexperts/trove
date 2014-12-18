@@ -12,7 +12,7 @@ describe PdfCollectionExporter do
 
   subject { PdfCollectionExporter.new(collection) }
 
-  it 'has a name for the export file' do
+  it 'has a name for the export file', :exporter => 'true'  do
     collection.title = "Student Research in the 1960's"
     expect(subject.pdf_file_name).to eq 'student_research_in_the_1960_s.pdf'
   end
@@ -21,7 +21,7 @@ describe PdfCollectionExporter do
     before { collection.update(title: "Student Research in the 1960's") }
     after { FileUtils.rm_rf(subject.pptx_exporter.export_dir, secure: true) }
 
-    it 'generates the file and returns the file path' do
+    it 'generates the file and returns the file path', :exporter => 'true' do
       export_file_path = subject.export
 
       expect(export_file_path.match(/student_research_in_the_1960_s.*.pdf/)).to_not be_nil

@@ -19,7 +19,7 @@ module CatalogHelper
     if pids.present?
       ActiveFedora::Base.find(pids)
     else
-      TuftsImage.where(displays_ssim: 'tdil').limit(3)
+      TuftsImage.where(displays_ssim: 'trove').limit(3)
     end
   end
 

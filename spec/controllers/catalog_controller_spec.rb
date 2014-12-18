@@ -44,10 +44,10 @@ describe CatalogController do
 
       describe "the search results" do
         let!(:course_collection) { create(:course_collection) }
-        let!(:image) { create(:tufts_image, displays: ['tdil']) }
-        let(:soft_deleted_image) { create(:tufts_image, displays: ['tdil']) }
-        let!(:template) { create(:tufts_template, displays: ['tdil']) }
-        let!(:pdf) { create(:tufts_pdf, displays: ['tdil']) }
+        let!(:image) { create(:tufts_image, displays: ['trove']) }
+        let(:soft_deleted_image) { create(:tufts_image, displays: ['trove']) }
+        let!(:template) { create(:tufts_template, displays: ['trove']) }
+        let!(:pdf) { create(:tufts_pdf, displays: ['trove']) }
 
         before do
           soft_deleted_image.state = 'D'
@@ -86,18 +86,18 @@ describe CatalogController do
     end
 
     describe "GET show" do
-      context 'images with "tdil" display' do
-        let(:tdil_img) { create(:image, displays: ['tdil']) }
+      context 'images with "trove" display' do
+        let(:trove_img) { create(:image, displays: ['trove']) }
 
         it 'is successful' do
-          get :show, id: tdil_img.pid
+          get :show, id: trove_img.pid
           expect(response).to render_template(:show)
           expect(response).to be_successful
           expect(assigns[:document]).to_not be_nil
         end
       end
 
-      context 'images with non-tdil display' do
+      context 'images with non-trove display' do
         let(:dl_img) { create(:image, displays: ['dl']) }
         it 'denies access' do
           get :show, id: dl_img.pid
@@ -108,22 +108,22 @@ describe CatalogController do
     end
 
     describe "PATCH add_to_collection" do
-      let(:image) { create(:tufts_image, displays: ['tdil']) }
+      let(:image) { create(:tufts_image, displays: ['trove']) }
       it "adds to my collection" do
-        collection = create(:personal_collection, user: user, displays: ['tdil'])
+        collection = create(:personal_collection, user: user, displays: ['trove'])
         patch :add_to_collection, id: image.id, collection_id: collection.id
         expect(response).to redirect_to(catalog_path(image))
         expect(collection.reload.members).to include(image)
       end
 
       it "doesn't add to another user's collection" do
-        collection = create(:personal_collection, displays: ['tdil'])
+        collection = create(:personal_collection, displays: ['trove'])
         patch :add_to_collection, id: image.id, collection_id: collection.id
         expect(collection.reload.members).to_not include(image)
       end
 
       it "doesn't add to a course collection" do
-        collection = create(:course_collection, displays: ['tdil'])
+        collection = create(:course_collection, displays: ['trove'])
         patch :add_to_collection, id: image.id, collection_id: collection.id
         expect(collection.reload.members).to_not include(image)
       end
@@ -137,26 +137,26 @@ describe CatalogController do
   end
 
   describe "authenticated user" do
-    let(:image) { create(:tufts_image, displays: ['tdil']) }
+    let(:image) { create(:tufts_image, displays: ['trove']) }
     before { sign_in admin }
 
     describe "PATCH add_to_collection" do
       it "adds to my collection" do
-        collection = create(:personal_collection, user: admin, displays: ['tdil'])
+        collection = create(:personal_collection, user: admin, displays: ['trove'])
         patch :add_to_collection, id: image.id, collection_id: collection.id
         expect(response).to redirect_to(catalog_path(image))
         expect(collection.reload.members).to include(image)
       end
 
       it "adds to another user's collection" do
-        collection = create(:personal_collection, displays: ['tdil'])
+        collection = create(:personal_collection, displays: ['trove'])
         patch :add_to_collection, id: image.id, collection_id: collection.id
         expect(response).to redirect_to(catalog_path(image))
         expect(collection.reload.members).to include(image)
       end
 
       it "adds to a course collection" do
-        collection = create(:course_collection, displays: ['tdil'])
+        collection = create(:course_collection, displays: ['trove'])
         patch :add_to_collection, id: image.id, collection_id: collection.id
         expect(response).to redirect_to(catalog_path(image))
         expect(collection.reload.members).to include(image)
