@@ -7,7 +7,7 @@ class CatalogController < ApplicationController
 
   include Hydra::Controller::ControllerBehavior
 
-  CatalogController.solr_search_params_logic += [:only_displays_in_tdil, :only_images_and_collections,
+  CatalogController.solr_search_params_logic += [:only_displays_in_trove, :only_images_and_collections,
     :exclude_root_collection, :exclude_soft_deleted]
 
   configure_blacklight do |config|
@@ -173,9 +173,9 @@ protected
     solr_parameters[:fq] << "-id:\"#{CourseCollection::ROOT_PID}\""
   end
 
-  def only_displays_in_tdil(solr_parameters, user_parameters)
+  def only_displays_in_trove(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "displays_ssim:tdil"
+    solr_parameters[:fq] << "displays_ssim:trove"
   end
 
   def exclude_soft_deleted(solr_parameters, user_parameters)
@@ -183,10 +183,10 @@ protected
     solr_parameters[:fq] << "NOT #{ActiveFedora::SolrService.solr_name("object_state", :stored_sortable)}:\"D\""
   end
 
-  # Override method from blacklight to check for 'tdil' display
+  # Override method from blacklight to check for 'trove' display
   def get_solr_response_for_doc_id(id=nil, extra_controller_params={})
     @response, @document = super
-    unless @document['displays_ssim'] && @document['displays_ssim'].include?('tdil')
+    unless @document['displays_ssim'] && @document['displays_ssim'].include?('trove')
       raise Hydra::AccessDenied.new("You do not have sufficient access privileges to read this document.", :read, params[:id])
     end
     [@response, @document]
