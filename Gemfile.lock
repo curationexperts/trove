@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/curationexperts/tufts_models.git
-  revision: 8bb0b0f078917ad1fbaa0d057d687106ecaed940
-  tag: v1.0.0
+  revision: 47daa043447a023f15ae2ba553952bd2323a2e71
+  ref: 47daa043447a023f15ae2ba553952bd2323a2e71
   specs:
     tufts_models (0.0.1)
       active-fedora (~> 7.0)
@@ -177,7 +177,7 @@ GEM
       hydra-access-controls (= 7.2.2)
       hydra-core (= 7.2.2)
       rails (>= 3.2.6)
-    hydra-role-management (0.2.0)
+    hydra-role-management (0.2.1)
       blacklight
       bootstrap_form
       cancancan
@@ -306,7 +306,7 @@ GEM
       rdf (~> 1.1)
     rdoc (4.1.2)
       json (~> 1.4)
-    redis (3.1.0)
+    redis (3.2.0)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
     ref (1.0.5)
