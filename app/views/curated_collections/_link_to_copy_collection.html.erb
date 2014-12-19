@@ -1,6 +1,6 @@
 <% if can? :copy, collection %>
   <li>
-    <%= link_to [:copy, collection], method: :post do %>
+    <%= link_to [:copy, collection], method: :post, data: { confirm: t('.confirm_copy') } do %>
         <%= icon 'plus' %> copy this collection
     <% end %>
   </li>
