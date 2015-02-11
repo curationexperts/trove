@@ -3,6 +3,7 @@ ALLOW_DOTS ||= /[^\/]+(?=\.(html|json|pptx|pdf)\z)|[^\/]+/
 Rails.application.routes.draw do
 
   get 'about', to: 'pages#about', as: 'about'
+  get 'help', to: 'pages#help', as: 'help'
   get 'contact', to: 'pages#contact', as: 'contact'
 
   resources :downloads, only: [:show], constraints: { id: ALLOW_DOTS }

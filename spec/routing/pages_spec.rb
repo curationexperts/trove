@@ -8,6 +8,13 @@ describe 'Pages routes:' do
     )
   end
 
+  it 'routes to help' do
+    expect(get: 'help').to route_to(
+      controller: 'pages',
+      action: 'help'
+    )
+  end
+
   it 'routes to contact' do
     expect(get: 'contact').to route_to(
       controller: 'pages',
