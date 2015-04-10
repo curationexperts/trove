@@ -8,6 +8,7 @@ notifications:
 
 install:
   - sudo apt-get -y install libreoffice
+  - bundle install
 
 before_script:
   - bundle exec rake config:copy db:setup
