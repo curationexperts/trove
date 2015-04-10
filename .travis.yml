@@ -1,0 +1,21 @@
+language: ruby
+rvm:
+  - 2.1
+
+notifications:
+  email:
+    - justin@curationexperts.com
+
+before_script:
+  - apt-get -y install libreoffice
+  - bundle exec rake config:copy db:setup
+  - bundle exec rake db:setup
+
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+
+bundler_args: --without development debug
+
+services:
+  - redis-server
