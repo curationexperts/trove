@@ -6,10 +6,14 @@ notifications:
   email:
     - justin@curationexperts.com
 
-before_script:
+install:
   - sudo apt-get -y install libreoffice
+
+before_script:
   - bundle exec rake config:copy db:setup
-  - bundle exec rake db:setup
+
+script:
+  - bundle exec rake ci
 
 env:
   global:
