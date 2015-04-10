@@ -1,4 +1,5 @@
 #Tufts Digital Image Library
+[![Build Status](https://travis-ci.org/curationexperts/trove.svg?branch=master)](https://travis-ci.org/curationexperts/trove)
 
 This application was developed for Ruby 2.1.2, which was the most recently released version of Ruby as of Sept 2014.
 
