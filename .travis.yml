@@ -10,7 +10,7 @@ notifications:
     - justin@curationexperts.com
 
 before_install:
-  - sudo apt-get -y install libreoffice
+  - apt-get -y install libreoffice
 
 before_script:
   - bundle exec rake config:copy db:setup
