@@ -8,9 +8,8 @@ notifications:
   email:
     - justin@curationexperts.com
 
-install:
+before_install:
   - sudo apt-get -y install libreoffice
-  - bundle install
 
 before_script:
   - bundle exec rake config:copy db:setup
