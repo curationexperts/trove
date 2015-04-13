@@ -2,15 +2,12 @@ language: ruby
 rvm:
   - 2.1
 
-sudo: false
-cache: bundler
-
 notifications:
   email:
     - justin@curationexperts.com
 
 before_install:
-  - apt-get -y install libreoffice
+  - sudo apt-get -y install libreoffice
 
 before_script:
   - bundle exec rake config:copy db:setup
