@@ -48,10 +48,10 @@ To run a shared copy of hydra-jetty:
 > * rake jetty:start
 
 ### Share the data directory between MIRA & Trove
-If you are running a shared version of Fedora and Solr, you'll also want to share the binary data directory between the two applications.  Set up a symbolic link from the trove local_object_store dictory to the same directory in the mira application.  The command will look something like this:  
-
-* ln -s ../mira/tmp/local_object_store/ tmp/local_object_store
-* Edit the config/application.yml file and change the development/object_store_root to read `   object_store_root: "<%=Rails.root%>../mira/tmp/local_object_store"`
+If you are running a shared version of Fedora and Solr, you'll want both applications to use the same data store directory.  You can do this by editing the `trove/config/application.yml` file to point to the local_object_store where MIRA saves it's binary uploads.  If *mira* and *trove* are both in subdirectories of the same working directory edit the config/application.yml file and change the development/object_store_root line to read 
+```
+    object_store_root: "<%=Rails.root%>/../mira/tmp/local_object_store"
+```
 
 ### Check your installation
 Ingest some images into MIRA, mark them for display in trove, and publish them to make them visible in trove.  If you want to have MIRA and Trove running simulaneously you'll need to start one of the servers on an alternat port (instead of the default port 3000).
