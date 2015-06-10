@@ -8,8 +8,6 @@ notifications:
 
 before_install:
   - sudo apt-get update
-
-before_install:
   - sudo apt-get -y install libreoffice
 
 before_script:
