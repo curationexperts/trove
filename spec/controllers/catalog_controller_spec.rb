@@ -29,6 +29,30 @@ describe CatalogController do
         CourseCollection.delete_all
       end
 
+      describe "with draft and published objects" do
+        let!(:draft_record) {
+          TuftsImage.build_draft_version(displays: ['trove'], title: "draft image").tap do |r|
+            r.save!
+          end
+        }
+
+        let!(:published_record) {
+          TuftsImage.create!(displays: ['trove'], title: "published image", pid: "tufts:123")
+        }
+
+        let!(:published_uc_record) {
+          TuftsImage.create!(displays: ['trove'], title: "published image", pid: "tufts.uc:123")
+        }
+
+        it 'displays only the published records' do
+          get :index
+          records = assigns[:document_list].map(&:id)
+
+          expect(records).to include(published_record.pid)
+          expect(records).to include(published_uc_record.pid)
+        end
+      end
+
       describe "the sidebar" do
         let!(:my_collection1) { create(:personal_collection, user: user) }
         let!(:my_collection2) { create(:personal_collection, user: user) }
@@ -44,8 +68,8 @@ describe CatalogController do
 
       describe "the search results" do
         let!(:course_collection) { create(:course_collection) }
-        let!(:image) { create(:tufts_image, displays: ['trove']) }
-        let(:soft_deleted_image) { create(:tufts_image, displays: ['trove']) }
+        let!(:image) { TuftsImage.create!(displays: 'trove', title: 'published image', pid: "tufts:123") }
+        let(:soft_deleted_image) { TuftsImage.create(displays: ['trove'], title: 'soft-deleted', pid: "tufts:456") }
         let!(:template) { create(:tufts_template, displays: ['trove']) }
         let!(:pdf) { create(:tufts_pdf, displays: ['trove']) }
 

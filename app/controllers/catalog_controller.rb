@@ -8,7 +8,7 @@ class CatalogController < ApplicationController
   include Hydra::Controller::ControllerBehavior
 
   CatalogController.solr_search_params_logic += [:only_displays_in_trove, :only_images_and_collections,
-    :exclude_root_collection, :exclude_soft_deleted]
+    :exclude_root_collection, :exclude_soft_deleted, :only_published_objects]
 
   configure_blacklight do |config|
     config.view.delete(:slideshow)
@@ -163,6 +163,11 @@ class CatalogController < ApplicationController
   end
 
 protected
+
+  def only_published_objects(solr_parameters, user_parameters)
+    solr_parameters[:fq] ||= []
+    solr_parameters[:fq] << "id:#{PidUtils.published_namespace}*"
+  end
 
   def only_images_and_collections(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
