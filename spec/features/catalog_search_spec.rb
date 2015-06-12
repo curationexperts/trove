@@ -22,10 +22,15 @@ feature 'Catalog Search:' do
   end
 
   context "when displays are set" do
-    let!(:trove_obj) { create(:image, displays: ['dl', 'trove']) }
-    let!(:non_trove_obj) { create(:image, displays: ['dl']) }
+    let!(:trove_obj) do
+      TuftsImage.create!(displays: ['dl', 'trove'], pid: "tufts:123", title: "trove")
+    end
 
-    scenario 'returns only objects with "trove" display' do
+    let!(:non_trove_obj) do
+      TuftsImage.create!(displays: ['dl'], pid: "tufts:456", title: "non-trove")
+    end
+
+    scenario 'returns only published objects with "trove" display' do
       visit root_path
       click_button('Search')
       within('#documents') do
