@@ -2,10 +2,10 @@
 require 'blacklight/catalog'
 
 class CatalogController < ApplicationController
-
   include Blacklight::Catalog
-
   include Hydra::Controller::ControllerBehavior
+
+  before_filter :allow_only_published_objects, only: [:show]
 
   CatalogController.solr_search_params_logic += [:only_displays_in_trove, :only_images_and_collections,
     :exclude_root_collection, :exclude_soft_deleted, :only_published_objects]
@@ -147,6 +147,7 @@ class CatalogController < ApplicationController
     super
   end
 
+
   def add_to_collection
     get_solr_response_for_doc_id(params[:id])
     if ActiveFedora::Base.exists?(params[:collection_id])
@@ -163,6 +164,10 @@ class CatalogController < ApplicationController
   end
 
 protected
+
+  def allow_only_published_objects
+    not_found unless PidUtils.published?(params[:id])
+  end
 
   def only_published_objects(solr_parameters, user_parameters)
     solr_parameters[:fq] ||= []
